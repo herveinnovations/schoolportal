@@ -1,0 +1,125 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence, MotionConfig } from 'motion/react';
+import { BrandMark } from './BrandMark';
+import { ArrowLeft, GraduationCap, BookOpen, Shield, Eye, EyeOff, CheckCircle2, Video, ClipboardCheck, Award, Users, BarChart3, KeyRound } from 'lucide-react';
+import { Input } from '@/app/components/ui/input';
+
+export type Role = 'student' | 'lecturer' | 'staff';
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+export type ShellTheme = Role | 'all';
+
+export const roleMeta: Record<ShellTheme, { label: string; icon: React.ReactNode; accent: string; panel: string; points: [React.ReactNode, string][]; heading: string }> = {
+  student: {
+    label: 'Student', icon: <GraduationCap className="w-4 h-4" />, accent: 'bg-emerald-700', panel: 'from-emerald-800 via-emerald-900 to-stone-900',
+    heading: 'Your classes, recordings and results in one place.',
+    points: [[<Video className="w-4 h-4" />, 'Join live lectures and ask questions'], [<ClipboardCheck className="w-4 h-4" />, 'Sit timed exams online'], [<Award className="w-4 h-4" />, 'Download your certificates']],
+  },
+  lecturer: {
+    label: 'Lecturer', icon: <BookOpen className="w-4 h-4" />, accent: 'bg-amber-700', panel: 'from-amber-800 via-amber-900 to-stone-900',
+    heading: 'Teach live, post work and grade from one portal.',
+    points: [[<Video className="w-4 h-4" />, 'Start live classes and take attendance'], [<ClipboardCheck className="w-4 h-4" />, 'Build exams and assignments'], [<Users className="w-4 h-4" />, 'Track every student in your courses']],
+  },
+  all: {
+    label: 'Alphatech', icon: <GraduationCap className="w-4 h-4" />, accent: 'bg-emerald-700', panel: 'from-emerald-800 via-emerald-900 to-stone-900',
+    heading: 'One sign-in for students, lecturers and staff.',
+    points: [[<Video className="w-4 h-4" />, 'Live classes, recordings and exams'], [<Users className="w-4 h-4" />, 'Marking, attendance and gradebooks'], [<BarChart3 className="w-4 h-4" />, 'Payments, results and administration']],
+  },
+  staff: {
+    label: 'Staff', icon: <Shield className="w-4 h-4" />, accent: 'bg-teal-800', panel: 'from-teal-900 via-stone-800 to-stone-950',
+    heading: 'Administration for authorised staff only.',
+    points: [[<BarChart3 className="w-4 h-4" />, 'Enrolment, revenue and activity at a glance'], [<BookOpen className="w-4 h-4" />, 'Create courses and assign lecturers'], [<KeyRound className="w-4 h-4" />, 'Issue certificates and announcements']],
+  },
+};
+
+export const RoleSwitch: React.FC<{ role: Role; onChange: (r: Role) => void }> = ({ role, onChange }) => (
+  <div role="tablist" aria-label="Account type" className="grid grid-cols-3 gap-1 p-1 bg-stone-100 rounded-full">
+    {(['student', 'lecturer', 'staff'] as Role[]).map(r => (
+      <button key={r} type="button" role="tab" aria-selected={role === r} onClick={() => onChange(r)}
+        className={`relative flex items-center justify-center gap-1.5 rounded-full py-2 text-sm font-medium transition-colors ${role === r ? 'text-white' : 'text-stone-600 hover:text-stone-900'}`}>
+        {role === r && <motion.span layoutId="role-pill" className={`absolute inset-0 rounded-full ${roleMeta[r].accent} shadow-sm`} transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
+        <span className="relative flex items-center gap-1.5">{roleMeta[r].icon}{roleMeta[r].label}</span>
+      </button>
+    ))}
+  </div>
+);
+
+export const PasswordInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="relative">
+      <Input {...props} type={show ? 'text' : 'password'} className="pr-10" />
+      <button type="button" onClick={() => setShow(s => !s)} aria-label={show ? 'Hide password' : 'Show password'}
+        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-stone-400 hover:text-stone-700 rounded">
+        {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+      </button>
+    </div>
+  );
+};
+
+export const AuthShell: React.FC<{ onHome: () => void; role: ShellTheme; children: React.ReactNode; aside?: React.ReactNode }> = ({ onHome, role, children, aside }) => {
+  const meta = roleMeta[role];
+  return (
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-stone-50 grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+        {/* Brand panel (desktop) */}
+        <aside className={`hidden lg:flex relative overflow-hidden flex-col justify-between p-10 bg-gradient-to-br ${meta.panel} text-white transition-colors duration-700`}>
+          <motion.div aria-hidden animate={{ scale: [1, 1.2, 1], opacity: [0.25, 0.45, 0.25] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-white/20 blur-3xl" />
+          <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '22px 22px' }} />
+          <button onClick={onHome} className="relative w-fit" aria-label="Alphatech Computer Institute home"><BrandMark withName dark /></button>
+          <div className="relative">
+            <AnimatePresence mode="wait">
+              <motion.div key={role} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.4, ease }}>
+                <p className="text-xs font-semibold tracking-[0.14em] uppercase text-white/60">{role === 'all' ? 'Alphatech Computer Institute portal' : `${meta.label} portal`}</p>
+                <h2 className="mt-2 text-3xl xl:text-4xl font-bold leading-tight text-balance max-w-md">{meta.heading}</h2>
+                <ul className="mt-8 space-y-3">
+                  {meta.points.map(([icon, text], i) => (
+                    <motion.li key={text} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08, duration: 0.4 }}
+                      className="flex items-center gap-3 text-white/90">
+                      <span className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">{icon}</span>{text}
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <p className="relative text-xs text-white/50">© 2026 Alphatech Computer Institute</p>
+        </aside>
+
+        {/* Form side */}
+        <div className="flex flex-col min-w-0">
+          <nav className="h-16 px-4 sm:px-8 flex items-center justify-between border-b border-stone-200 bg-white lg:bg-transparent lg:border-0">
+            <button onClick={onHome} aria-label="Alphatech Computer Institute home" className="lg:invisible"><BrandMark withName /></button>
+            <button onClick={onHome} className="group inline-flex items-center gap-1.5 text-sm text-stone-600 hover:text-emerald-700">
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" /> Back to home
+            </button>
+          </nav>
+          <main className="flex-1 flex items-center justify-center px-4 py-10">
+            <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease }} className="w-full max-w-md">
+              <div className="bg-white rounded-2xl shadow-xl shadow-stone-200/60 border border-stone-200 p-6 sm:p-8">{children}</div>
+              {aside}
+            </motion.div>
+          </main>
+        </div>
+      </div>
+    </MotionConfig>
+  );
+};
+
+export const ErrorNote: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <motion.div role="alert" initial={{ opacity: 0, y: -6, x: 0 }} animate={{ opacity: 1, y: 0, x: [0, -6, 6, -4, 4, 0] }} transition={{ duration: 0.4 }}
+    className="text-red-600 text-sm bg-red-50 p-3 rounded-lg border border-red-100 flex items-start gap-2">
+    <span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-1.5" />
+    <span>{children}</span>
+  </motion.div>
+);
+
+export const SuccessNote: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="text-green-700 text-sm bg-green-50 p-3 rounded-lg border border-green-100 flex items-center gap-2">
+    <CheckCircle2 className="w-4 h-4 shrink-0" />{children}
+  </motion.div>
+);
+
+export const Spinner: React.FC = () => <span className="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin" aria-hidden />;
