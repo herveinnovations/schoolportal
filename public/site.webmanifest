@@ -1,0 +1,12 @@
+{
+  "name": "Alphatech Computer Institute Portal",
+  "short_name": "Alphatech",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fafaf9",
+  "theme_color": "#047857"
+}
