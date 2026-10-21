@@ -19,8 +19,10 @@ Everyone signs in on the same page; the account decides which portal opens. The 
 
 ## One-time setup
 
+> Done on 21 Oct 2026: the tables, security rules and the `invite-user` function are already set up in the School Portal Supabase project. Steps 1–2 are only needed for a new project.
+
 1. **Create the database.** Either:
-   - Supabase dashboard → SQL Editor → paste `supabase/migrations/20261021000000_portal_schema.sql` → Run, **or**
+   - Supabase dashboard → SQL Editor → paste each file in `supabase/migrations` in order → Run, **or**
    - add the repository secrets `SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD` and run the **Deploy database** workflow (it also deploys the invite function).
 
    The first administrator is the email in the `owner_email` line near the top of that file. Change it before running if needed.
