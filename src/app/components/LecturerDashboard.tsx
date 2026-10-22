@@ -9,7 +9,7 @@ import { Tabs, TabsContent } from '@/app/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar';
-import { Home, BookOpen, CalendarDays, Video, PlayCircle, FileText, ClipboardCheck, PenLine, GraduationCap, UserCheck, Award, User, Plus, Trash2, ExternalLink, MapPin, Users, Clock, Eye, EyeOff, KeyRound } from 'lucide-react';
+import { Home, BookOpen, CalendarDays, Video, PlayCircle, FileText, ClipboardCheck, PenLine, GraduationCap, UserCheck, Award, User, FolderOpen, Plus, Trash2, ExternalLink, MapPin, Users, Clock, Eye, EyeOff, KeyRound } from 'lucide-react';
 import { DashboardShell, type NavItem } from './shell/DashboardShell';
 import { NotificationBell } from './shell/NotificationBell';
 import { SectionTitle, EmptyState, StatusPill, countdown, fmtDate } from './shell/ui';
@@ -21,6 +21,7 @@ import { Attendance } from './lecturer/Attendance';
 import { ExamBuilder } from './lecturer/ExamBuilder';
 import { PasswordInput } from './AuthShell';
 import { examMax } from '@/app/lib/academics';
+import { DocumentsList } from './DocumentsList';
 
 const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const isUrl = (s: string) => /^https?:\/\/\S+\.\S+/.test(s.trim());
@@ -70,6 +71,7 @@ export const LecturerDashboard: React.FC = () => {
     { id: 'gradebook', label: 'Gradebook', icon: GraduationCap, section: 'Students' },
     { id: 'attendance', label: 'Attendance', icon: UserCheck, section: 'Students' },
     { id: 'certificates', label: 'Certificates', icon: Award, section: 'Students' },
+    { id: 'documents', label: 'Documents', icon: FolderOpen, section: 'Account' },
     { id: 'profile', label: 'Profile', icon: User, section: 'Account' },
   ];
 
@@ -265,6 +267,8 @@ export const LecturerDashboard: React.FC = () => {
         </TabsContent>
 
         {/* Certificates */}
+        <TabsContent value="documents"><SectionTitle title="Documents" sub="Files shared by the administration office." /><DocumentsList /></TabsContent>
+
         <TabsContent value="certificates">
           <SectionTitle title="Certificates" sub="Issue a certificate to a student in one of your courses." action={<Button onClick={() => setDialog('certificate')}><Plus className="w-4 h-4" />Issue certificate</Button>} />
           {(() => {

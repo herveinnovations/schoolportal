@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { useAuth, type Course, type Notification } from '@/app/context/AuthContext';
 import { Tabs, TabsContent } from '@/app/components/ui/tabs';
-import { Home, BookOpen, Video, CalendarDays, PlayCircle, FileText, ClipboardCheck, GraduationCap, Wallet, Award, User } from 'lucide-react';
+import { Home, BookOpen, Video, CalendarDays, PlayCircle, FileText, ClipboardCheck, GraduationCap, Wallet, Award, User, FolderOpen } from 'lucide-react';
+import { DocumentsList } from './DocumentsList';
+import { SectionTitle } from './shell/ui';
 import { DashboardShell, type NavItem } from './shell/DashboardShell';
 import { NotificationBell } from './shell/NotificationBell';
 import { EmptyState } from './shell/ui';
@@ -50,6 +52,7 @@ export const StudentDashboard: React.FC = () => {
     { id: 'exams', label: 'Exams', icon: ClipboardCheck, badge: openExams, section: 'Learning' },
     { id: 'results', label: 'Results', icon: GraduationCap, section: 'Learning' },
     { id: 'finance', label: 'Payments', icon: Wallet, badge: fin.overdue.length + (fin.registration?.status === 'rejected' ? 1 : 0), section: 'Account' },
+    { id: 'documents', label: 'Documents', icon: FolderOpen, section: 'Learning' },
     { id: 'certificates', label: 'Certificates', icon: Award, section: 'Account' },
     { id: 'profile', label: 'Profile', icon: User, section: 'Account' },
   ];
@@ -124,6 +127,7 @@ export const StudentDashboard: React.FC = () => {
           <TabsContent value="exams">{needCourses(<ExamSchedule />, ClipboardCheck, 'No exams yet')}</TabsContent>
           <TabsContent value="results"><StudentResults /></TabsContent>
           <TabsContent value="finance"><StudentFinance onPay={(courseId, amount) => setPayFor({ courseId, amount })} onResubmitRegistration={() => setShowRegPayment(true)} /></TabsContent>
+          <TabsContent value="documents"><SectionTitle title="Documents" sub="Forms, timetables, handouts and other files from the school." /><DocumentsList /></TabsContent>
           <TabsContent value="certificates"><StudentCertificates go={go} /></TabsContent>
           <TabsContent value="profile"><StudentProfile /></TabsContent>
         </Tabs>

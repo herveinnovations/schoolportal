@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { PHOTOS } from '@/app/config/school';
+import { useSite } from '@/app/context/SiteContext';
 import { useAuth, type Course } from '@/app/context/AuthContext';
 import { Button } from '@/app/components/ui/button';
 import { Video, FileText, ClipboardCheck, CalendarClock, AlertTriangle, Hourglass, ArrowRight, Megaphone, FileCheck2, CheckCircle2, Sparkles } from 'lucide-react';
@@ -22,6 +22,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export const StudentHome: React.FC<Props> = ({ go, openCourse, onRegister, onResubmitRegistration, onPay, onJoin }) => {
   const { user, courses, liveClasses, timetable, homeworks, homeworkSubmissions, exams, examAttempts, paymentClaims, announcements } = useAuth();
+  const { images: siteImages } = useSite();
   if (!user) return null;
   const now = new Date();
   const mine = courses.filter(c => user.courses.includes(c.id));
@@ -79,7 +80,7 @@ export const StudentHome: React.FC<Props> = ({ go, openCourse, onRegister, onRes
       {/* Hero */}
       <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease }}
         className="relative overflow-hidden bg-ink text-white p-6 sm:p-10">
-        <img src={PHOTOS.hero} alt="" aria-hidden onError={e => { e.currentTarget.style.display = 'none'; }} className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <img src={siteImages.hero} alt="" aria-hidden onError={e => { e.currentTarget.style.display = 'none'; }} className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
         <span aria-hidden className="absolute left-0 top-0 bottom-0 w-1.5 bg-sun" />
         <div className="relative grid md:grid-cols-[1fr_minmax(0,320px)] gap-6 items-center">

@@ -41,6 +41,16 @@ Everyone signs in on the same page; the account decides which portal opens. The 
 
 6. Sign up on the site with the owner email, confirm it, and you land in the Staff portal as Administrator. Invite lecturers and staff from **Staff & access**, then add courses.
 
+## Website photos, text and files
+
+Staff (Administrator or Registrar) manage these from the Staff portal, with no code changes or redeploys:
+
+- **Website**: upload the hero, tile, wide and sign-in photos; edit the headline, intro, About text, phone and email.
+- **Files**: upload documents and choose who can download them (everyone on the website, students, lecturers, or one course).
+- **Courses**: each course can have its own picture.
+
+Photos go to the public `site-media` storage bucket (resized in the browser first). Documents go to the private `documents` bucket and are downloaded through 10-minute links that respect each file's audience.
+
 ## Running locally
 
 ```bash

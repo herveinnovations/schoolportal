@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { PHOTOS } from '@/app/config/school';
+import { useSite } from '@/app/context/SiteContext';
 import { useAuth } from '@/app/context/AuthContext';
 import { Button } from '@/app/components/ui/button';
 import { Video, FileText, ClipboardCheck, PlayCircle, PenLine, MapPin, CalendarClock, ArrowRight, Users, CheckCircle2 } from 'lucide-react';
@@ -16,6 +16,7 @@ interface Props {
 
 export const LecturerHome: React.FC<Props> = ({ go, quick, onStart }) => {
   const { user, users, courses, timetable, liveClasses, homeworks, homeworkSubmissions, exams, examAttempts } = useAuth();
+  const { images: siteImages } = useSite();
   if (!user) return null;
   const now = new Date();
   const today = DAYS[now.getDay()];
@@ -46,7 +47,7 @@ export const LecturerHome: React.FC<Props> = ({ go, quick, onStart }) => {
   return (
     <div className="space-y-6">
       <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden bg-ink text-white p-6 sm:p-10">
-        <img src={PHOTOS.hero} alt="" aria-hidden onError={e => { e.currentTarget.style.display = 'none'; }} className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <img src={siteImages.hero} alt="" aria-hidden onError={e => { e.currentTarget.style.display = 'none'; }} className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
         <span aria-hidden className="absolute left-0 top-0 bottom-0 w-1.5 bg-sun" />
         <div className="relative flex flex-wrap items-end justify-between gap-6">

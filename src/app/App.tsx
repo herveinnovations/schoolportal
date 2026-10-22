@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from '@/app/context/AuthContext';
+import { SiteProvider } from '@/app/context/SiteContext';
 import { Landing } from '@/app/components/Landing';
 import { Login } from '@/app/components/Login';
 import { Signup } from '@/app/components/Signup';
@@ -76,9 +77,11 @@ function MainContent() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <MainContent />
-      <Toaster />
-    </AuthProvider>
+    <SiteProvider>
+      <AuthProvider>
+        <MainContent />
+        <Toaster />
+      </AuthProvider>
+    </SiteProvider>
   );
 }

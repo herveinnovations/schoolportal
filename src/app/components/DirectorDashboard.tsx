@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { useAuth, staffCan, type Course, type Announcement } from '@/app/context/AuthContext';
 import { Accounts } from './staff/Accounts';
+import { WebsiteEditor } from './staff/WebsiteEditor';
+import { Files } from './staff/Files';
+import { uploadSiteImage } from '@/app/lib/media';
+import { Spinner } from './AuthShell';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
@@ -10,7 +14,7 @@ import { Tabs, TabsContent } from '@/app/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar';
-import { LayoutDashboard, Wallet, Users, UserSquare2, KeyRound, BookOpen, GraduationCap, Megaphone, Award, Plus, Pencil, Trash2, Search } from 'lucide-react';
+import { LayoutDashboard, Wallet, Users, UserSquare2, KeyRound, Globe, FolderOpen, BookOpen, GraduationCap, Megaphone, Award, Plus, Pencil, Trash2, Search } from 'lucide-react';
 import { DashboardShell, type NavItem } from './shell/DashboardShell';
 import { NotificationBell } from './shell/NotificationBell';
 import { SectionTitle, EmptyState, StatusPill, Segmented, fmtDate } from './shell/ui';
@@ -39,6 +43,7 @@ export const DirectorDashboard: React.FC = () => {
   const [cert, setCert] = useState({ studentId: '', courseId: '', title: 'Certificate of Completion', fileUrl: '' });
   const [resultsCourse, setResultsCourse] = useState('');
   const [lecQ, setLecQ] = useState('');
+  const [imgBusy, setImgBusy] = useState(false);
 
   if (!user) return null;
   const students = users.filter(u => u.role === 'student');
@@ -54,12 +59,14 @@ export const DirectorDashboard: React.FC = () => {
     { id: 'results', label: 'Results', icon: GraduationCap, section: 'Academics', area: 'academics' },
     { id: 'certificates', label: 'Certificates', icon: Award, section: 'Academics', area: 'academics' },
     { id: 'announcements', label: 'Announcements', icon: Megaphone, section: 'Communication', area: 'academics' },
+    { id: 'files', label: 'Files', icon: FolderOpen, section: 'Communication', area: 'academics' },
+    { id: 'website', label: 'Website', icon: Globe, section: 'Communication', area: 'academics' },
     { id: 'accounts', label: 'Staff & access', icon: KeyRound, section: 'Administration', area: 'accounts' },
   ];
   const items: NavItem[] = allItems.filter(i => i.area === 'any' || staffCan(user, i.area));
   const allowed = new Set(items.map(i => i.id));
   const go = (id: string) => { if (allowed.has(id)) setTab(id); };
-  const primary = ['overview', 'payments', 'students', 'results', 'courses', 'announcements'].filter(id => allowed.has(id)).slice(0, 4);
+  const primary = ['overview', 'payments', 'students', 'results', 'courses', 'website'].filter(id => allowed.has(id)).slice(0, 4);
 
 
   const openCourse = (c?: Course) => {
@@ -83,6 +90,16 @@ export const DirectorDashboard: React.FC = () => {
       actions={<NotificationBell onOpen={() => {}} />}>
       <Tabs value={tab} onValueChange={go}>
         <TabsContent value="overview"><StaffOverview go={go} /></TabsContent>
+
+        <TabsContent value="website">
+          <SectionTitle title="Website" sub="Change the photos and text on the public website. Changes go live straight away." />
+          {staffCan(user, 'academics') && <WebsiteEditor />}
+        </TabsContent>
+
+        <TabsContent value="files">
+          <SectionTitle title="Files" sub="Upload documents and choose who can download them: the public website, students, lecturers or one course." />
+          {staffCan(user, 'academics') && <Files />}
+        </TabsContent>
 
         <TabsContent value="accounts">
           <SectionTitle title="Staff & access" sub="Invite lecturers and office staff, choose what they can manage, and switch accounts off when someone leaves." />
@@ -274,8 +291,20 @@ export const DirectorDashboard: React.FC = () => {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="cf-img">Cover image (optional)</Label>
-              <Input id="cf-img" type="file" accept="image/*" onChange={e => { const f = e.target.files?.[0]; if (!f) return; if (f.size > 1.5e6) { toast.error('Choose an image under 1.5 MB'); return; } const r = new FileReader(); r.onloadend = () => setCourseForm(cf => ({ ...cf, imageUrl: r.result as string })); r.readAsDataURL(f); }} />
-              {courseForm.imageUrl && <img src={courseForm.imageUrl} alt="" className="mt-2 h-28 w-full object-cover rounded-xl" />}
+              <Input id="cf-img" type="file" accept="image/jpeg,image/png,image/webp" disabled={imgBusy} onChange={async e => {
+                const f = e.target.files?.[0]; if (!f) return;
+                setImgBusy(true);
+                try { const url = await uploadSiteImage(f, 'courses', 1400); setCourseForm(cf => ({ ...cf, imageUrl: url })); toast.success('Picture uploaded'); }
+                catch (err) { toast.error((err as Error).message); }
+                finally { setImgBusy(false); e.target.value = ''; }
+              }} />
+              {imgBusy && <p className="text-xs text-stone-500 flex items-center gap-2"><Spinner />Uploading picture…</p>}
+              {courseForm.imageUrl && !imgBusy && (
+                <div className="relative mt-2">
+                  <img src={courseForm.imageUrl} alt="" className="h-32 w-full object-cover" />
+                  <button type="button" onClick={() => setCourseForm(cf => ({ ...cf, imageUrl: '' }))} className="absolute right-2 top-2 bg-white/95 px-2 py-1 text-xs font-semibold text-ink hover:bg-white">Remove</button>
+                </div>
+              )}
             </div>
             <Button className="w-full" onClick={saveCourse}>{courseDialog === 'new' ? 'Create course' : 'Save changes'}</Button>
           </div>

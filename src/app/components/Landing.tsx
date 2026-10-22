@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, MotionConfig, useScroll, useSpring } from 'motion/react';
 import { useAuth } from '@/app/context/AuthContext';
 import { schoolLogo } from './BrandMark';
-import { SCHOOL, PHOTOS, FEES } from '@/app/config/school';
+import { SCHOOL, FEES } from '@/app/config/school';
+import { useSite } from '@/app/context/SiteContext';
+import { DocumentRow } from './DocumentsList';
 import {
   Video, PlayCircle, ClipboardCheck, MessageSquare, FileText, Wallet, TrendingUp, Clock,
   ArrowRight, ArrowUp, Menu, X, ChevronDown, Phone,
@@ -84,6 +86,8 @@ const FaqItem: React.FC<{ q: string; a: string; open: boolean; onToggle: () => v
 /* ---------- Page ---------- */
 export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
   const { courses } = useAuth();
+  const { images, text, contact, documents } = useSite();
+  const publicDocs = documents.filter(d => d.audience === 'public');
   const [menuOpen, setMenuOpen] = useState(false);
   const [showTop, setShowTop] = useState(false);
   const [filter, setFilter] = useState<'all' | 'beginner' | 'advanced' | 'teveta_level_3'>('all');
@@ -167,24 +171,24 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
 
         {/* ---------- Hero ---------- */}
         <section id="top" className="relative overflow-hidden bg-ink">
-          <div className="absolute inset-0"><Photo src={PHOTOS.hero} alt="" zoom /></div>
+          <div className="absolute inset-0"><Photo src={images.hero} alt="" zoom /></div>
           <div className="absolute inset-0 bg-black/55" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/10 to-transparent" />
           <div className={`relative ${wrap} min-h-[600px] sm:min-h-[700px] lg:min-h-[872px] flex flex-col justify-center py-24`}>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.15 }}
               className="max-w-[880px] font-display font-extrabold text-white text-[42px] sm:text-[58px] lg:text-[68px] leading-[1.12] tracking-[-0.01em] text-balance">
-              {'Alphatech\u00a0– Computer Skills That Open Doors!'}
+              {text.heroTitle}
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease, delay: 0.35 }}
               className="mt-7 max-w-[620px] text-[17px] sm:text-[18px] leading-[1.6] text-white/85">
-              Live classes, recorded lessons and certificates, full-time or part-time, from anywhere in Zambia. {SCHOOL.motto}.
+              {text.heroSubtitle}
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease, delay: 0.5 }}
               className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
               <SunButton onClick={() => onSignUp()}>Apply Now <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></SunButton>
-              {SCHOOL.phone ? (
-                <a href={`tel:${SCHOOL.phone.replace(/\s/g, '')}`} className="inline-flex items-center gap-3 text-white text-[16px] font-semibold hover:text-sun transition-colors">
-                  <Phone className="w-5 h-5" fill="currentColor" strokeWidth={0} />{SCHOOL.phone}
+              {contact.phone ? (
+                <a href={`tel:${contact.phone.replace(/\s/g, '')}`} className="inline-flex items-center gap-3 text-white text-[16px] font-semibold hover:text-sun transition-colors">
+                  <Phone className="w-5 h-5" fill="currentColor" strokeWidth={0} />{contact.phone}
                 </a>
               ) : (
                 <a href="#courses" className="text-white font-semibold underline underline-offset-4 hover:text-sun">Browse courses</a>
@@ -207,7 +211,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
               <SunButton dark className="mt-auto self-start" onClick={() => document.getElementById('how')?.scrollIntoView()}>Learn More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></SunButton>
             </Reveal>
             <Reveal delay={0.16} className="min-h-[300px] md:min-h-0 bg-stone-200 overflow-hidden">
-              <Photo src={PHOTOS.tile} alt="A student working on a laptop" className="transition-transform duration-700 hover:scale-105" />
+              <Photo src={images.tile} alt="A student working on a laptop" className="transition-transform duration-700 hover:scale-105" />
             </Reveal>
           </div>
         </section>
@@ -219,14 +223,14 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
               <a href="#faq" className="inline-block mt-6 text-[16px] font-semibold text-sun-deep underline underline-offset-4 decoration-2 hover:text-ink">More About Us</a>
             </Numbered>
             <Reveal delay={0.1} className="lg:pt-10 space-y-5 text-[16px] leading-[1.7] text-stone-500">
-              <p className="text-[18px] font-semibold leading-[1.55] text-ink/80">Alphatech Computer Institute was created to help Zambians build real computer skills for work, business and further study.</p>
-              <p>Whether you are using a computer for the first time or preparing for a TEVETA qualification, our lecturers teach live, record every class and mark your work online, so you always know where you stand.</p>
-              <p>Everything happens in one portal: your timetable, live classes, recordings, assignments, exams, results, payments and certificates. Sign in from a phone or a computer, wherever you are.</p>
+              <p className="text-[18px] font-semibold leading-[1.55] text-ink/80">{text.aboutLead}</p>
+              <p>{text.aboutBody1}</p>
+              <p>{text.aboutBody2}</p>
             </Reveal>
           </div>
           <Reveal className={`${wrap} mt-14 lg:mt-[60px]`}>
             <div className="relative h-[280px] sm:h-[420px] lg:h-[520px] bg-stone-300 overflow-hidden">
-              <Photo src={PHOTOS.band} alt="A class in progress" />
+              <Photo src={images.band} alt="A class in progress" />
               <div className="absolute left-0 bottom-0 bg-sun text-ink px-6 sm:px-10 py-5 sm:py-7 max-w-[90%]">
                 <p className="font-display font-extrabold text-[20px] sm:text-[28px] leading-tight">{SCHOOL.motto}.</p>
               </div>
@@ -364,7 +368,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <section id="faq" className="py-20 lg:py-[120px] scroll-mt-24">
           <div className={`${wrap} grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-8`}>
             <Numbered n="06" title={<>Questions<br className="hidden lg:block" /> &amp; Answers</>}>
-              <p className="mt-5 text-[16px] leading-[1.7] text-stone-500">What new students ask most. Can’t find your answer? Call us{SCHOOL.phone ? ` on ${SCHOOL.phone}` : ''}.</p>
+              <p className="mt-5 text-[16px] leading-[1.7] text-stone-500">What new students ask most. Can’t find your answer? Call us{contact.phone ? ` on ${contact.phone}` : ''}.</p>
             </Numbered>
             <Reveal delay={0.1} className="border-t border-stone-200">
               {faqs.map((f, i) => (
@@ -373,6 +377,20 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             </Reveal>
           </div>
         </section>
+
+        {/* ---------- Downloads (files staff marked for everyone) ---------- */}
+        {publicDocs.length > 0 && (
+          <section id="downloads" className="pb-20 lg:pb-[120px] scroll-mt-24">
+            <div className={`${wrap} grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-8`}>
+              <Numbered n="07" title="Downloads">
+                <p className="mt-5 text-[16px] leading-[1.7] text-stone-500">Prospectus, forms and other documents from the school.</p>
+              </Numbered>
+              <Reveal delay={0.1} className="border border-stone-200 divide-y divide-stone-100">
+                {publicDocs.map(d => <DocumentRow key={d.id} doc={d} showAudience={false} />)}
+              </Reveal>
+            </div>
+          </section>
+        )}
 
         {/* ---------- Call to action ---------- */}
         <section className="bg-sun">
@@ -416,8 +434,8 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             </div>
             <div>
               <p className="font-display font-bold text-white text-[17px] mb-4">Contact</p>
-              {SCHOOL.phone && <a href={`tel:${SCHOOL.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 text-[15px] hover:text-sun"><Phone className="w-4 h-4" />{SCHOOL.phone}</a>}
-              {SCHOOL.email && <a href={`mailto:${SCHOOL.email}`} className="mt-2 block text-[15px] hover:text-sun">{SCHOOL.email}</a>}
+              {contact.phone && <a href={`tel:${contact.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 text-[15px] hover:text-sun"><Phone className="w-4 h-4" />{contact.phone}</a>}
+              {contact.email && <a href={`mailto:${contact.email}`} className="mt-2 block text-[15px] hover:text-sun">{contact.email}</a>}
               <p className="mt-3 text-[13px] text-white/45 leading-relaxed">Payments: MTN Money, Airtel Money, bank deposit or cash at the office.</p>
             </div>
           </div>

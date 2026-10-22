@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, MotionConfig } from 'motion/react';
 import { Wordmark } from './BrandMark';
-import { PHOTOS } from '@/app/config/school';
+import { useSite } from '@/app/context/SiteContext';
 import { ArrowLeft, GraduationCap, BookOpen, Shield, Eye, EyeOff, CheckCircle2, Video, ClipboardCheck, Award, Users, BarChart3, KeyRound } from 'lucide-react';
 import { Input } from '@/app/components/ui/input';
 
@@ -61,12 +61,13 @@ export const PasswordInput: React.FC<React.ComponentProps<typeof Input>> = (prop
 
 export const AuthShell: React.FC<{ onHome: () => void; role: ShellTheme; children: React.ReactNode; aside?: React.ReactNode }> = ({ onHome, role, children, aside }) => {
   const meta = roleMeta[role];
+  const { images } = useSite();
   return (
     <MotionConfig reducedMotion="user">
       <div className="min-h-screen bg-stone-50 grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
         {/* Brand panel (desktop) */}
         <aside className="hidden lg:flex relative overflow-hidden flex-col justify-between p-12 bg-ink text-white">
-          <motion.img src={PHOTOS.signIn} alt="" aria-hidden initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 2.4, ease }}
+          <motion.img src={images.signIn} alt="" aria-hidden initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 2.4, ease }}
             onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
             className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/65" />
@@ -125,4 +126,4 @@ export const SuccessNote: React.FC<{ children: React.ReactNode }> = ({ children 
   </motion.div>
 );
 
-export const Spinner: React.FC = () => <span className="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin" aria-hidden />;
+export const Spinner: React.FC = () => <span className="inline-block w-4 h-4 rounded-full border-2 border-current/30 border-t-current animate-spin" aria-hidden />;
