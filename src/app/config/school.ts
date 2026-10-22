@@ -2,6 +2,20 @@ export const SCHOOL = {
   name: 'Alphatech Computer Institute',
   shortName: 'Alphatech',
   motto: 'Computer Literacy is our priority',
+  // Shown in the website header and hero. Replace with the school's real contact number
+  // (leave empty '' to hide it).
+  phone: '+260 966 123 456',
+  email: '',
+};
+
+// Website photos. These are free Unsplash photos; swap in real Alphatech campus photos
+// (put them in /public and use '/your-photo.jpg') whenever you have them.
+const u = (id: string, w = 1600) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=70`;
+export const PHOTOS = {
+  hero: u('photo-1522202176988-66273c2fd55f', 2000),     // students studying together
+  tile: u('photo-1531482615713-2afd69097998', 900),      // student working on a laptop
+  band: u('photo-1524178232363-1fb2b075b655', 2000),     // classroom
+  signIn: u('photo-1523240795612-9a054b0db644', 1400),   // students on campus
 };
 
 // One place for the school's fees and payment details.

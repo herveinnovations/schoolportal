@@ -21,3 +21,14 @@ export const BrandMark: React.FC<{ size?: 'sm' | 'md' | 'lg'; withName?: boolean
     </span>
   );
 };
+
+/** Website wordmark: ALPHA in white, TECH in yellow, on dark backgrounds. */
+export const Wordmark: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <span className={`inline-flex items-center gap-3 ${className}`}>
+    <img src={logo} alt="" className="h-11 w-auto bg-white p-0.5" />
+    <span className="leading-none text-left">
+      <span className="block font-display font-extrabold text-[22px] tracking-tight text-white">ALPHA<span className="text-sun">TECH</span></span>
+      <span className="block mt-1 text-[9.5px] font-semibold tracking-[0.16em] uppercase text-white/65">Computer Institute</span>
+    </span>
+  </span>
+);

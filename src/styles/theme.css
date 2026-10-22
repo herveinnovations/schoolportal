@@ -1,5 +1,17 @@
 @custom-variant dark (&:is(.dark *));
 
+/* Brand: charcoal, warm yellow and deep indigo, with Work Sans display type */
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: "Work Sans Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #262626;
+  --color-ink-soft: #2f2f2f;
+  --color-sun: #fec131;
+  --color-sun-deep: #f0ad00;
+  --color-royal: #3a2f8f;
+  --color-royal-deep: #2c236f;
+}
+
 :root {
   --font-size: 16px;
   --background: #ffffff;
@@ -130,7 +142,7 @@
 
   html {
     font-size: var(--font-size);
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, Helvetica, sans-serif;
+    font-family: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   }
 
   h1 {
@@ -209,3 +221,11 @@ main [data-slot="card"]:hover { transform: translateY(-2px); box-shadow: 0 12px 
 }
 /* Dashboards fade up when they open */
 .dash-main { animation: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* Sign-in and sign-up cards use the website's look: display headings, square yellow buttons */
+.auth-card h1 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em; }
+.auth-card [data-slot="button"].bg-emerald-700 { background: var(--color-sun); color: var(--color-ink); border-radius: 0; font-weight: 600; box-shadow: none; }
+.auth-card [data-slot="button"].bg-emerald-700:hover { background: var(--color-sun-deep); }
+.auth-card [data-slot="button"] { border-radius: 0; }
+.auth-card [data-slot="input"] { border-radius: 0; }
+.auth-card button.text-emerald-700, .auth-card .text-emerald-700 { color: var(--color-royal); }

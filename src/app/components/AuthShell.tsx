@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, MotionConfig } from 'motion/react';
-import { BrandMark } from './BrandMark';
+import { Wordmark } from './BrandMark';
+import { PHOTOS } from '@/app/config/school';
 import { ArrowLeft, GraduationCap, BookOpen, Shield, Eye, EyeOff, CheckCircle2, Video, ClipboardCheck, Award, Users, BarChart3, KeyRound } from 'lucide-react';
 import { Input } from '@/app/components/ui/input';
 
@@ -64,41 +65,43 @@ export const AuthShell: React.FC<{ onHome: () => void; role: ShellTheme; childre
     <MotionConfig reducedMotion="user">
       <div className="min-h-screen bg-stone-50 grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
         {/* Brand panel (desktop) */}
-        <aside className={`hidden lg:flex relative overflow-hidden flex-col justify-between p-10 bg-gradient-to-br ${meta.panel} text-white transition-colors duration-700`}>
-          <motion.div aria-hidden animate={{ scale: [1, 1.2, 1], opacity: [0.25, 0.45, 0.25] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-white/20 blur-3xl" />
-          <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '22px 22px' }} />
-          <button onClick={onHome} className="relative w-fit" aria-label="Alphatech Computer Institute home"><BrandMark withName dark /></button>
+        <aside className="hidden lg:flex relative overflow-hidden flex-col justify-between p-12 bg-ink text-white">
+          <motion.img src={PHOTOS.signIn} alt="" aria-hidden initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 2.4, ease }}
+            onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+            className="absolute inset-0 w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/65" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <button onClick={onHome} className="relative w-fit" aria-label="Alphatech Computer Institute home"><Wordmark /></button>
           <div className="relative">
             <AnimatePresence mode="wait">
               <motion.div key={role} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.4, ease }}>
-                <p className="text-xs font-semibold tracking-[0.14em] uppercase text-white/60">{role === 'all' ? 'Alphatech Computer Institute portal' : `${meta.label} portal`}</p>
-                <h2 className="mt-2 text-3xl xl:text-4xl font-bold leading-tight text-balance max-w-md">{meta.heading}</h2>
-                <ul className="mt-8 space-y-3">
+                <p className="text-sm font-semibold tracking-[0.2em] text-sun">- {role === 'all' ? 'PORTAL' : meta.label.toUpperCase()} -</p>
+                <h2 className="mt-4 font-display font-extrabold text-[40px] xl:text-[48px] leading-[1.1] tracking-[-0.01em] text-balance max-w-lg">{meta.heading}</h2>
+                <ul className="mt-9 space-y-4">
                   {meta.points.map(([icon, text], i) => (
                     <motion.li key={text} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08, duration: 0.4 }}
-                      className="flex items-center gap-3 text-white/90">
-                      <span className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">{icon}</span>{text}
+                      className="flex items-center gap-4 text-[16px] text-white/90">
+                      <span className="w-10 h-10 bg-sun text-ink flex items-center justify-center shrink-0">{icon}</span>{text}
                     </motion.li>
                   ))}
                 </ul>
               </motion.div>
             </AnimatePresence>
           </div>
-          <p className="relative text-xs text-white/50">© 2026 Alphatech Computer Institute</p>
+          <p className="relative text-[13px] text-white/50">© 2026 Alphatech Computer Institute · Computer Literacy is our priority</p>
         </aside>
 
         {/* Form side */}
         <div className="flex flex-col min-w-0">
-          <nav className="h-16 px-4 sm:px-8 flex items-center justify-between border-b border-stone-200 bg-white lg:bg-transparent lg:border-0">
-            <button onClick={onHome} aria-label="Alphatech Computer Institute home" className="lg:invisible"><BrandMark withName /></button>
-            <button onClick={onHome} className="group inline-flex items-center gap-1.5 text-sm text-stone-600 hover:text-emerald-700">
+          <nav className="h-[76px] px-4 sm:px-8 flex items-center justify-between bg-ink lg:bg-transparent">
+            <button onClick={onHome} aria-label="Alphatech Computer Institute home" className="lg:invisible"><Wordmark /></button>
+            <button onClick={onHome} className="group inline-flex items-center gap-1.5 text-sm font-medium text-white lg:text-stone-600 hover:text-sun lg:hover:text-ink">
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" /> Back to home
             </button>
           </nav>
           <main className="flex-1 flex items-center justify-center px-4 py-10">
             <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease }} className="w-full max-w-md">
-              <div className="bg-white rounded-2xl shadow-xl shadow-stone-200/60 border border-stone-200 p-6 sm:p-8">{children}</div>
+              <div className="auth-card bg-white border border-stone-200 border-t-4 border-t-sun shadow-[0_30px_60px_-30px_rgba(0,0,0,0.25)] p-6 sm:p-9">{children}</div>
               {aside}
             </motion.div>
           </main>
