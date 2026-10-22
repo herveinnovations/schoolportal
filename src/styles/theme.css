@@ -10,6 +10,20 @@
   --color-sun-deep: #f0ad00;
   --color-royal: #3a2f8f;
   --color-royal-deep: #2c236f;
+
+  /* The dashboards were built with the emerald and teal families; they now render in the
+     brand indigo so every screen matches the website. */
+  --color-emerald-50: #f3f2fb;  --color-emerald-100: #e6e3f6; --color-emerald-200: #cdc8ee;
+  --color-emerald-300: #aaa2e0; --color-emerald-400: #8177cc; --color-emerald-500: #5f54b5;
+  --color-emerald-600: #4a3fa3; --color-emerald-700: #3a2f8f; --color-emerald-800: #2f2675;
+  --color-emerald-900: #261f5c; --color-emerald-950: #17123a;
+  --color-teal-50: #f3f2fb;  --color-teal-100: #e6e3f6; --color-teal-200: #cdc8ee;
+  --color-teal-300: #aaa2e0; --color-teal-400: #8177cc; --color-teal-500: #5f54b5;
+  --color-teal-600: #4a3fa3; --color-teal-700: #3a2f8f; --color-teal-800: #2f2675;
+  --color-teal-900: #261f5c; --color-teal-950: #17123a;
+
+  /* Square corners, like the website */
+  --radius-xs: 0px; --radius-2xl: 0px; --radius-3xl: 0px; --radius-4xl: 0px;
 }
 
 :root {
@@ -20,14 +34,14 @@
   --card-foreground: #1c1917;
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #047857;
+  --primary: #3a2f8f;
   --primary-foreground: oklch(1 0 0);
   --secondary: #f5f5f4;
   --secondary-foreground: #1c1917;
   --muted: #f5f5f4;
   --muted-foreground: #78716c;
-  --accent: #f0fdf4;
-  --accent-foreground: #064e3b;
+  --accent: #f3f2fb;
+  --accent-foreground: #261f5c;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
   --border: rgba(41, 37, 36, 0.12);
@@ -36,13 +50,13 @@
   --switch-background: #cbced4;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #6ee7b7;
+  --ring: #fec131;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.75rem;
+  --radius: 0px;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: #047857;
@@ -117,10 +131,10 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: var(--radius);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -206,7 +220,7 @@ html { scroll-behavior: smooth; }
 
 /* Cards lift slightly on hover */
 [data-slot="card"] { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
-main [data-slot="card"]:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -12px rgb(6 78 59 / 0.25); border-color: #a7f3d0; }
+main [data-slot="card"]:hover { transform: translateY(-2px); box-shadow: 0 18px 36px -18px rgb(0 0 0 / 0.3); border-color: #262626; }
 
 /* Buttons press in */
 [data-slot="button"] { transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.12s; }
@@ -224,8 +238,12 @@ main [data-slot="card"]:hover { transform: translateY(-2px); box-shadow: 0 12px 
 
 /* Sign-in and sign-up cards use the website's look: display headings, square yellow buttons */
 .auth-card h1 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em; }
-.auth-card [data-slot="button"].bg-emerald-700 { background: var(--color-sun); color: var(--color-ink); border-radius: 0; font-weight: 600; box-shadow: none; }
-.auth-card [data-slot="button"].bg-emerald-700:hover { background: var(--color-sun-deep); }
 .auth-card [data-slot="button"] { border-radius: 0; }
 .auth-card [data-slot="input"] { border-radius: 0; }
 .auth-card button.text-emerald-700, .auth-card .text-emerald-700 { color: var(--color-royal); }
+
+/* Dashboards: page titles in Work Sans, square buttons and inputs everywhere */
+.dash-main h2, .dash-main h3, [role="dialog"] h2 { font-family: var(--font-display); letter-spacing: -0.01em; }
+.dash-main button.rounded-full, .dash-main a.rounded-full, [role="dialog"] button.rounded-full,
+.dash-main [role="tablist"].rounded-full, .dash-main [role="tab"].rounded-full { border-radius: 0; }
+[data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"] { border-radius: 0; }

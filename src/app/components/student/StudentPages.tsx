@@ -309,10 +309,10 @@ export const StudentProfile: React.FC = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[340px_minmax(0,1fr)] gap-6 items-start">
       {/* Digital student ID */}
-      <motion.div initial={{ opacity: 0, rotateX: 8 }} animate={{ opacity: 1, rotateX: 0 }} className="rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-emerald-800 via-emerald-900 to-stone-900 text-white">
+      <motion.div initial={{ opacity: 0, rotateX: 8 }} animate={{ opacity: 1, rotateX: 0 }} className="overflow-hidden shadow-xl bg-ink text-white border-t-4 border-sun">
         <div className="p-5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5"><span className="bg-white rounded-lg p-0.5"><img src={schoolLogo} alt="" className="h-9 w-auto" /></span><div className="leading-tight"><p className="font-bold tracking-wide">ALPHATECH</p><p className="text-[10px] tracking-[0.12em] text-emerald-200">COMPUTER INSTITUTE</p></div></div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-emerald-200">Student ID</p>
+          <div className="flex items-center gap-2.5"><span className="bg-white p-0.5"><img src={schoolLogo} alt="" className="h-9 w-auto" /></span><div className="leading-none"><p className="font-display font-extrabold text-[17px] tracking-tight">ALPHA<span className="text-sun">TECH</span></p><p className="mt-1 text-[9px] font-semibold tracking-[0.16em] text-white/60">COMPUTER INSTITUTE</p></div></div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-sun">Student ID</p>
         </div>
         <div className="px-5 pb-5 flex items-center gap-4">
           <Avatar className="w-20 h-20 ring-4 ring-white/20">

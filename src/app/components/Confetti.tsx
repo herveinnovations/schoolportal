@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 
-const COLORS = ['#047857', '#10b981', '#f59e0b', '#fbbf24', '#065f46', '#fde68a'];
+const COLORS = ['#3a2f8f', '#fec131', '#f59e0b', '#fbbf24', '#262626', '#cdc8ee'];
 
 /** A short burst of confetti for wins like passing an exam. Skipped when reduced motion is on. */
 export const Confetti: React.FC<{ show: boolean }> = ({ show }) => {

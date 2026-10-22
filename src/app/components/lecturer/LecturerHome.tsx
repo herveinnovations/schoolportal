@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { PHOTOS } from '@/app/config/school';
 import { useAuth } from '@/app/context/AuthContext';
 import { Button } from '@/app/components/ui/button';
 import { Video, FileText, ClipboardCheck, PlayCircle, PenLine, MapPin, CalendarClock, ArrowRight, Users, CheckCircle2 } from 'lucide-react';
@@ -44,12 +45,14 @@ export const LecturerHome: React.FC<Props> = ({ go, quick, onStart }) => {
 
   return (
     <div className="space-y-6">
-      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-800 via-stone-800 to-stone-900 text-white p-6 sm:p-8">
-        <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '20px 20px' }} />
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden bg-ink text-white p-6 sm:p-10">
+        <img src={PHOTOS.hero} alt="" aria-hidden onError={e => { e.currentTarget.style.display = 'none'; }} className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
+        <span aria-hidden className="absolute left-0 top-0 bottom-0 w-1.5 bg-sun" />
         <div className="relative flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-amber-200 text-sm">{now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-            <h2 className="mt-1 text-2xl sm:text-3xl font-bold">{greeting()}, {user.name.replace(/^(Mr|Ms|Mrs|Dr)\.?\s/, '').split(' ')[0]}</h2>
+            <p className="text-sun text-sm font-semibold tracking-wide">{now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+            <h2 className="mt-2 font-display font-extrabold text-[30px] sm:text-[40px] leading-[1.1] tracking-[-0.01em]">{greeting()}, {user.name.replace(/^(Mr|Ms|Mrs|Dr)\.?\s/, '').split(' ')[0]}</h2>
             <p className="mt-2 text-sm text-stone-200">{myCourses.length} course{myCourses.length === 1 ? '' : 's'} · {students.length} student{students.length === 1 ? '' : 's'}</p>
           </div>
           {(subsToMark.length + scriptsToMark.length) > 0 ? (

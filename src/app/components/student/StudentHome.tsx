@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { PHOTOS } from '@/app/config/school';
 import { useAuth, type Course } from '@/app/context/AuthContext';
 import { Button } from '@/app/components/ui/button';
 import { Video, FileText, ClipboardCheck, CalendarClock, AlertTriangle, Hourglass, ArrowRight, Megaphone, FileCheck2, CheckCircle2, Sparkles } from 'lucide-react';
@@ -77,26 +78,27 @@ export const StudentHome: React.FC<Props> = ({ go, openCourse, onRegister, onRes
     <div className="space-y-6">
       {/* Hero */}
       <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-800 via-emerald-900 to-stone-900 text-white p-6 sm:p-8">
-        <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '20px 20px' }} />
-        <motion.div aria-hidden animate={{ scale: [1, 1.15, 1], opacity: [0.25, 0.4, 0.25] }} transition={{ duration: 9, repeat: Infinity }} className="absolute -right-16 -top-20 w-72 h-72 rounded-full bg-amber-400/30 blur-3xl" />
+        className="relative overflow-hidden bg-ink text-white p-6 sm:p-10">
+        <img src={PHOTOS.hero} alt="" aria-hidden onError={e => { e.currentTarget.style.display = 'none'; }} className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
+        <span aria-hidden className="absolute left-0 top-0 bottom-0 w-1.5 bg-sun" />
         <div className="relative grid md:grid-cols-[1fr_minmax(0,320px)] gap-6 items-center">
           <div>
-            <p className="text-emerald-200 text-sm">{now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-            <h2 className="mt-1 text-2xl sm:text-3xl font-bold">{greeting()}, {user.name.split(' ')[0]}</h2>
+            <p className="text-sun text-sm font-semibold tracking-wide">{now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+            <h2 className="mt-2 font-display font-extrabold text-[30px] sm:text-[40px] leading-[1.1] tracking-[-0.01em]">{greeting()}, {user.name.split(' ')[0]}</h2>
             <div className="mt-3 flex flex-wrap gap-2 text-xs">
-              <span className="px-2.5 py-1 rounded-full bg-white/10 border border-white/15">{user.studentNumber ? `Student no. ${user.studentNumber}` : 'Student number pending'}</span>
-              <span className="px-2.5 py-1 rounded-full bg-white/10 border border-white/15">{mine.length} course{mine.length === 1 ? '' : 's'}</span>
-              {todo.length > 0 && <span className="px-2.5 py-1 rounded-full bg-amber-400/90 text-amber-950 font-semibold">{todo.length} to do</span>}
+              <span className="px-2.5 py-1 bg-white/10 border border-white/15">{user.studentNumber ? `Student no. ${user.studentNumber}` : 'Student number pending'}</span>
+              <span className="px-2.5 py-1 bg-white/10 border border-white/15">{mine.length} course{mine.length === 1 ? '' : 's'}</span>
+              {todo.length > 0 && <span className="px-2.5 py-1 bg-sun text-ink font-semibold">{todo.length} to do</span>}
             </div>
           </div>
-          <div className="rounded-2xl bg-white/10 border border-white/15 backdrop-blur p-4">
+          <div className="bg-white/10 border border-white/15 backdrop-blur p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-200">Next up</p>
             {liveNow ? (
               <div className="mt-2">
                 <p className="flex items-center gap-2 font-semibold"><span className="relative flex w-2.5 h-2.5"><span className="absolute inset-0 rounded-full bg-red-400 animate-ping" /><span className="relative w-2.5 h-2.5 rounded-full bg-red-500" /></span>Live now</p>
                 <p className="text-sm text-emerald-50 mt-0.5">{liveNow.courseName}</p>
-                <Button size="sm" className="mt-3 bg-white text-emerald-900 hover:bg-emerald-50 w-full" onClick={() => onJoin(liveNow.id)}><Video className="w-4 h-4" />Join class</Button>
+                <Button size="sm" className="mt-3 w-full" onClick={() => onJoin(liveNow.id)}><Video className="w-4 h-4" />Join class</Button>
               </div>
             ) : nextScheduled ? (
               <div className="mt-2">

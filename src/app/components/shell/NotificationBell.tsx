@@ -46,7 +46,7 @@ export const NotificationBell: React.FC<{ onOpen?: (n: Notification) => void }> 
   return (
     <div className="relative" ref={ref}>
       <button onClick={() => setOpen(o => !o)} aria-label={`Notifications${unread.length ? `, ${unread.length} unread` : ''}`} aria-expanded={open}
-        className="relative w-10 h-10 rounded-full flex items-center justify-center text-stone-600 hover:bg-stone-100 hover:text-stone-900">
+        className="relative w-10 h-10 flex items-center justify-center text-white lg:text-ink/70 hover:bg-white/10 lg:hover:bg-stone-100 hover:text-sun lg:hover:text-ink">
         <motion.span key={unread.length} animate={unread.length ? { rotate: [0, -14, 12, -8, 0] } : {}} transition={{ duration: 0.6 }}><Bell className="w-5 h-5" /></motion.span>
         {unread.length > 0 && <span className="absolute top-1.5 right-1.5 min-w-4 h-4 px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">{unread.length}</span>}
       </button>

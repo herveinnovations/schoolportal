@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { PHOTOS } from '@/app/config/school';
 import { toast } from 'sonner';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useAuth, staffCan } from '@/app/context/AuthContext';
@@ -9,7 +10,7 @@ import { Stat, greeting } from '../shell/ui';
 import { timeAgo } from '../shell/NotificationBell';
 import { kwacha, studentFinance } from '@/app/lib/finance';
 
-const tooltipStyle = { borderRadius: 12, border: '1px solid #e7e5e4', boxShadow: '0 8px 24px rgba(0,0,0,.08)', fontSize: 12 };
+const tooltipStyle = { borderRadius: 0, border: '1px solid #e7e5e4', boxShadow: '0 8px 24px rgba(0,0,0,.08)', fontSize: 12 };
 
 export const StaffOverview: React.FC<{ go: (tab: string) => void }> = ({ go }) => {
   const { user, users, courses, paymentClaims, homeworkSubmissions, examAttempts, activityLogs } = useAuth();
@@ -43,12 +44,14 @@ export const StaffOverview: React.FC<{ go: (tab: string) => void }> = ({ go }) =
 
   return (
     <div className="space-y-6">
-      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-800 via-emerald-900 to-stone-900 text-white p-6 sm:p-8">
-        <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '20px 20px' }} />
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden bg-ink text-white p-6 sm:p-10">
+        <img src={PHOTOS.hero} alt="" aria-hidden onError={e => { e.currentTarget.style.display = 'none'; }} className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
+        <span aria-hidden className="absolute left-0 top-0 bottom-0 w-1.5 bg-sun" />
         <div className="relative flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-teal-200 text-sm">{now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-            <h2 className="mt-1 text-2xl sm:text-3xl font-bold">{greeting()}, {user.name.split(' ')[0]}</h2>
+            <p className="text-sun text-sm font-semibold tracking-wide">{now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+            <h2 className="mt-2 font-display font-extrabold text-[30px] sm:text-[40px] leading-[1.1] tracking-[-0.01em]">{greeting()}, {user.name.split(' ')[0]}</h2>
             <p className="mt-2 text-sm text-stone-200">{attention.length ? `${attention.length} thing${attention.length === 1 ? '' : 's'} need${attention.length === 1 ? 's' : ''} attention today.` : 'Everything is up to date.'}</p>
           </div>
           {user.staffRole && <span className="rounded-full bg-white/10 border border-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide">{user.staffRole === 'admin' ? 'Administrator' : user.staffRole === 'finance' ? 'Finance' : 'Registrar'}</span>}
@@ -92,7 +95,7 @@ export const StaffOverview: React.FC<{ go: (tab: string) => void }> = ({ go }) =
                 <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: '#78716c' }} />
                 <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: '#a8a29e' }} tickFormatter={v => (v >= 1000 ? `${v / 1000}k` : v)} width={40} />
                 <Tooltip cursor={{ fill: '#f5f5f4' }} contentStyle={tooltipStyle} formatter={(v: number) => [kwacha(v), 'Received']} />
-                <Bar dataKey="amount" fill="#047857" radius={[6, 6, 0, 0]} maxBarSize={40} />
+                <Bar dataKey="amount" fill="#3a2f8f" radius={0} maxBarSize={40} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -108,7 +111,7 @@ export const StaffOverview: React.FC<{ go: (tab: string) => void }> = ({ go }) =
                   <XAxis type="number" allowDecimals={false} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: '#a8a29e' }} />
                   <YAxis type="category" dataKey="name" tickLine={false} axisLine={false} width={170} interval={0} tick={{ fontSize: 12, fill: '#44403c', width: 170 } as never} />
                   <Tooltip cursor={{ fill: '#f5f5f4' }} contentStyle={tooltipStyle} labelFormatter={(_, p) => p?.[0]?.payload?.full ?? ''} formatter={(v: number) => [v, 'Students']} />
-                  <Bar dataKey="students" fill="#0f766e" radius={[0, 6, 6, 0]} maxBarSize={24} />
+                  <Bar dataKey="students" fill="#fec131" radius={0} maxBarSize={24} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
