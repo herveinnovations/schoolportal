@@ -2,7 +2,7 @@
 
 One portal for students, lecturers and staff: live classes, recordings, assignments, timed exams, marking, gradebook, attendance, payments and certificates.
 
-- **Website:** React + Vite, hosted on GitHub Pages (`.github/workflows/deploy-site.yml` publishes every push to `main`).
+- **Website:** React + Vite, hosted on Vercel at https://alphatechonlinelearning.vercel.app (every push to `main` deploys automatically).
 - **Database and logins:** Supabase (`supabase/migrations`, `supabase/functions/invite-user`).
 
 ## How access works
@@ -30,8 +30,8 @@ Everyone signs in on the same page; the account decides which portal opens. The 
 2. **Deploy the invite function** (skip if the workflow did it): `supabase functions deploy invite-user --no-verify-jwt`.
 
 3. **Tell Supabase where the site lives.** Dashboard → Authentication → URL Configuration:
-   - Site URL: `https://herveinnovations.github.io/schoolportal/`
-   - Redirect URLs: add `https://herveinnovations.github.io/schoolportal/**`
+   - Site URL: `https://alphatechonlinelearning.vercel.app`
+   - Redirect URLs: add `https://alphatechonlinelearning.vercel.app/**`
 
    Without this, confirmation, invite and reset emails send people to the wrong address.
 
