@@ -49,7 +49,7 @@ const SunButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { dark
 const Numbered: React.FC<{ n: string; title: React.ReactNode; light?: boolean; children?: React.ReactNode }> = ({ n, title, light, children }) => (
   <Reveal>
     <p className={`text-sm font-semibold tracking-[0.2em] ${light ? 'text-white/60' : 'text-ink/60'}`}>- {n} -</p>
-    <h2 className={`mt-3 font-display font-extrabold text-[40px] sm:text-[52px] lg:text-[60px] leading-[1.1] tracking-[-0.01em] text-balance ${light ? 'text-white' : 'text-ink'}`}>{title}</h2>
+    <h2 className={`mt-3 font-display font-extrabold text-[30px] sm:text-[38px] lg:text-[44px] leading-[1.1] tracking-[-0.01em] text-balance ${light ? 'text-white' : 'text-ink'}`}>{title}</h2>
     {children}
   </Reveal>
 );
@@ -67,7 +67,7 @@ const faqs = [
 const FaqItem: React.FC<{ q: string; a: string; open: boolean; onToggle: () => void; id: string }> = ({ q, a, open, onToggle, id }) => (
   <div className="border-b border-stone-200">
     <button id={`${id}-btn`} aria-expanded={open} aria-controls={`${id}-panel`} onClick={onToggle}
-      className="w-full flex items-center justify-between gap-6 py-6 text-left font-display font-bold text-[19px] text-ink hover:text-royal focus-visible:outline-2 focus-visible:outline-royal">
+      className="w-full flex items-center justify-between gap-6 py-6 text-left font-display font-bold text-[17px] text-ink hover:text-royal focus-visible:outline-2 focus-visible:outline-royal">
       {q}
       <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.25 }} className={`shrink-0 w-9 h-9 flex items-center justify-center ${open ? 'bg-sun text-ink' : 'bg-stone-100 text-ink/60'}`}><ChevronDown className="w-5 h-5" /></motion.span>
     </button>
@@ -76,7 +76,7 @@ const FaqItem: React.FC<{ q: string; a: string; open: boolean; onToggle: () => v
         <motion.div id={`${id}-panel`} role="region" aria-labelledby={`${id}-btn`}
           initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3, ease }} className="overflow-hidden">
-          <p className="pb-6 text-stone-500 text-[16px] leading-[1.7] max-w-[68ch]">{a}</p>
+          <p className="pb-6 text-stone-500 text-[15px] leading-[1.7] max-w-[68ch]">{a}</p>
         </motion.div>
       )}
     </AnimatePresence>
@@ -154,7 +154,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
               <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} transition={{ duration: 0.3, ease }} className="lg:hidden overflow-hidden bg-white border-t border-stone-200">
                 <div className={`${wrap} py-4 flex flex-col`}>
                   {navLinks.map(([h, l]) => (
-                    <a key={h} href={h} onClick={() => setMenuOpen(false)} className="py-3.5 text-ink text-[17px] font-semibold border-b border-stone-100">{l}</a>
+                    <a key={h} href={h} onClick={() => setMenuOpen(false)} className="py-3.5 text-ink text-[16px] font-semibold border-b border-stone-100">{l}</a>
                   ))}
                   <div className="grid grid-cols-2 gap-3 pt-5">
                     <button onClick={() => onSignIn()} className="h-12 border border-ink/25 text-ink font-semibold">Sign In</button>
@@ -173,18 +173,18 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
           <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/10 to-transparent" />
           <div className={`relative ${wrap} min-h-[600px] sm:min-h-[700px] lg:min-h-[872px] flex flex-col justify-center py-24`}>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.15 }}
-              className="max-w-[880px] font-display font-extrabold text-white text-[42px] sm:text-[58px] lg:text-[68px] leading-[1.12] tracking-[-0.01em] text-balance">
+              className="max-w-[880px] font-display font-extrabold text-white text-[34px] sm:text-[44px] lg:text-[52px] leading-[1.12] tracking-[-0.01em] text-balance">
               {text.heroTitle}
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease, delay: 0.35 }}
-              className="mt-7 max-w-[620px] text-[17px] sm:text-[18px] leading-[1.6] text-white/85">
+              className="mt-7 max-w-[620px] text-[16px] sm:text-[17px] leading-[1.6] text-white/85">
               {text.heroSubtitle}
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease, delay: 0.5 }}
               className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
               <SunButton onClick={() => onSignUp()}>Apply Now <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></SunButton>
               {contact.phone ? (
-                <a href={`tel:${contact.phone.replace(/\s/g, '')}`} className="inline-flex items-center gap-3 text-white text-[16px] font-semibold hover:text-sun transition-colors">
+                <a href={`tel:${contact.phone.replace(/\s/g, '')}`} className="inline-flex items-center gap-3 text-white text-[15px] font-semibold hover:text-sun transition-colors">
                   <Phone className="w-5 h-5" fill="currentColor" strokeWidth={0} />{contact.phone}
                 </a>
               ) : (
@@ -197,14 +197,14 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         {/* ---------- Three tiles ---------- */}
         <section className="pt-20 sm:pt-28 lg:pt-[140px]">
           <div className={`${wrap} grid md:grid-cols-3 gap-[30px]`}>
-            <Reveal className="bg-royal text-white p-10 min-h-[340px] lg:min-h-[367px] flex flex-col">
-              <h3 className="font-display font-extrabold text-[36px] lg:text-[40px] leading-[1.15]">Our Courses</h3>
-              <p className="mt-4 text-[16px] leading-[1.55] text-white/90">From your first computer lesson to TEVETA Level 3. Pick a course and we’ll take you through it step by step.</p>
+            <Reveal className="bg-royal text-white p-10 min-h-[280px] lg:min-h-[300px] flex flex-col">
+              <h3 className="font-display font-extrabold text-[28px] lg:text-[30px] leading-[1.15]">Our Courses</h3>
+              <p className="mt-4 text-[15px] leading-[1.55] text-white/90">From your first computer lesson to TEVETA Level 3. Pick a course and we’ll take you through it step by step.</p>
               <SunButton className="mt-auto self-start" onClick={() => document.getElementById('courses')?.scrollIntoView()}>Learn More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></SunButton>
             </Reveal>
-            <Reveal delay={0.08} className="bg-sun text-ink p-10 min-h-[340px] lg:min-h-[367px] flex flex-col">
-              <h3 className="font-display font-extrabold text-[36px] lg:text-[40px] leading-[1.15]">Study Your Way</h3>
-              <p className="mt-4 text-[16px] leading-[1.55] text-ink/80">Join live lectures or catch up on recordings, study full-time or part-time, and pay in monthly instalments.</p>
+            <Reveal delay={0.08} className="bg-sun text-ink p-10 min-h-[280px] lg:min-h-[300px] flex flex-col">
+              <h3 className="font-display font-extrabold text-[28px] lg:text-[30px] leading-[1.15]">Study Your Way</h3>
+              <p className="mt-4 text-[15px] leading-[1.55] text-ink/80">Join live lectures or catch up on recordings, study full-time or part-time, and pay in monthly instalments.</p>
               <SunButton dark className="mt-auto self-start" onClick={() => document.getElementById('how')?.scrollIntoView()}>Learn More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></SunButton>
             </Reveal>
             <Reveal delay={0.16} className="min-h-[300px] md:min-h-0 bg-stone-200 overflow-hidden">
@@ -217,10 +217,10 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <section id="about" className="pt-16 lg:pt-[72px] scroll-mt-24">
           <div className={`${wrap} grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-8`}>
             <Numbered n="01" title={<>About<br className="hidden lg:block" /> Alphatech</>}>
-              <a href="#faq" className="inline-block mt-6 text-[16px] font-semibold text-sun-deep underline underline-offset-4 decoration-2 hover:text-ink">More About Us</a>
+              <a href="#faq" className="inline-block mt-6 text-[15px] font-semibold text-sun-deep underline underline-offset-4 decoration-2 hover:text-ink">More About Us</a>
             </Numbered>
-            <Reveal delay={0.1} className="lg:pt-10 space-y-5 text-[16px] leading-[1.7] text-stone-500">
-              <p className="text-[18px] font-semibold leading-[1.55] text-ink/80">{text.aboutLead}</p>
+            <Reveal delay={0.1} className="lg:pt-10 space-y-5 text-[15px] leading-[1.7] text-stone-500">
+              <p className="text-[17px] font-semibold leading-[1.55] text-ink/80">{text.aboutLead}</p>
               <p>{text.aboutBody1}</p>
               <p>{text.aboutBody2}</p>
             </Reveal>
@@ -229,7 +229,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             <div className="relative h-[280px] sm:h-[420px] lg:h-[520px] bg-stone-300 overflow-hidden">
               <Photo src={images.band} alt="A class in progress" />
               <div className="absolute left-0 bottom-0 bg-sun text-ink px-6 sm:px-10 py-5 sm:py-7 max-w-[90%]">
-                <p className="font-display font-extrabold text-[20px] sm:text-[28px] leading-tight">{SCHOOL.motto}.</p>
+                <p className="font-display font-extrabold text-[18px] sm:text-[22px] leading-tight">{SCHOOL.motto}.</p>
               </div>
             </div>
           </Reveal>
@@ -241,7 +241,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             <div className="grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-6 items-end mb-12">
               <Numbered n="02" title="Courses" />
               <Reveal delay={0.1}>
-                <p className="text-[16px] leading-[1.7] text-stone-500 max-w-[60ch]">Courses open for enrolment. Prices are in Zambian Kwacha, and every course can be paid in full or in 3 or 6 monthly instalments.</p>
+                <p className="text-[15px] leading-[1.7] text-stone-500 max-w-[60ch]">Courses open for enrolment. Prices are in Zambian Kwacha, and every course can be paid in full or in 3 or 6 monthly instalments.</p>
                 {courses.length > 0 && (
                   <div role="tablist" aria-label="Filter by level" className="mt-6 flex flex-wrap gap-2">
                     {([['all', 'All'], ['beginner', 'Beginner'], ['advanced', 'Advanced'], ['teveta_level_3', 'TEVETA Level 3']] as const).map(([v, l]) => (
@@ -256,8 +256,8 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             {courses.length === 0 ? (
               <Reveal className="bg-stone-50 border-l-4 border-sun p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                 <div>
-                  <p className="font-display font-extrabold text-[24px] text-ink">The course list is being prepared</p>
-                  <p className="mt-2 text-stone-500 text-[16px]">Courses for the next intake will be listed here soon. Create your account now so you’re ready to enrol.</p>
+                  <p className="font-display font-extrabold text-[20px] text-ink">The course list is being prepared</p>
+                  <p className="mt-2 text-stone-500 text-[15px]">Courses for the next intake will be listed here soon. Create your account now so you’re ready to enrol.</p>
                 </div>
                 <SunButton onClick={() => onSignUp()} className="shrink-0">Apply Now <ArrowRight className="w-4 h-4" /></SunButton>
               </Reveal>
@@ -272,12 +272,12 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                         {c.imageUrl ? <div className="h-44 overflow-hidden"><img src={c.imageUrl} alt="" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" /></div> : null}
                         <div className="p-8 flex flex-col flex-1">
                           <span className={`self-start px-3 py-1 text-[12px] font-bold uppercase tracking-[0.08em] ${levelTone(c.level)}`}>{levelLabel(c.level)}</span>
-                          <h3 className="mt-5 font-display font-extrabold text-[24px] leading-[1.2] text-ink">{c.name}</h3>
+                          <h3 className="mt-5 font-display font-extrabold text-[20px] leading-[1.2] text-ink">{c.name}</h3>
                           <p className="mt-1 text-[14px] text-stone-400">{c.lecturerName} · {c.credits} credits</p>
                           <p className="mt-4 text-[15px] leading-[1.65] text-stone-500 line-clamp-3 flex-1">{c.description}</p>
                           <div className="mt-6 pt-6 border-t border-stone-200 flex items-end justify-between gap-4">
                             <div>
-                              <p className="font-display font-extrabold text-[26px] text-ink tabular-nums leading-none">K {Number(c.price).toLocaleString()}</p>
+                              <p className="font-display font-extrabold text-[22px] text-ink tabular-nums leading-none">K {Number(c.price).toLocaleString()}</p>
                               <p className="mt-1.5 text-[13px] text-stone-400 tabular-nums">or K {Math.round(c.price / 3).toLocaleString()} × 3 months</p>
                             </div>
                             <button onClick={() => onSignUp()} aria-label={`Apply for ${c.name}`} className="w-12 h-12 bg-sun group-hover:bg-ink group-hover:text-white text-ink flex items-center justify-center transition-colors">
@@ -300,13 +300,13 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
           <div className={wrap}>
             <div className="grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-6 items-end mb-14">
               <Numbered n="03" light title="What You Get" />
-              <Reveal delay={0.1}><p className="text-[16px] leading-[1.7] text-white/60 max-w-[60ch]">Everything a student needs, from the first lecture to the final certificate, in one account.</p></Reveal>
+              <Reveal delay={0.1}><p className="text-[15px] leading-[1.7] text-white/60 max-w-[60ch]">Everything a student needs, from the first lecture to the final certificate, in one account.</p></Reveal>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10">
               {features.map((f, i) => (
                 <Reveal key={f.title} delay={(i % 3) * 0.08} className="bg-ink p-8 lg:p-10 group hover:bg-ink-soft transition-colors">
                   <span className="w-14 h-14 bg-sun text-ink flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-1"><f.icon className="w-6 h-6" /></span>
-                  <h3 className="mt-6 font-display font-bold text-[21px] text-white">{f.title}</h3>
+                  <h3 className="mt-6 font-display font-bold text-[18px] text-white">{f.title}</h3>
                   <p className="mt-2.5 text-[15px] leading-[1.65] text-white/60">{f.text}</p>
                 </Reveal>
               ))}
@@ -319,14 +319,14 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
           <div className={wrap}>
             <div className="grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-6 items-end mb-14">
               <Numbered n="04" title="How to Join" />
-              <Reveal delay={0.1}><p className="text-[16px] leading-[1.7] text-stone-500 max-w-[60ch]">Four steps, in this order, from sign-up to your first class.</p></Reveal>
+              <Reveal delay={0.1}><p className="text-[15px] leading-[1.7] text-stone-500 max-w-[60ch]">Four steps, in this order, from sign-up to your first class.</p></Reveal>
             </div>
             <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-[30px]">
               {steps.map((s, i) => (
                 <Reveal key={s.title} delay={i * 0.1}>
                   <li className="list-none h-full border-t-4 border-ink pt-7">
-                    <span className="font-display font-extrabold text-[56px] leading-none text-sun">{String(i + 1).padStart(2, '0')}</span>
-                    <p className="mt-5 font-display font-bold text-[21px] text-ink">{s.title}</p>
+                    <span className="font-display font-extrabold text-[44px] leading-none text-sun">{String(i + 1).padStart(2, '0')}</span>
+                    <p className="mt-5 font-display font-bold text-[18px] text-ink">{s.title}</p>
                     <p className="mt-2.5 text-[15px] leading-[1.65] text-stone-500">{s.text}</p>
                   </li>
                 </Reveal>
@@ -340,7 +340,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <section id="fees" className="bg-stone-50 py-20 lg:py-[120px] scroll-mt-24">
           <div className={`${wrap} grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-10`}>
             <Numbered n="05" title="Fees">
-              <p className="mt-5 text-[16px] leading-[1.7] text-stone-500">What you pay, and when. Pay by MTN Money, Airtel Money, bank deposit or cash at the office.</p>
+              <p className="mt-5 text-[15px] leading-[1.7] text-stone-500">What you pay, and when. Pay by MTN Money, Airtel Money, bank deposit or cash at the office.</p>
             </Numbered>
             <Reveal delay={0.1} className="bg-white border border-stone-200 overflow-x-auto">
               <table className="w-full text-[15px] min-w-[520px]">
@@ -352,9 +352,9 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-200 tabular-nums">
-                  <tr><td className="px-7 py-5 font-semibold">Registration</td><td className="px-7 py-5 font-display font-extrabold text-[18px]">K {FEES.registration}</td><td className="px-7 py-5 text-stone-500">Once, after you create your account</td></tr>
-                  <tr><td className="px-7 py-5 font-semibold">Course fee</td><td className="px-7 py-5 font-display font-extrabold text-[18px]">Per course</td><td className="px-7 py-5 text-stone-500">At enrolment: in full, or 3 or 6 monthly instalments</td></tr>
-                  <tr><td className="px-7 py-5 font-semibold">Certificate</td><td className="px-7 py-5 font-display font-extrabold text-[18px]">K {FEES.certificate}</td><td className="px-7 py-5 text-stone-500">After you pass the course ({FEES.passMark}% or more)</td></tr>
+                  <tr><td className="px-7 py-5 font-semibold">Registration</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">K {FEES.registration}</td><td className="px-7 py-5 text-stone-500">Once, after you create your account</td></tr>
+                  <tr><td className="px-7 py-5 font-semibold">Course fee</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">Per course</td><td className="px-7 py-5 text-stone-500">At enrolment: in full, or 3 or 6 monthly instalments</td></tr>
+                  <tr><td className="px-7 py-5 font-semibold">Certificate</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">K {FEES.certificate}</td><td className="px-7 py-5 text-stone-500">After you pass the course ({FEES.passMark}% or more)</td></tr>
                 </tbody>
               </table>
             </Reveal>
@@ -365,7 +365,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <section id="faq" className="py-20 lg:py-[120px] scroll-mt-24">
           <div className={`${wrap} grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-8`}>
             <Numbered n="06" title={<>Questions<br className="hidden lg:block" /> &amp; Answers</>}>
-              <p className="mt-5 text-[16px] leading-[1.7] text-stone-500">What new students ask most. Can’t find your answer? Call us{contact.phone ? ` on ${contact.phone}` : ''}.</p>
+              <p className="mt-5 text-[15px] leading-[1.7] text-stone-500">What new students ask most. Can’t find your answer? Call us{contact.phone ? ` on ${contact.phone}` : ''}.</p>
             </Numbered>
             <Reveal delay={0.1} className="border-t border-stone-200">
               {faqs.map((f, i) => (
@@ -380,7 +380,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
           <section id="downloads" className="pb-20 lg:pb-[120px] scroll-mt-24">
             <div className={`${wrap} grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-8`}>
               <Numbered n="07" title="Downloads">
-                <p className="mt-5 text-[16px] leading-[1.7] text-stone-500">Prospectus, forms and other documents from the school.</p>
+                <p className="mt-5 text-[15px] leading-[1.7] text-stone-500">Prospectus, forms and other documents from the school.</p>
               </Numbered>
               <Reveal delay={0.1} className="border border-stone-200 divide-y divide-stone-100">
                 {publicDocs.map(d => <DocumentRow key={d.id} doc={d} showAudience={false} />)}
@@ -393,8 +393,8 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <section className="bg-sun">
           <div className={`${wrap} py-16 lg:py-20 flex flex-col lg:flex-row lg:items-center justify-between gap-8`}>
             <Reveal>
-              <h2 className="font-display font-extrabold text-[34px] sm:text-[44px] leading-[1.12] text-ink text-balance max-w-[720px]">Ready to start your registration?</h2>
-              <p className="mt-3 text-[17px] text-ink/75">It takes a few minutes. Have your NRC or passport number ready.</p>
+              <h2 className="font-display font-extrabold text-[28px] sm:text-[34px] leading-[1.12] text-ink text-balance max-w-[720px]">Ready to start your registration?</h2>
+              <p className="mt-3 text-[16px] text-ink/75">It takes a few minutes. Have your NRC or passport number ready.</p>
             </Reveal>
             <Reveal delay={0.1} className="shrink-0"><SunButton dark onClick={() => onSignUp()}>Apply Now <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></SunButton></Reveal>
           </div>
@@ -404,14 +404,14 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <footer className="bg-ink text-white/70">
           <div className={`${wrap} py-16 grid sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10`}>
             <div>
-              <p className="font-display font-extrabold text-white text-[24px] leading-tight">{SCHOOL.name}</p>
+              <p className="font-display font-extrabold text-white text-[20px] leading-tight">{SCHOOL.name}</p>
               <p className="mt-2 text-[15px] font-semibold text-sun">{SCHOOL.motto}</p>
               <button onClick={() => onSignUp()} className="group mt-6 inline-flex items-center gap-3 h-12 px-6 bg-sun hover:bg-white text-ink text-[15px] font-semibold transition-colors">
                 Apply Now <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
             <div>
-              <p className="font-display font-bold text-white text-[17px] mb-4">Students</p>
+              <p className="font-display font-bold text-white text-[16px] mb-4">Students</p>
               <ul className="space-y-2.5 text-[15px]">
                 <li><button onClick={() => onSignUp()} className="text-[15px] font-normal hover:text-sun transition-colors">Apply now</button></li>
                 <li><button onClick={() => onSignIn()} className="text-[15px] font-normal hover:text-sun transition-colors">Sign in</button></li>
@@ -420,14 +420,14 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
               </ul>
             </div>
             <div>
-              <p className="font-display font-bold text-white text-[17px] mb-4">Lecturers &amp; staff</p>
+              <p className="font-display font-bold text-white text-[16px] mb-4">Lecturers &amp; staff</p>
               <ul className="space-y-2.5 text-[15px]">
                 <li><button onClick={() => onSignIn()} className="text-[15px] font-normal hover:text-sun transition-colors">Sign in</button></li>
               </ul>
               <p className="mt-3 text-[13px] text-white/45 leading-relaxed">Use the email address your invitation was sent to.</p>
             </div>
             <div>
-              <p className="font-display font-bold text-white text-[17px] mb-4">Contact</p>
+              <p className="font-display font-bold text-white text-[16px] mb-4">Contact</p>
               {contact.phone && <a href={`tel:${contact.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 text-[15px] hover:text-sun"><Phone className="w-4 h-4" />{contact.phone}</a>}
               {contact.email && <a href={`mailto:${contact.email}`} className="mt-2 block text-[15px] hover:text-sun">{contact.email}</a>}
               <p className="mt-3 text-[13px] text-white/45 leading-relaxed">Payments: MTN Money, Airtel Money, bank deposit or cash at the office.</p>

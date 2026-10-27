@@ -77,11 +77,11 @@ export const AuthShell: React.FC<{ onHome: () => void; role: ShellTheme; childre
             <AnimatePresence mode="wait">
               <motion.div key={role} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.4, ease }}>
                 <p className="text-sm font-semibold tracking-[0.2em] text-sun">- {role === 'all' ? 'PORTAL' : meta.label.toUpperCase()} -</p>
-                <h2 className="mt-4 font-display font-extrabold text-[40px] xl:text-[48px] leading-[1.1] tracking-[-0.01em] text-balance max-w-lg">{meta.heading}</h2>
+                <h2 className="mt-4 font-display font-extrabold text-[30px] xl:text-[38px] leading-[1.1] tracking-[-0.01em] text-balance max-w-lg">{meta.heading}</h2>
                 <ul className="mt-9 space-y-4">
                   {meta.points.map(([icon, text], i) => (
                     <motion.li key={text} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08, duration: 0.4 }}
-                      className="flex items-center gap-4 text-[16px] text-white/90">
+                      className="flex items-center gap-4 text-[15px] text-white/90">
                       <span className="w-10 h-10 bg-sun text-ink flex items-center justify-center shrink-0">{icon}</span>{text}
                     </motion.li>
                   ))}
