@@ -16,20 +16,28 @@ export interface Transaction {
 }
 
 export interface StudentPersonalDetails {
-  dateOfBirth: string;
-  gender: string;
-  address: string;
-  residentialAddress: string;
-  postalAddress: string;
-  nrcNumber: string;
-  passportNumber?: string;
-  phoneNumber: string;
-  alternativeNumber: string;
-  guardianName: string;
-  guardianPhone: string;
-  nationality: string;
-  program?: string;
+  // Official enrolment form
+  dateOfBirth?: string;
+  gender?: string;
+  nrcNumber?: string;
+  phoneNumber?: string;
+  residentialAddress?: string;
+  modeOfStudy?: string;            // Full time, Part time, Online, e-Learning, Distance
+  coursesOfInterest?: string[];    // ticked on the enrolment form
+  disability?: string;             // Yes / No
+  disabilityDetails?: string;
+  academicQualification?: string;
+  message?: string;
   hasCompletedRegistration?: boolean;
+  // Older fields kept for existing records
+  address?: string;
+  postalAddress?: string;
+  passportNumber?: string;
+  alternativeNumber?: string;
+  guardianName?: string;
+  guardianPhone?: string;
+  nationality?: string;
+  program?: string;
   sponsorshipType?: 'self' | 'bursary' | 'corporate';
 }
 
@@ -91,7 +99,7 @@ export interface Course {
   price: number;
   currency: string;
   syllabus?: string;
-  level?: 'beginner' | 'advanced' | 'teveta_level_3';
+  level?: import('@/app/lib/levels').Level;
   imageUrl?: string;
 }
 

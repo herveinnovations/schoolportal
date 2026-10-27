@@ -83,7 +83,7 @@ export const WebsiteEditor: React.FC = () => {
 
   const saveContact = async () => {
     setSaving('contact');
-    const err = await saveSection('contact', { phone: c.phone.trim(), email: c.email.trim() });
+    const err = await saveSection('contact', { phone: c.phone.trim(), email: c.email.trim(), address: c.address.trim() });
     setSaving('');
     err ? toast.error(err) : toast.success('Contact details saved');
   };
@@ -136,7 +136,12 @@ export const WebsiteEditor: React.FC = () => {
             <Label htmlFor="wc-email">Email</Label>
             <Input id="wc-email" type="email" value={c.email} onChange={e => setC({ ...c, email: e.target.value })} placeholder="info@yourschool.com" />
           </div>
-          {(c.phone !== contact.phone || c.email !== contact.email) && <p className="text-xs text-amber-700">Not saved yet.</p>}
+          <div className="space-y-1.5">
+            <Label htmlFor="wc-addr">Office address</Label>
+            <Textarea id="wc-addr" rows={2} value={c.address} onChange={e => setC({ ...c, address: e.target.value })} />
+            <p className="text-xs text-stone-500">Shown in the website footer and on the enrolment form PDF.</p>
+          </div>
+          {(c.phone !== contact.phone || c.email !== contact.email || c.address !== contact.address) && <p className="text-xs text-amber-700">Not saved yet.</p>}
           <Button onClick={saveContact} disabled={saving === 'contact'}>{saving === 'contact' ? <><Spinner />Saving…</> : 'Save contact details'}</Button>
         </div>
       </section>

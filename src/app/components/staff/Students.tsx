@@ -29,8 +29,8 @@ export const Students: React.FC = () => {
   };
 
   const exportCsv = () => {
-    const head = ['Name', 'Student no.', 'Email', 'Phone', 'Courses', 'Fees', 'Paid', 'Balance', 'Overdue instalments'];
-    const data = rows.map(({ s, f }) => [s.name, s.studentNumber ?? '', s.email, s.personalDetails?.phoneNumber ?? '', s.courses.map(id => courses.find(c => c.id === id)?.name ?? '').join('; '), f.totalFees, f.paidFees, f.balance, f.overdue.length]);
+    const head = ['Name', 'Student no.', 'Email', 'Phone', 'Mode of study', 'Courses ticked on form', 'Enrolled courses', 'Fees', 'Paid', 'Balance', 'Overdue instalments'];
+    const data = rows.map(({ s, f }) => [s.name, s.studentNumber ?? '', s.email, s.personalDetails?.phoneNumber ?? '', s.personalDetails?.modeOfStudy ?? '', (s.personalDetails?.coursesOfInterest ?? []).join('; '), s.courses.map(id => courses.find(c => c.id === id)?.name ?? '').join('; '), f.totalFees, f.paidFees, f.balance, f.overdue.length]);
     const csv = [head, ...data].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
     const a = document.createElement('a'); a.href = url; a.download = 'Alphatech students.csv'; a.click(); URL.revokeObjectURL(url);
@@ -110,12 +110,33 @@ export const Students: React.FC = () => {
               </div>
               {sel.s.personalDetails && (
                 <div>
-                  <h4 className="font-semibold text-stone-900 text-sm mb-2">Personal details</h4>
-                  <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                    {[['NRC', sel.s.personalDetails.nrcNumber], ['Phone', sel.s.personalDetails.phoneNumber], ['Date of birth', sel.s.personalDetails.dateOfBirth && fmtDate(sel.s.personalDetails.dateOfBirth)], ['Gender', sel.s.personalDetails.gender], ['Address', sel.s.personalDetails.residentialAddress || sel.s.personalDetails.address], ['Guardian', [sel.s.personalDetails.guardianName, sel.s.personalDetails.guardianPhone].filter(Boolean).join(' · ')], ['Sponsorship', sel.s.personalDetails.sponsorshipType && sel.s.personalDetails.sponsorshipType[0].toUpperCase() + sel.s.personalDetails.sponsorshipType.slice(1)]].filter(([, v]) => v).map(([k, v]) => (
-                      <div key={k as string}><dt className="text-xs text-stone-500">{k}</dt><dd className="text-stone-900">{v}</dd></div>
-                    ))}
-                  </dl>
+                  <h4 className="font-semibold text-stone-900 text-sm mb-2">Enrolment form</h4>
+                  {(() => {
+                    const p = sel.s.personalDetails!;
+                    const rows: [string, React.ReactNode][] = [
+                      ['Date of birth', p.dateOfBirth && fmtDate(p.dateOfBirth)], ['Gender', p.gender], ['N.R.C number', p.nrcNumber],
+                      ['Cell number', p.phoneNumber], ['Residential address', p.residentialAddress || p.address], ['Mode of study', p.modeOfStudy],
+                      ['Physical disabilities', p.disability === 'Yes' && p.disabilityDetails ? `Yes: ${p.disabilityDetails}` : p.disability],
+                      ['Academic qualification', p.academicQualification],
+                      ['Guardian', [p.guardianName, p.guardianPhone].filter(Boolean).join(' · ')],
+                    ];
+                    return (
+                      <>
+                        <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                          {rows.filter(([, v]) => v).map(([k, v]) => (
+                            <div key={k}><dt className="text-xs text-stone-500">{k}</dt><dd className="text-stone-900">{v}</dd></div>
+                          ))}
+                        </dl>
+                        {!!p.coursesOfInterest?.length && (
+                          <div className="mt-3">
+                            <p className="text-xs text-stone-500 mb-1.5">Courses ticked on the form</p>
+                            <div className="flex flex-wrap gap-1.5">{p.coursesOfInterest.map(c => <span key={c} className="bg-sun/20 border border-sun px-2 py-0.5 text-xs text-ink">{c}</span>)}</div>
+                          </div>
+                        )}
+                        {p.message && <div className="mt-3"><p className="text-xs text-stone-500">Message</p><p className="text-sm text-stone-800 whitespace-pre-line">{p.message}</p></div>}
+                      </>
+                    );
+                  })()}
                 </div>
               )}
               <div>

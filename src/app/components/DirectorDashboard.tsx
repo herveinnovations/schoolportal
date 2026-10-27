@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { useAuth, staffCan, type Course, type Announcement } from '@/app/context/AuthContext';
 import { Accounts } from './staff/Accounts';
+import { LEVELS } from '@/app/lib/levels';
 import { WebsiteEditor } from './staff/WebsiteEditor';
 import { Files } from './staff/Files';
 import { uploadSiteImage } from '@/app/lib/media';
@@ -26,7 +27,7 @@ import { kwacha } from '@/app/lib/finance';
 import { FEES } from '@/app/config/school';
 
 const emptyCourse = { name: '', description: '', credits: 3, price: 0, lecturerId: '', level: 'beginner' as NonNullable<Course['level']>, imageUrl: '' };
-const levelLabel: Record<NonNullable<Course['level']>, string> = { beginner: 'Beginner', advanced: 'Advanced', teveta_level_3: 'TEVETA Level 3' };
+const levelLabel: Record<NonNullable<Course['level']>, string> = Object.fromEntries(LEVELS.map(l => [l.id, l.label])) as Record<NonNullable<Course['level']>, string>;
 
 export const DirectorDashboard: React.FC = () => {
   const {

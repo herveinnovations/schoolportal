@@ -13,7 +13,7 @@ export interface SiteText {
   aboutBody1: string;
   aboutBody2: string;
 }
-export interface SiteContact { phone: string; email: string }
+export interface SiteContact { phone: string; email: string; address: string }
 
 export const DEFAULT_TEXT: SiteText = {
   heroTitle: 'Alphatech – Computer Skills That Open Doors!',
@@ -23,7 +23,7 @@ export const DEFAULT_TEXT: SiteText = {
   aboutBody2: 'Everything happens in one portal: your timetable, live classes, recordings, assignments, exams, results, payments and certificates. Sign in from a phone or a computer, wherever you are.',
 };
 export const DEFAULT_IMAGES: SiteImages = { ...PHOTOS };
-export const DEFAULT_CONTACT: SiteContact = { phone: SCHOOL.phone, email: SCHOOL.email };
+export const DEFAULT_CONTACT: SiteContact = { phone: SCHOOL.phone, email: SCHOOL.email, address: SCHOOL.address };
 
 export type DocAudience = 'public' | 'all' | 'students' | 'lecturers' | 'course';
 
@@ -92,6 +92,7 @@ export const SiteProvider: React.FC<{ children: React.ReactNode }> = ({ children
     Object.entries(saved ?? {}).forEach(([k, v]) => { if (k in out && typeof v === 'string' && v.trim()) out[k] = v; });
     if (saved && 'phone' in saved && saved.phone === '') out.phone = '';
     if (saved && 'email' in saved && saved.email === '') out.email = '';
+    if (saved && 'address' in saved && saved.address === '') out.address = '';
     return out as T;
   };
   const images = useMemo(() => pick(DEFAULT_IMAGES, raw.images), [raw.images]);

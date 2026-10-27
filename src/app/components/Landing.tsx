@@ -3,6 +3,7 @@ import { motion, AnimatePresence, MotionConfig, useScroll, useSpring } from 'mot
 import { useAuth } from '@/app/context/AuthContext';
 import { schoolLogo, Logo } from './BrandMark';
 import { SCHOOL, FEES } from '@/app/config/school';
+import { LEVELS, levelLabel, levelTone, type Level } from '@/app/lib/levels';
 import { useSite } from '@/app/context/SiteContext';
 import { DocumentRow } from './DocumentsList';
 import {
@@ -56,7 +57,7 @@ const Numbered: React.FC<{ n: string; title: React.ReactNode; light?: boolean; c
 
 /* ---------- FAQ ---------- */
 const faqs = [
-  { q: 'What do I need to register?', a: 'An email address, your NRC number (or passport if you are not Zambian), a phone number, details of a guardian or next of kin, and your last school attended.' },
+  { q: 'What do I need to register?', a: `Your full names, date of birth, cell number, residential address and email, plus your NRC number if you have one. You choose your mode of study and the courses you want, and pay the K${FEES.registration} admission form fee. Other requirements are given in your Acceptance Letter.` },
   { q: 'Can I pay course fees in instalments?', a: `Yes. When you enrol you choose full payment, 3 monthly instalments or 6 monthly instalments. The registration fee of K${FEES.registration} is paid once, in full.` },
   { q: 'How do I pay?', a: 'By MTN Money, Airtel Money, bank deposit or cash at the office. You enter the transaction reference in the portal and our Finance office confirms it, usually within one working day.' },
   { q: 'What if I miss a live class?', a: 'Lecturers add recordings to your course, so you can watch them any time before your exams.' },
@@ -90,7 +91,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
   const publicDocs = documents.filter(d => d.audience === 'public');
   const [menuOpen, setMenuOpen] = useState(false);
   const [showTop, setShowTop] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'beginner' | 'advanced' | 'teveta_level_3'>('all');
+  const [filter, setFilter] = useState<'all' | Level>('all');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
@@ -118,8 +119,6 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
     { title: 'Enrol and start', text: 'Choose a course, full-time or part-time, and a payment plan. Then join your first class.' },
   ];
 
-  const levelLabel = (l?: string) => (l === 'teveta_level_3' ? 'TEVETA Level 3' : l === 'advanced' ? 'Advanced' : 'Beginner');
-  const levelTone = (l?: string) => (l === 'teveta_level_3' ? 'bg-royal text-white' : l === 'advanced' ? 'bg-ink text-white' : 'bg-sun text-ink');
   const shownCourses = courses.filter(c => filter === 'all' || (c.level ?? 'beginner') === filter);
 
   const navLinks: [string, string][] = [['#about', 'About Us'], ['#courses', 'Courses'], ['#how', 'How to Join'], ['#fees', 'Fees'], ['#faq', 'FAQ']];
@@ -244,8 +243,8 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                 <p className="text-[15px] leading-[1.7] text-stone-500 max-w-[60ch]">Courses open for enrolment. Prices are in Zambian Kwacha, and every course can be paid in full or in 3 or 6 monthly instalments.</p>
                 {courses.length > 0 && (
                   <div role="tablist" aria-label="Filter by level" className="mt-6 flex flex-wrap gap-2">
-                    {([['all', 'All'], ['beginner', 'Beginner'], ['advanced', 'Advanced'], ['teveta_level_3', 'TEVETA Level 3']] as const).map(([v, l]) => (
-                      <button key={v} role="tab" aria-selected={filter === v} onClick={() => setFilter(v)}
+                    {([['all', 'All'], ...LEVELS.filter(lv => courses.some(c => (c.level ?? 'beginner') === lv.id)).map(lv => [lv.id, lv.label])] as [string, string][]).map(([v, l]) => (
+                      <button key={v} role="tab" aria-selected={filter === v} onClick={() => setFilter(v as 'all' | Level)}
                         className={`h-10 px-5 text-[14px] font-semibold transition-colors ${filter === v ? 'bg-ink text-white' : 'bg-stone-100 text-ink/70 hover:bg-stone-200'}`}>{l}</button>
                     ))}
                   </div>
@@ -429,7 +428,8 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             <div>
               <p className="font-display font-bold text-white text-[16px] mb-4">Contact</p>
               {contact.phone && <a href={`tel:${contact.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 text-[15px] hover:text-sun"><Phone className="w-4 h-4" />{contact.phone}</a>}
-              {contact.email && <a href={`mailto:${contact.email}`} className="mt-2 block text-[15px] hover:text-sun">{contact.email}</a>}
+              {contact.email && <a href={`mailto:${contact.email}`} className="mt-2 block text-[15px] hover:text-sun break-all">{contact.email}</a>}
+              {contact.address && <p className="mt-2 text-[15px] leading-[1.55]">{contact.address}</p>}
               <p className="mt-3 text-[13px] text-white/45 leading-relaxed">Payments: MTN Money, Airtel Money, bank deposit or cash at the office.</p>
             </div>
           </div>

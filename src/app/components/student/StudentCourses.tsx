@@ -1,3 +1,4 @@
+import { LEVELS, levelLabel, type Level } from '@/app/lib/levels';
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAuth, type Course } from '@/app/context/AuthContext';
@@ -7,14 +8,13 @@ import { BookOpen, Search, ArrowRight, User, Lock } from 'lucide-react';
 import { SectionTitle, Segmented, EmptyState, StatusPill } from '../shell/ui';
 import { courseProgress } from '@/app/lib/academics';
 
-const levelLabel = (l?: string) => (l === 'teveta_level_3' ? 'TEVETA Level 3' : l === 'advanced' ? 'Advanced' : 'Beginner');
-const levelTone = (l?: string) => (l === 'teveta_level_3' ? 'from-teal-700 to-emerald-900' : l === 'advanced' ? 'from-stone-700 to-stone-900' : 'from-emerald-600 to-emerald-800');
+const gradientFor = (l?: string) => (l === 'teveta_level_3' ? 'from-navy to-ink' : l === 'advanced' || l === 'refresher' ? 'from-stone-700 to-ink' : l === 'office' ? 'from-royal to-royal-deep' : 'from-emerald-600 to-teal-700');
 
 interface Props { openCourse: (c: Course) => void; onEnrol: (c: Course) => void; canEnrol: boolean }
 
 export const StudentCourses: React.FC<Props> = ({ openCourse, onEnrol, canEnrol }) => {
   const { user, courses, homeworks, homeworkSubmissions, exams, examAttempts } = useAuth();
-  const [level, setLevel] = useState<'all' | 'beginner' | 'advanced' | 'teveta_level_3'>('all');
+  const [level, setLevel] = useState<'all' | Level>('all');
   const [q, setQ] = useState('');
   if (!user) return null;
 
@@ -66,7 +66,7 @@ export const StudentCourses: React.FC<Props> = ({ openCourse, onEnrol, canEnrol 
           </div>
         )}
         <div className="flex flex-wrap items-center gap-3 mb-5">
-          <Segmented id="level" value={level} onChange={setLevel} options={[['all', 'All'], ['beginner', 'Beginner'], ['advanced', 'Advanced'], ['teveta_level_3', 'TEVETA L3']]} />
+          <Segmented id="level" value={level} onChange={setLevel} options={[['all', 'All'], ...LEVELS.filter(lv => courses.some(c => (c.level ?? 'beginner') === lv.id)).map(lv => [lv.id, lv.label] as ['all' | Level, string])]} />
           <div className="relative flex-1 min-w-[200px] max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
             <Input id="course-search" value={q} onChange={e => setQ(e.target.value)} placeholder="Search courses" className="pl-9 bg-white" />
@@ -80,7 +80,7 @@ export const StudentCourses: React.FC<Props> = ({ openCourse, onEnrol, canEnrol 
               {catalogue.map(c => (
                 <motion.article key={c.id} layout initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.97 }}
                   className="group bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-lg hover:border-emerald-300 transition-[box-shadow,border-color] flex flex-col">
-                  <div className={`h-20 bg-gradient-to-br ${levelTone(c.level)} relative`}>
+                  <div className={`h-20 bg-gradient-to-br ${gradientFor(c.level)} relative`}>
                     <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '16px 16px' }} />
                     <span className="absolute left-4 top-4 bg-white/90 text-stone-900 text-xs font-semibold px-2.5 py-0.5 rounded-full">{levelLabel(c.level)}</span>
                     <BookOpen className="absolute right-4 bottom-3 w-9 h-9 text-white/25 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6" />
