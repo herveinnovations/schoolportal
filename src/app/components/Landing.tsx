@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, MotionConfig, useScroll, useSpring } from 'motion/react';
 import { useAuth } from '@/app/context/AuthContext';
-import { schoolLogo } from './BrandMark';
+import { schoolLogo, Logo } from './BrandMark';
 import { SCHOOL, FEES } from '@/app/config/school';
 import { useSite } from '@/app/context/SiteContext';
 import { DocumentRow } from './DocumentsList';
@@ -130,37 +130,34 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <motion.div style={{ scaleX: progress }} className="fixed top-0 left-0 right-0 h-[3px] bg-sun origin-left z-[60]" />
 
         {/* ---------- Top bar ---------- */}
-        <nav className="sticky top-0 z-50 bg-ink">
+        <nav className="sticky top-0 z-50 bg-white border-b border-stone-200 shadow-[0_8px_24px_-18px_rgba(0,0,0,0.35)]">
           <div className={`${wrap} h-[76px] lg:h-[90px] flex items-center justify-between gap-4`}>
-            <a href="#top" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 shrink-0" aria-label={`${SCHOOL.name} home`}>
-              <img src={schoolLogo} alt="" className="h-11 lg:h-12 w-auto" />
-              <span className="leading-none">
-                <span className="block font-display font-extrabold text-[22px] lg:text-[24px] tracking-tight text-white">ALPHA<span className="text-sun">TECH</span></span>
-                <span className="block mt-1 text-[9.5px] font-semibold tracking-[0.16em] uppercase text-white/65">Computer Institute</span>
-              </span>
+            <a href="#top" onClick={() => setMenuOpen(false)} className="shrink-0" aria-label={`${SCHOOL.name} home`}>
+              <span className="lg:hidden"><Logo height={44} /></span>
+              <span className="hidden lg:inline-flex"><Logo height={56} /></span>
             </a>
             <div className="hidden lg:flex items-center gap-10">
               {navLinks.map(([h, l]) => (
-                <a key={h} href={h} className="relative text-[15px] font-medium text-white/90 hover:text-sun transition-colors after:absolute after:left-0 after:-bottom-1.5 after:h-0.5 after:w-0 after:bg-sun after:transition-all hover:after:w-full">{l}</a>
+                <a key={h} href={h} className="relative text-[15px] font-semibold text-ink/80 hover:text-navy transition-colors after:absolute after:left-0 after:-bottom-1.5 after:h-[3px] after:w-0 after:bg-sun after:transition-all hover:after:w-full">{l}</a>
               ))}
             </div>
             <div className="flex items-center gap-2 sm:gap-3">
-              <button onClick={() => onSignIn()} className="hidden sm:inline-flex h-11 items-center px-4 text-[15px] font-medium text-white hover:text-sun transition-colors">Sign In</button>
+              <button onClick={() => onSignIn()} className="hidden sm:inline-flex h-11 items-center px-4 text-[15px] font-semibold text-ink hover:text-navy transition-colors">Sign In</button>
               <button onClick={() => onSignUp()} className="hidden sm:inline-flex h-11 items-center px-6 bg-sun hover:bg-sun-deep text-ink text-[15px] font-semibold transition-colors">Apply Now</button>
-              <button className="lg:hidden w-11 h-11 flex items-center justify-center bg-royal text-white" aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen} onClick={() => setMenuOpen(o => !o)}>
+              <button className="lg:hidden w-11 h-11 flex items-center justify-center bg-ink text-white" aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen} onClick={() => setMenuOpen(o => !o)}>
                 {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
           <AnimatePresence>
             {menuOpen && (
-              <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} transition={{ duration: 0.3, ease }} className="lg:hidden overflow-hidden bg-ink border-t border-white/10">
+              <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} transition={{ duration: 0.3, ease }} className="lg:hidden overflow-hidden bg-white border-t border-stone-200">
                 <div className={`${wrap} py-4 flex flex-col`}>
                   {navLinks.map(([h, l]) => (
-                    <a key={h} href={h} onClick={() => setMenuOpen(false)} className="py-3.5 text-white text-[17px] font-medium border-b border-white/10">{l}</a>
+                    <a key={h} href={h} onClick={() => setMenuOpen(false)} className="py-3.5 text-ink text-[17px] font-semibold border-b border-stone-100">{l}</a>
                   ))}
                   <div className="grid grid-cols-2 gap-3 pt-5">
-                    <button onClick={() => onSignIn()} className="h-12 border border-white/25 text-white font-medium">Sign In</button>
+                    <button onClick={() => onSignIn()} className="h-12 border border-ink/25 text-ink font-semibold">Sign In</button>
                     <button onClick={() => onSignUp()} className="h-12 bg-sun text-ink font-semibold">Apply Now</button>
                   </div>
                 </div>
@@ -407,13 +404,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <footer className="bg-ink text-white/70">
           <div className={`${wrap} py-16 grid sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10`}>
             <div>
-              <div className="flex items-center gap-3">
-                <span className="bg-white p-1"><img src={schoolLogo} alt="" className="h-12 w-auto" /></span>
-                <span className="leading-none">
-                  <span className="block font-display font-extrabold text-[22px] tracking-tight text-white">ALPHA<span className="text-sun">TECH</span></span>
-                  <span className="block mt-1 text-[9.5px] font-semibold tracking-[0.16em] uppercase text-white/60">Computer Institute</span>
-                </span>
-              </div>
+              <Logo height={52} plate />
               <p className="mt-5 text-[15px] leading-[1.65] max-w-[34ch]">{SCHOOL.motto}. Live classes, recordings, exams and certificates in one portal.</p>
             </div>
             <div>

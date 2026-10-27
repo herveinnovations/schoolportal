@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, MotionConfig } from 'motion/react';
-import { Wordmark } from './BrandMark';
+import { Logo } from './BrandMark';
 import { useSite } from '@/app/context/SiteContext';
 import { ArrowLeft, GraduationCap, BookOpen, Shield, Eye, EyeOff, CheckCircle2, Video, ClipboardCheck, Award, Users, BarChart3, KeyRound } from 'lucide-react';
 import { Input } from '@/app/components/ui/input';
@@ -72,7 +72,7 @@ export const AuthShell: React.FC<{ onHome: () => void; role: ShellTheme; childre
             className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/65" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-          <button onClick={onHome} className="relative w-fit" aria-label="Alphatech Computer Institute home"><Wordmark /></button>
+          <button onClick={onHome} className="relative w-fit" aria-label="Alphatech Computer Institute home"><Logo height={52} plate /></button>
           <div className="relative">
             <AnimatePresence mode="wait">
               <motion.div key={role} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.4, ease }}>
@@ -94,9 +94,9 @@ export const AuthShell: React.FC<{ onHome: () => void; role: ShellTheme; childre
 
         {/* Form side */}
         <div className="flex flex-col min-w-0">
-          <nav className="h-[76px] px-4 sm:px-8 flex items-center justify-between bg-ink lg:bg-transparent">
-            <button onClick={onHome} aria-label="Alphatech Computer Institute home" className="lg:invisible"><Wordmark /></button>
-            <button onClick={onHome} className="group inline-flex items-center gap-1.5 text-sm font-medium text-white lg:text-stone-600 hover:text-sun lg:hover:text-ink">
+          <nav className="h-[76px] px-4 sm:px-8 flex items-center justify-between bg-white lg:bg-transparent border-b border-stone-200 lg:border-0">
+            <button onClick={onHome} aria-label="Alphatech Computer Institute home" className="lg:invisible"><Logo height={44} /></button>
+            <button onClick={onHome} className="group inline-flex items-center gap-1.5 text-sm font-semibold text-ink/70 hover:text-ink">
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" /> Back to home
             </button>
           </nav>

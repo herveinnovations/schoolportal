@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, MotionConfig } from 'motion/react';
 import { LogOut, MoreHorizontal, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { BrandMark, Wordmark } from '../BrandMark';
+import { BrandMark, Logo } from '../BrandMark';
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar';
 import type { User } from '@/app/context/AuthContext';
 
@@ -57,10 +57,10 @@ export const DashboardShell: React.FC<Props> = ({ portal, user, items, active, o
       <div className="min-h-screen bg-stone-50">
         {/* Sidebar (desktop) */}
         <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col bg-ink z-40">
-          <div className="px-5 pt-6 pb-5 border-b border-white/10">
-            <Wordmark />
-            <p className="mt-4 inline-block bg-sun text-ink px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em]">{portal} portal</p>
+          <div className="bg-white px-4 py-4 flex justify-center">
+            <Logo height={46} />
           </div>
+          <p className="bg-sun text-ink px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em]">{portal} portal</p>
           <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5" aria-label={`${portal} navigation`}>
             {Object.entries(sections).map(([section, list]) => (
               <div key={section || 'main'}>

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { schoolLogo } from '../BrandMark';
+import { schoolLogo, Logo } from '../BrandMark';
 import { motion } from 'motion/react';
 import { toast } from 'sonner';
 import { useAuth } from '@/app/context/AuthContext';
@@ -311,7 +311,7 @@ export const StudentProfile: React.FC = () => {
       {/* Digital student ID */}
       <motion.div initial={{ opacity: 0, rotateX: 8 }} animate={{ opacity: 1, rotateX: 0 }} className="overflow-hidden shadow-xl bg-ink text-white border-t-4 border-sun">
         <div className="p-5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5"><span className="bg-white p-0.5"><img src={schoolLogo} alt="" className="h-9 w-auto" /></span><div className="leading-none"><p className="font-display font-extrabold text-[17px] tracking-tight">ALPHA<span className="text-sun">TECH</span></p><p className="mt-1 text-[9px] font-semibold tracking-[0.16em] text-white/60">COMPUTER INSTITUTE</p></div></div>
+          <Logo height={34} plate className="!px-2 !py-1.5" />
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-sun">Student ID</p>
         </div>
         <div className="px-5 pb-5 flex items-center gap-4">
