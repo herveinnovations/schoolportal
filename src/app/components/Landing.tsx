@@ -404,14 +404,17 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <footer className="bg-ink text-white/70">
           <div className={`${wrap} py-16 grid sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10`}>
             <div>
-              <Logo height={52} plate />
-              <p className="mt-5 text-[15px] leading-[1.65] max-w-[34ch]">{SCHOOL.motto}. Live classes, recordings, exams and certificates in one portal.</p>
+              <p className="font-display font-extrabold text-white text-[24px] leading-tight">{SCHOOL.name}</p>
+              <p className="mt-2 text-[15px] font-semibold text-sun">{SCHOOL.motto}</p>
+              <button onClick={() => onSignUp()} className="group mt-6 inline-flex items-center gap-3 h-12 px-6 bg-sun hover:bg-white text-ink text-[15px] font-semibold transition-colors">
+                Apply Now <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
             </div>
             <div>
               <p className="font-display font-bold text-white text-[17px] mb-4">Students</p>
               <ul className="space-y-2.5 text-[15px]">
-                <li><button onClick={() => onSignUp()} className="hover:text-sun transition-colors">Apply now</button></li>
-                <li><button onClick={() => onSignIn()} className="hover:text-sun transition-colors">Sign in</button></li>
+                <li><button onClick={() => onSignUp()} className="text-[15px] font-normal hover:text-sun transition-colors">Apply now</button></li>
+                <li><button onClick={() => onSignIn()} className="text-[15px] font-normal hover:text-sun transition-colors">Sign in</button></li>
                 <li><a href="#courses" className="hover:text-sun transition-colors">Courses</a></li>
                 <li><a href="#fees" className="hover:text-sun transition-colors">Fees</a></li>
               </ul>
@@ -419,7 +422,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             <div>
               <p className="font-display font-bold text-white text-[17px] mb-4">Lecturers &amp; staff</p>
               <ul className="space-y-2.5 text-[15px]">
-                <li><button onClick={() => onSignIn()} className="hover:text-sun transition-colors">Sign in</button></li>
+                <li><button onClick={() => onSignIn()} className="text-[15px] font-normal hover:text-sun transition-colors">Sign in</button></li>
               </ul>
               <p className="mt-3 text-[13px] text-white/45 leading-relaxed">Use the email address your invitation was sent to.</p>
             </div>
