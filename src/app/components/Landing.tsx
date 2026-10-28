@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import { motion, AnimatePresence, MotionConfig, useScroll, useSpring } from 'motion/react';
 import { useAuth } from '@/app/context/AuthContext';
 import { schoolLogo, Logo } from './BrandMark';
@@ -84,6 +86,57 @@ const FaqItem: React.FC<{ q: string; a: string; open: boolean; onToggle: () => v
   </div>
 );
 
+/* ---------- Dropdown panel ---------- */
+type PanelLink = { label: string; href?: string; onClick?: () => void };
+type PanelMenu = { id: string; title: string; sub: string; cols: { heading: string; links: PanelLink[] }[] };
+
+/** Full-width dropdown. It wipes open once, then glides to each menu's height and cross-fades the content. */
+const MegaPanel: React.FC<{ menu: PanelMenu; onPick: (l: PanelLink) => void }> = ({ menu, onPick }) => {
+  const inner = useRef<HTMLDivElement>(null);
+  const [h, setH] = useState<number | 'auto'>('auto');
+  useLayoutEffect(() => {
+    const el = inner.current; if (!el) return;
+    const ro = new ResizeObserver(() => setH(el.offsetHeight));
+    ro.observe(el); setH(el.offsetHeight);
+    return () => ro.disconnect();
+  }, []);
+  const linkCls = 'group inline-flex items-center gap-2 text-[15px] font-normal text-ink hover:text-navy transition-colors duration-300';
+  const arrow = <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-1.5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out" />;
+  return (
+    <motion.div initial={{ clipPath: 'inset(0 0 100% 0)' }} animate={{ clipPath: 'inset(0 0 0% 0)' }} exit={{ clipPath: 'inset(0 0 100% 0)' }}
+      transition={{ duration: 0.5, ease }}
+      className="hidden lg:block absolute left-0 right-0 top-full bg-stone-50 shadow-[0_30px_50px_-30px_rgba(0,0,0,0.35)] overflow-hidden">
+      <motion.div animate={{ height: h }} transition={{ duration: 0.45, ease }}>
+        <div ref={inner}>
+          <AnimatePresence mode="popLayout" initial={false}>
+            <motion.div key={menu.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3, ease }} className={`${wrap} py-10 grid grid-cols-[260px_repeat(3,minmax(0,1fr))] gap-10`}>
+              <div>
+                <p className="font-display font-extrabold text-[30px] leading-tight text-ink">{menu.title}</p>
+                <p className="mt-2 text-[15px] leading-[1.6] text-stone-500">{menu.sub}</p>
+              </div>
+              {menu.cols.map((col, ci) => (
+                <div key={col.heading}>
+                  <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.08 + ci * 0.05 }} className="text-[13px] font-semibold text-stone-500">{col.heading}</motion.p>
+                  <ul className="mt-4 space-y-3.5">
+                    {col.links.map((l, li) => (
+                      <motion.li key={l.label} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease, delay: 0.1 + ci * 0.05 + li * 0.04 }}>
+                        {l.href
+                          ? <a href={l.href} onClick={() => onPick(l)} className={linkCls}>{l.label}{arrow}</a>
+                          : <button onClick={() => onPick(l)} className={linkCls}>{l.label}{arrow}</button>}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 /* ---------- Page ---------- */
 export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
   const { courses } = useAuth();
@@ -97,6 +150,35 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
   const [mobileSub, setMobileSub] = useState<string | null>(null);
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
+
+  /* Smooth, momentum scrolling for the whole page, and gliding jumps to #sections */
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true, wheelMultiplier: 0.9, touchMultiplier: 1.4 });
+    let frame = requestAnimationFrame(function raf(t) { lenis.raf(t); frame = requestAnimationFrame(raf); });
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.('a[href^="#"]');
+      const hash = a?.getAttribute('href');
+      if (!a || !hash || hash === '#') return;
+      const el = document.querySelector<HTMLElement>(hash);
+      if (!el) return;
+      e.preventDefault();
+      const navH = document.querySelector('nav')?.getBoundingClientRect().height ?? 80;
+      lenis.scrollTo(hash === '#top' ? 0 : el, { offset: -navH + 1, duration: 1.4 });
+      history.replaceState(null, '', hash);
+    };
+    document.addEventListener('click', onClick);
+    return () => { cancelAnimationFrame(frame); document.removeEventListener('click', onClick); lenis.destroy(); };
+  }, []);
+
+  /* Dropdown hover intent: open quickly, close with a short grace period so moving the mouse doesn't flicker */
+  const timer = useRef<number>();
+  const hoverMenu = (id: string | null) => {
+    window.clearTimeout(timer.current);
+    if (id === null) { timer.current = window.setTimeout(() => setMenuId(null), 180); return; }
+    if (menuId) setMenuId(id); else timer.current = window.setTimeout(() => setMenuId(id), 70);
+  };
+  useEffect(() => () => window.clearTimeout(timer.current), []);
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 900);
@@ -169,7 +251,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <motion.div style={{ scaleX: progress }} className="fixed top-0 left-0 right-0 h-[3px] bg-sun origin-left z-[60]" />
 
         {/* ---------- Top bar ---------- */}
-        <nav className="sticky top-0 z-50 bg-white shadow-[0_8px_24px_-18px_rgba(0,0,0,0.35)]" onMouseLeave={() => setMenuId(null)} onKeyDown={e => { if (e.key === 'Escape') setMenuId(null); }}>
+        <nav className="sticky top-0 z-50 bg-white shadow-[0_8px_24px_-18px_rgba(0,0,0,0.35)]" onMouseLeave={() => hoverMenu(null)} onMouseEnter={() => window.clearTimeout(timer.current)} onKeyDown={e => { if (e.key === 'Escape') setMenuId(null); }}>
           <div className={`${wrap} h-[76px] lg:h-[90px] flex items-center justify-between gap-4`}>
             <a href="#top" onClick={() => setMenuOpen(false)} className="shrink-0" aria-label={`${SCHOOL.name} home`}>
               <span className="lg:hidden"><Logo height={44} /></span>
@@ -177,10 +259,11 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             </a>
             <div className="hidden lg:flex items-center gap-9 self-stretch">
               {menus.map(m => (
-                <a key={m.id} href={m.href} onMouseEnter={() => setMenuId(m.id)} onFocus={() => setMenuId(m.id)} onClick={() => setMenuId(null)}
+                <a key={m.id} href={m.href} onMouseEnter={() => hoverMenu(m.id)} onFocus={() => setMenuId(m.id)} onClick={() => setMenuId(null)}
                   aria-haspopup="true" aria-expanded={menuId === m.id}
-                  className={`relative h-full flex items-center gap-1 text-[15px] font-semibold transition-colors after:absolute after:left-0 after:bottom-[22px] after:h-[3px] after:bg-sun after:transition-all ${menuId === m.id ? 'text-navy after:w-full' : 'text-ink/80 hover:text-navy after:w-0'}`}>
-                  {m.label}<ChevronDown className={`w-3.5 h-3.5 transition-transform ${menuId === m.id ? 'rotate-180' : ''}`} />
+                  className={`relative h-full flex items-center gap-1 text-[15px] font-semibold transition-colors duration-300 ${menuId === m.id ? 'text-navy' : 'text-ink/80 hover:text-navy'}`}>
+                  {m.label}<ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ease-out ${menuId === m.id ? 'rotate-180' : ''}`} />
+                  {menuId === m.id && <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-[22px] h-[3px] bg-sun" transition={{ type: 'spring', stiffness: 420, damping: 38 }} />}
                 </a>
               ))}
             </div>
@@ -193,36 +276,18 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             </div>
           </div>
           <AnimatePresence>
+            {openMenu && <MegaPanel key="mega" menu={openMenu} onPick={go} />}
+          </AnimatePresence>
+          <AnimatePresence>
             {openMenu && (
-              <motion.div key="mega" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22, ease }}
-                className="hidden lg:block absolute left-0 right-0 top-full bg-stone-50 shadow-[0_30px_50px_-30px_rgba(0,0,0,0.35)]">
-                <div key={openMenu.id} className={`${wrap} py-10 grid grid-cols-[260px_repeat(3,minmax(0,1fr))] gap-10`}>
-                  <div>
-                    <p className="font-display font-extrabold text-[30px] leading-tight text-ink">{openMenu.title}</p>
-                    <p className="mt-2 text-[15px] leading-[1.6] text-stone-500">{openMenu.sub}</p>
-                  </div>
-                  {openMenu.cols.map(col => (
-                    <div key={col.heading}>
-                      <p className="text-[13px] font-semibold text-stone-500">{col.heading}</p>
-                      <ul className="mt-4 space-y-3.5">
-                        {col.links.map(l => (
-                          <li key={l.label}>
-                            {l.href
-                              ? <a href={l.href} onClick={() => go(l)} className="group inline-flex items-center gap-2 text-[15px] text-ink hover:text-navy transition-colors">{l.label}<ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" /></a>
-                              : <button onClick={() => go(l)} className="group inline-flex items-center gap-2 text-[15px] font-normal text-ink hover:text-navy transition-colors">{l.label}<ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" /></button>}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+              <motion.div key="dim" aria-hidden initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}
+                onMouseEnter={() => hoverMenu(null)} className="hidden lg:block fixed inset-0 top-[90px] -z-10 bg-ink/25 backdrop-blur-[2px]" />
             )}
           </AnimatePresence>
           <AnimatePresence>
             {menuOpen && (
               <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} transition={{ duration: 0.3, ease }} className="lg:hidden overflow-hidden bg-white">
-                <div className={`${wrap} py-4 flex flex-col max-h-[calc(100dvh-76px)] overflow-y-auto overscroll-contain`}>
+                <div data-lenis-prevent className={`${wrap} py-4 flex flex-col max-h-[calc(100dvh-76px)] overflow-y-auto overscroll-contain`}>
                   {menus.map(m => (
                     <div key={m.id}>
                       <button onClick={() => setMobileSub(mobileSub === m.id ? null : m.id)} aria-expanded={mobileSub === m.id}
