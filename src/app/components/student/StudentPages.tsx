@@ -309,7 +309,7 @@ export const StudentProfile: React.FC = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[340px_minmax(0,1fr)] gap-6 items-start">
       {/* Digital student ID */}
-      <motion.div initial={{ opacity: 0, rotateX: 8 }} animate={{ opacity: 1, rotateX: 0 }} className="overflow-hidden shadow-xl bg-ink text-white border-t-4 border-sun">
+      <motion.div initial={{ opacity: 0, rotateX: 8 }} animate={{ opacity: 1, rotateX: 0 }} className="overflow-hidden shadow-xl bg-ink text-white">
         <div className="p-5 flex items-center justify-between">
           <Logo height={34} plate className="!px-2 !py-1.5" />
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-sun">Student ID</p>

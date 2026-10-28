@@ -114,7 +114,7 @@ export const Accounts: React.FC = () => {
             <fieldset className="space-y-2">
               <legend className="text-sm font-medium text-stone-900 mb-1">What will they do?</legend>
               {(Object.keys(ROLE_INFO) as Choice[]).map(r => (
-                <label key={r} className={`flex items-start gap-3 rounded-xl border p-3 cursor-pointer transition ${form.role === r ? 'border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500' : 'border-stone-200 hover:border-stone-300'}`}>
+                <label key={r} className={`flex items-start gap-3 rounded-xl border p-3 cursor-pointer transition ${form.role === r ? 'border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500' : 'border-transparent bg-stone-100 hover:bg-stone-200'}`}>
                   <input type="radio" name="inv-role" className="mt-1 accent-emerald-700" checked={form.role === r} onChange={() => setForm({ ...form, role: r })} />
                   <span><span className="block text-sm font-semibold text-stone-900">{ROLE_INFO[r].label}</span><span className="block text-xs text-stone-600">{ROLE_INFO[r].text}</span></span>
                 </label>

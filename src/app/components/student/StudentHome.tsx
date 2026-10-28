@@ -82,7 +82,6 @@ export const StudentHome: React.FC<Props> = ({ go, openCourse, onRegister, onRes
         className="relative overflow-hidden bg-ink text-white p-6 sm:p-10">
         <img src={siteImages.hero} alt="" aria-hidden onError={e => { e.currentTarget.style.display = 'none'; }} className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
-        <span aria-hidden className="absolute left-0 top-0 bottom-0 w-1.5 bg-sun" />
         <div className="relative grid md:grid-cols-[1fr_minmax(0,320px)] gap-6 items-center">
           <div>
             <p className="text-sun text-sm font-semibold tracking-wide">{now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
@@ -204,7 +203,7 @@ export const StudentHome: React.FC<Props> = ({ go, openCourse, onRegister, onRes
           <ul className="space-y-3">
             {news.map(a => (
               <li key={a.id} className="flex gap-3">
-                <span className={`w-1 rounded-full shrink-0 ${a.type === 'urgent' ? 'bg-red-500' : a.type === 'academic' ? 'bg-emerald-600' : 'bg-stone-300'}`} />
+                <span className={`mt-2 w-2 h-2 rounded-full shrink-0 ${a.type === 'urgent' ? 'bg-red-500' : a.type === 'academic' ? 'bg-emerald-600' : 'bg-stone-300'}`} />
                 <div className="min-w-0">
                   <p className="font-semibold text-stone-900">{a.title}</p>
                   <p className="text-sm text-stone-600">{a.content}</p>

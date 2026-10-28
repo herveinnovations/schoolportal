@@ -45,7 +45,7 @@
   --accent-foreground: #261f5c;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
-  --border: rgba(41, 37, 36, 0.12);
+  --border: transparent;
   --input: #e7e5e4;
   --input-background: #fafaf9;
   --switch-background: #cbced4;
@@ -85,7 +85,7 @@
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
+  --border: transparent;
   --input: oklch(0.269 0 0);
   --ring: oklch(0.439 0 0);
   --font-weight-medium: 500;
@@ -221,7 +221,7 @@ html { scroll-behavior: smooth; }
 
 /* Cards lift slightly on hover */
 [data-slot="card"] { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
-main [data-slot="card"]:hover { transform: translateY(-2px); box-shadow: 0 18px 36px -18px rgb(0 0 0 / 0.3); border-color: #262626; }
+main [data-slot="card"]:hover { transform: translateY(-2px); box-shadow: 0 18px 36px -18px rgb(0 0 0 / 0.3); }
 
 /* Buttons press in */
 [data-slot="button"] { transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.12s; }
@@ -248,3 +248,129 @@ main [data-slot="card"]:hover { transform: translateY(-2px); box-shadow: 0 18px 
 .dash-main button.rounded-full, .dash-main a.rounded-full, [role="dialog"] button.rounded-full,
 .dash-main [role="tablist"].rounded-full, .dash-main [role="tab"].rounded-full { border-radius: 0; }
 [data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"] { border-radius: 0; }
+
+/* No border lines: soft (light/neutral) borders are hidden everywhere; spacing, shadows and backgrounds separate things instead.
+   Inputs, checkboxes (.keep-border) and strong selection borders stay. */
+[class*="border-slate-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-slate-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-slate-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-slate-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-gray-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-gray-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-gray-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-gray-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-zinc-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-zinc-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-zinc-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-zinc-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-neutral-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-neutral-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-neutral-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-neutral-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-red-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-red-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-red-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-red-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-orange-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-orange-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-orange-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-orange-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-amber-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-amber-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-amber-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-amber-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-yellow-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-yellow-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-yellow-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-yellow-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-lime-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-lime-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-lime-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-lime-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-green-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-green-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-green-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-green-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-emerald-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-emerald-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-emerald-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-emerald-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-teal-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-teal-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-teal-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-teal-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-cyan-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-cyan-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-cyan-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-cyan-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-sky-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-sky-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-sky-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-sky-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-blue-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-blue-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-blue-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-blue-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-indigo-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-indigo-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-indigo-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-indigo-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-violet-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-violet-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-violet-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-violet-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-purple-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-purple-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-purple-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-purple-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-fuchsia-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-fuchsia-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-fuchsia-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-fuchsia-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-pink-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-pink-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-pink-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-pink-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-rose-50"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-rose-100"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-rose-200"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-rose-300"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-400"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-white"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-black"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-ink/"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-royal/"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-sun/"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-emerald-700/"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-teal-700/"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-500"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-600"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-700"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-800"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-stone-900"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-gray-500"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-gray-600"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-gray-700"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-gray-800"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-gray-900"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-zinc-500"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-zinc-600"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-zinc-700"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-zinc-800"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-zinc-900"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-neutral-500"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-neutral-600"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-neutral-700"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-neutral-800"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-neutral-900"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-slate-500"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-slate-600"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-slate-700"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-slate-800"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border),
+[class*="border-slate-900"]:not(input):not(textarea):not(select):not([data-slot="select-trigger"]):not(.keep-border) { border-color: transparent !important; }
+[class*="divide-"] > *:not(.keep-border) { border-color: transparent !important; }
+[data-slot="table-body"] > tr:nth-child(even) { background: #fafaf9; }

@@ -74,7 +74,7 @@ export const DashboardShell: React.FC<Props> = ({ portal, user, items, active, o
                         <button onClick={() => go(item.id)} aria-current={on ? 'page' : undefined}
                           className={`relative w-full flex items-center gap-3 px-3 py-2.5 text-[14px] transition-colors ${on ? 'text-white font-semibold' : 'text-white/65 hover:text-white hover:bg-white/5'}`}>
                           {on && <motion.span layoutId="nav-active" className="absolute inset-0 bg-white/10" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
-                          {on && <motion.span layoutId="nav-bar" className="absolute left-0 top-0 bottom-0 w-1 bg-sun" />}
+                          
                           <Icon className={`relative w-[18px] h-[18px] shrink-0 ${on ? 'text-sun' : 'text-white/45'}`} />
                           <span className="relative flex-1 text-left">{item.label}</span>
                           <Badge n={item.badge} className="relative" />
@@ -103,7 +103,7 @@ export const DashboardShell: React.FC<Props> = ({ portal, user, items, active, o
 
         <div className="lg:pl-64 flex flex-col min-h-screen">
           {/* Top bar */}
-          <header className="sticky z-30 bg-ink lg:bg-white/95 lg:backdrop-blur border-b border-ink lg:border-stone-200" style={{ top: 'env(safe-area-inset-top, 0px)' }}>
+          <header className="sticky z-30 bg-ink lg:bg-white/95 lg:backdrop-blur lg:shadow-[0_8px_24px_-20px_rgba(0,0,0,0.35)]" style={{ top: 'env(safe-area-inset-top, 0px)' }}>
             <div className="h-16 lg:h-[76px] px-4 sm:px-6 lg:px-8 flex items-center gap-3">
               <span className="lg:hidden bg-white p-0.5"><BrandMark size="sm" /></span>
               <div className="flex-1 min-w-0">
@@ -163,7 +163,7 @@ export const DashboardShell: React.FC<Props> = ({ portal, user, items, active, o
           {moreOpen && (
             <>
               <motion.div className="lg:hidden fixed inset-0 z-50 bg-black/40" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMoreOpen(false)} />
-              <motion.div role="dialog" aria-label="All pages" className="lg:hidden fixed inset-x-0 bottom-0 z-50 bg-white border-t-4 border-sun shadow-2xl max-h-[85vh] overflow-y-auto"
+              <motion.div role="dialog" aria-label="All pages" className="lg:hidden fixed inset-x-0 bottom-0 z-50 bg-white shadow-2xl max-h-[85vh] overflow-y-auto"
                 initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} transition={{ type: 'spring', stiffness: 380, damping: 36 }}
                 style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}>
                 <div className="sticky top-0 bg-white pt-3 pb-2 px-5 flex items-center justify-between">
@@ -177,7 +177,7 @@ export const DashboardShell: React.FC<Props> = ({ portal, user, items, active, o
                     const Icon = item.icon;
                     return (
                       <button key={item.id} onClick={() => go(item.id)}
-                        className={`relative flex flex-col items-center gap-2 p-3 border text-xs font-medium ${on ? 'bg-ink border-ink text-white' : 'border-stone-200 text-ink'}`}>
+                        className={`relative flex flex-col items-center gap-2 p-3 border text-xs font-medium ${on ? 'bg-ink border-ink text-white' : 'border-transparent bg-stone-100 text-ink'}`}>
                         <Icon className={`w-5 h-5 ${on ? 'text-sun' : 'text-ink/60'}`} />
                         {item.label}
                         {item.badge ? <span className="absolute top-1.5 right-1.5"><Badge n={item.badge} /></span> : null}

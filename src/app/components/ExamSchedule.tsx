@@ -182,13 +182,13 @@ export const ExamSchedule: React.FC = () => {
                   <p className="mt-2 text-xs font-semibold tracking-[0.3em] text-emerald-800">ALPHATECH COMPUTER INSTITUTE</p>
                   <h3 className="mt-3 text-2xl sm:text-3xl font-serif font-bold text-stone-900">Certificate of Completion</h3>
                   <p className="mt-5 text-stone-600">This certifies that</p>
-                  <p className="mt-1 text-2xl font-serif font-semibold text-stone-900 border-b-2 border-stone-300 inline-block px-6 pb-1">{user.name}</p>
+                  <p className="mt-1 text-2xl font-serif font-semibold text-stone-900 keep-border border-b-2 border-stone-300 inline-block px-6 pb-1">{user.name}</p>
                   <p className="mt-4 text-stone-600">has successfully completed</p>
                   <p className="mt-1 text-xl font-semibold text-emerald-800">{showCert.courseName}</p>
                   <p className="mt-3 text-sm text-stone-600">with a final mark of <strong>{pct}% ({letter(pct)})</strong> on {fmtDate(a.endTime!)}</p>
                   <div className="mt-8 grid grid-cols-2 gap-6 text-xs text-stone-500">
-                    <div className="border-t border-stone-400 pt-2">Director</div>
-                    <div className="border-t border-stone-400 pt-2">{showCert.lecturerName}</div>
+                    <div className="keep-border border-t border-stone-400 pt-2">Director</div>
+                    <div className="keep-border border-t border-stone-400 pt-2">{showCert.lecturerName}</div>
                   </div>
                   <p className="mt-6 text-[11px] text-stone-500">Verification code: <span className="font-mono font-semibold text-stone-700">{code}</span>{user.studentNumber && <> · Student no. {user.studentNumber}</>}</p>
                 </div>

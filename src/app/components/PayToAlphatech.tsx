@@ -63,7 +63,7 @@ export const PayToAlphatech: React.FC<Props> = ({ amount, referenceHint, submitL
         <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Payment method">
           {methods.map(m => (
             <button key={m.id} type="button" role="radio" aria-checked={method === m.id} onClick={() => { setMethod(m.id); setError(''); }}
-              className={`flex items-center gap-2.5 p-3 rounded-xl border-2 text-left text-sm font-medium transition ${method === m.id ? 'border-emerald-600 bg-emerald-50/60' : 'border-stone-200 hover:border-stone-300 bg-white'}`}>
+              className={`flex items-center gap-2.5 p-3 rounded-xl border-2 text-left text-sm font-medium transition ${method === m.id ? 'border-emerald-600 bg-emerald-50/60' : 'border-transparent bg-stone-100 hover:bg-stone-200'}`}>
               <span className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${m.tone}`}>{m.icon}</span>
               {m.label}
             </button>

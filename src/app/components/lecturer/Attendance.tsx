@@ -47,7 +47,7 @@ export const Attendance: React.FC = () => {
                         <li key={s.id}>
                           <button onClick={() => (rec ? removeAttendance(l.id, s.id) : recordAttendance(l.id, s.id, 'lecturer'))} aria-pressed={!!rec}
                             className={`w-full flex items-center gap-3 rounded-xl border px-3 py-2.5 text-left text-sm transition ${rec ? 'border-emerald-300 bg-emerald-50' : 'border-stone-200 hover:border-stone-300'}`}>
-                            <span className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${rec ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-stone-300'}`}>{rec && <Check className="w-3.5 h-3.5" />}</span>
+                            <span className={`w-5 h-5 rounded-md keep-border border-2 flex items-center justify-center ${rec ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-stone-300'}`}>{rec && <Check className="w-3.5 h-3.5" />}</span>
                             <span className="flex-1 font-medium text-stone-900">{s.name}</span>
                             {rec && <span className="text-xs text-stone-500">{rec.markedBy === 'auto' ? 'joined' : 'marked'}</span>}
                           </button>

@@ -15,7 +15,7 @@ export const SectionTitle: React.FC<{ title: string; sub?: string; action?: Reac
 
 /** Friendly empty state with one clear action. */
 export const EmptyState: React.FC<{ icon: LucideIcon; title: string; text: string; action?: React.ReactNode }> = ({ icon: Icon, title, text, action }) => (
-  <div className="border border-stone-200 border-l-4 border-l-sun bg-white px-6 py-12 text-center">
+  <div className="bg-white shadow-[0_10px_28px_-18px_rgba(0,0,0,0.22)] px-6 py-12 text-center">
     <div className="w-14 h-14 mx-auto bg-sun text-ink flex items-center justify-center mb-4"><Icon className="w-7 h-7" /></div>
     <p className="font-display font-extrabold text-[19px] text-ink">{title}</p>
     <p className="text-sm text-stone-500 mt-1 max-w-sm mx-auto">{text}</p>
@@ -27,7 +27,7 @@ export const EmptyState: React.FC<{ icon: LucideIcon; title: string; text: strin
 export const Stat: React.FC<{ label: string; value: React.ReactNode; hint?: React.ReactNode; tone?: string; icon?: LucideIcon; onClick?: () => void }> = ({ label, value, hint, tone = 'text-stone-900', icon: Icon, onClick }) => {
   const Tag = onClick ? 'button' : 'div';
   return (
-    <Tag onClick={onClick} className={`text-left bg-white border border-stone-200 border-t-4 border-t-ink p-4 sm:p-5 ${onClick ? 'hover:border-t-sun hover:shadow-[0_18px_36px_-18px_rgba(0,0,0,0.3)] transition' : ''}`}>
+    <Tag onClick={onClick} className={`text-left bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_28px_-18px_rgba(0,0,0,0.22)] p-4 sm:p-5 ${onClick ? 'hover:shadow-[0_18px_36px_-18px_rgba(0,0,0,0.3)] transition' : ''}`}>
       <div className="flex items-center justify-between gap-2">
         <p className="text-sm text-stone-500">{label}</p>
         {Icon && <Icon className="w-4 h-4 text-stone-400" />}

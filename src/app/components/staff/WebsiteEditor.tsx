@@ -102,7 +102,7 @@ export const WebsiteEditor: React.FC = () => {
 
   return (
     <div className="space-y-10">
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white border border-stone-200 border-l-4 border-l-sun px-5 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-sun/15 px-5 py-4">
         <p className="text-sm text-stone-600">Changes here go live on the website as soon as you save. Photos are resized automatically so the site stays fast on mobile data.</p>
         <a href="/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-sm font-semibold text-royal hover:underline">View website <ExternalLink className="w-4 h-4" /></a>
       </div>

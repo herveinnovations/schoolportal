@@ -59,7 +59,7 @@ export const Files: React.FC = () => {
       <button type="button" onClick={() => input.current?.click()}
         onDragOver={e => { e.preventDefault(); setDrag(true); }} onDragLeave={() => setDrag(false)}
         onDrop={e => { e.preventDefault(); setDrag(false); choose(e.dataTransfer.files?.[0]); }}
-        className={`w-full border-2 border-dashed px-6 py-10 text-center transition-colors ${drag ? 'border-sun bg-sun/10' : 'border-stone-300 bg-white hover:border-ink'}`}>
+        className={`w-full px-6 py-10 text-center transition-colors ${drag ? 'border-sun bg-sun/10' : 'bg-stone-100 hover:bg-stone-200'}`}>
         <span className="mx-auto w-14 h-14 bg-sun text-ink flex items-center justify-center"><UploadCloud className="w-7 h-7" /></span>
         <p className="mt-4 font-display font-extrabold text-[19px] text-ink">Drop a file here, or click to choose</p>
         <p className="mt-1 text-sm text-stone-500">PDF, Word, Excel, PowerPoint, pictures or zip. Up to 25 MB each.</p>

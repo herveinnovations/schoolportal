@@ -175,7 +175,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ open, onOpen
   };
 
   const err = (k: string) => errors[k] ? <p className="text-xs text-red-600 mt-1" role="alert">{errors[k]}</p> : null;
-  const choice = (active: boolean) => `flex items-center gap-2.5 border px-3.5 py-3 text-sm font-medium cursor-pointer transition ${active ? 'border-ink bg-ink text-white' : 'border-stone-200 bg-white text-ink hover:border-ink'}`;
+  const choice = (active: boolean) => `flex items-center gap-2.5 border px-3.5 py-3 text-sm font-medium cursor-pointer transition ${active ? 'border-ink bg-ink text-white' : 'border-transparent bg-stone-100 text-ink hover:bg-stone-200'}`;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -277,7 +277,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ open, onOpen
                                 return (
                                   <label key={k} className={`flex items-center gap-2.5 px-3 py-2 text-sm cursor-pointer border transition ${on ? 'border-sun bg-sun/15 text-ink font-medium' : 'border-transparent hover:bg-stone-50 text-stone-700'}`}>
                                     <input type="checkbox" className="sr-only" checked={on} onChange={() => toggleCourse(k)} />
-                                    <span className={`w-4 h-4 border-2 flex items-center justify-center shrink-0 ${on ? 'bg-ink border-ink text-white' : 'border-stone-300'}`}>{on && <Check className="w-3 h-3" />}</span>
+                                    <span className={`w-4 h-4 keep-border border-2 flex items-center justify-center shrink-0 ${on ? 'bg-ink border-ink text-white' : 'border-stone-300'}`}>{on && <Check className="w-3 h-3" />}</span>
                                     {c}
                                   </label>
                                 );
@@ -318,7 +318,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ open, onOpen
                   <Label htmlFor="rf-msg">Message</Label>
                   <Textarea id="rf-msg" rows={3} value={f.message} onChange={e => set('message', e.target.value)} placeholder="Anything you’d like the admissions office to know" />
                 </div>
-                <div className="bg-stone-50 border-l-4 border-sun px-4 py-3 text-sm text-stone-600">
+                <div className="bg-sun/15 px-4 py-3 text-sm text-stone-600">
                   The admission form fee is <strong className="text-ink">K{FEES.registration}</strong>. Other requirements will be given in your Acceptance Letter.
                   Questions? Contact the Student Admissions Office{contact.phone ? ` on ${contact.phone}` : ''}{contact.email ? ` or ${contact.email}` : ''}.
                 </div>

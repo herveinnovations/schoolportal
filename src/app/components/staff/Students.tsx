@@ -130,7 +130,7 @@ export const Students: React.FC = () => {
                         {!!p.coursesOfInterest?.length && (
                           <div className="mt-3">
                             <p className="text-xs text-stone-500 mb-1.5">Courses ticked on the form</p>
-                            <div className="flex flex-wrap gap-1.5">{p.coursesOfInterest.map(c => <span key={c} className="bg-sun/20 border border-sun px-2 py-0.5 text-xs text-ink">{c}</span>)}</div>
+                            <div className="flex flex-wrap gap-1.5">{p.coursesOfInterest.map(c => <span key={c} className="bg-sun/25 px-2 py-0.5 text-xs text-ink">{c}</span>)}</div>
                           </div>
                         )}
                         {p.message && <div className="mt-3"><p className="text-xs text-stone-500">Message</p><p className="text-sm text-stone-800 whitespace-pre-line">{p.message}</p></div>}

@@ -25,9 +25,9 @@ interface PaymentDialogProps {
 
 const Choice: React.FC<{ selected: boolean; onClick: () => void; title: string; sub?: string; right?: React.ReactNode }> = ({ selected, onClick, title, sub, right }) => (
   <button type="button" role="radio" aria-checked={selected} onClick={onClick}
-    className={`w-full flex items-center justify-between gap-3 text-left p-3 rounded-xl border-2 transition ${selected ? 'border-emerald-600 bg-emerald-50/60' : 'border-stone-200 hover:border-stone-300 bg-white'}`}>
+    className={`w-full flex items-center justify-between gap-3 text-left p-3 rounded-xl border-2 transition ${selected ? 'border-emerald-600 bg-emerald-50/60' : 'border-transparent bg-stone-100 hover:bg-stone-200'}`}>
     <span className="flex items-center gap-3">
-      <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${selected ? 'border-emerald-700' : 'border-stone-300'}`}>
+      <span className={`w-4 h-4 rounded-full keep-border border-2 flex items-center justify-center shrink-0 ${selected ? 'border-emerald-700' : 'border-stone-300'}`}>
         {selected && <span className="w-2 h-2 rounded-full bg-emerald-700" />}
       </span>
       <span>

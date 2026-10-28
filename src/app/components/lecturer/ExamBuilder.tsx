@@ -102,7 +102,7 @@ export const ExamBuilder: React.FC<{ open: boolean; onOpenChange: (o: boolean) =
                 {q.type === 'multiple-choice' && (
                   <div className="grid sm:grid-cols-2 gap-2" role="radiogroup" aria-label="Correct option">
                     {q.options!.map((o, j) => (
-                      <label key={j} className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 bg-white ${q.correctAnswer && q.correctAnswer === o && o ? 'border-green-500 ring-1 ring-green-500' : 'border-stone-200'}`}>
+                      <label key={j} className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 ${q.correctAnswer && q.correctAnswer === o && o ? 'bg-green-50 border-green-500 ring-1 ring-green-500' : 'bg-stone-100 border-transparent'}`}>
                         <input type="radio" name={`correct-${q.id}`} checked={!!o && q.correctAnswer === o} onChange={() => update(q.id, { correctAnswer: o })} aria-label={`Mark option ${j + 1} correct`} />
                         <input className="flex-1 bg-transparent outline-none text-sm" value={o} placeholder={`Option ${j + 1}`}
                           onChange={e => { const opts = [...q.options!]; const wasCorrect = q.correctAnswer === o; opts[j] = e.target.value; update(q.id, { options: opts, correctAnswer: wasCorrect ? e.target.value : q.correctAnswer }); }} />
@@ -114,7 +114,7 @@ export const ExamBuilder: React.FC<{ open: boolean; onOpenChange: (o: boolean) =
                 {q.type === 'true-false' && (
                   <div className="flex gap-2">
                     {['True', 'False'].map(v => (
-                      <button key={v} type="button" onClick={() => update(q.id, { correctAnswer: v })} className={`px-4 py-1.5 rounded-full text-sm border ${q.correctAnswer === v ? 'bg-green-600 text-white border-green-600' : 'bg-white border-stone-200'}`}>{v} is correct</button>
+                      <button key={v} type="button" onClick={() => update(q.id, { correctAnswer: v })} className={`px-4 py-1.5 rounded-full text-sm border ${q.correctAnswer === v ? 'bg-green-600 text-white border-green-600' : 'bg-stone-100 border-transparent'}`}>{v} is correct</button>
                     ))}
                   </div>
                 )}
