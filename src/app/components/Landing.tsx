@@ -304,7 +304,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10">
               {features.map((f, i) => (
                 <Reveal key={f.title} delay={(i % 3) * 0.08} className="bg-ink p-8 lg:p-10 group hover:bg-ink-soft transition-colors">
-                  <span className="w-[92px] h-[92px] bg-white border-b-4 border-sun flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-1"><img src={f.img} alt="" width={68} height={68} loading="lazy" className="w-[68px] h-[68px] object-contain" /></span>
+                  <img src={f.img} alt="" width={80} height={80} loading="lazy" className="block w-20 h-20 object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:-translate-y-1" />
                   <h3 className="mt-6 font-display font-bold text-[18px] text-white">{f.title}</h3>
                   <p className="mt-2.5 text-[15px] leading-[1.65] text-white/60">{f.text}</p>
                 </Reveal>
