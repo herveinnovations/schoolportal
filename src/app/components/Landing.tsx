@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, MotionConfig, useScroll, useSpring } from 'motion/react';
 import { useAuth } from '@/app/context/AuthContext';
 import { schoolLogo, Logo } from './BrandMark';
-import { SCHOOL, FEES } from '@/app/config/school';
+import { SCHOOL, FEES, STUDY_MODES } from '@/app/config/school';
 import { LEVELS, levelLabel, levelTone, type Level } from '@/app/lib/levels';
 import { useSite } from '@/app/context/SiteContext';
 import { DocumentRow } from './DocumentsList';
@@ -93,6 +93,8 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
   const [showTop, setShowTop] = useState(false);
   const [filter, setFilter] = useState<'all' | Level>('all');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [menuId, setMenuId] = useState<string | null>(null);
+  const [mobileSub, setMobileSub] = useState<string | null>(null);
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
@@ -121,7 +123,45 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
 
   const shownCourses = courses.filter(c => filter === 'all' || (c.level ?? 'beginner') === filter);
 
-  const navLinks: [string, string][] = [['#about', 'About Us'], ['#courses', 'Courses'], ['#how', 'How to Join'], ['#fees', 'Fees'], ['#faq', 'FAQ']];
+  /* ---------- Dropdown menus: a title on the left, then columns of links ---------- */
+  type MenuLink = { label: string; href?: string; onClick?: () => void };
+  type MenuDef = { id: string; label: string; href: string; title: string; sub: string; cols: { heading: string; links: MenuLink[] }[] };
+  const course = (lv: Level, label: string): MenuLink => ({ label, href: '#courses', onClick: () => setFilter(lv) });
+  const faqLink = (i: number, label: string): MenuLink => ({ label, href: '#faq', onClick: () => setOpenFaq(i) });
+  const menus: MenuDef[] = [
+    { id: 'about', label: 'About Us', href: '#about', title: 'About Us', sub: SCHOOL.motto,
+      cols: [
+        { heading: 'The institute', links: [{ label: 'Who we are', href: '#about' }, { label: 'What you get', href: '#features' }, { label: 'Downloads', href: publicDocs.length ? '#downloads' : '#about' }] },
+        { heading: 'Visit us', links: [{ label: 'Contact details', href: '#contact' }, ...(contact.phone ? [{ label: `Call ${contact.phone}`, href: `tel:${contact.phone.replace(/\s/g, '')}` }] : []), ...(contact.email ? [{ label: 'Send us an email', href: `mailto:${contact.email}` }] : [])] },
+        { heading: 'Portal', links: [{ label: 'Sign in', onClick: () => onSignIn() }, { label: 'Apply now', onClick: () => onSignUp() }] },
+      ] },
+    { id: 'courses', label: 'Courses', href: '#courses', title: 'Courses', sub: 'Practical computer skills for every level',
+      cols: [
+        { heading: 'Start here', links: [course('beginner', 'Beginner courses'), course('office', 'Office package'), course('refresher', 'Refresher I.C.T')] },
+        { heading: 'Go further', links: [course('short', 'Short computer courses'), course('advanced', 'Advanced courses'), course('teveta_level_3', 'TEVET Level III')] },
+        { heading: 'Ways to study', links: STUDY_MODES.slice(0, 3).map(m => ({ label: m, href: '#courses', onClick: () => setFilter('all') })) },
+      ] },
+    { id: 'how', label: 'How to Join', href: '#how', title: 'How to Join', sub: 'Four steps from sign-up to your first class',
+      cols: [
+        { heading: 'Apply', links: [{ label: 'Create your account', onClick: () => onSignUp() }, { label: 'Fill in the enrolment form', href: '#how' }] },
+        { heading: 'Pay and enrol', links: [{ label: `Pay the K${FEES.registration} admission fee`, href: '#fees' }, { label: 'Choose your course', href: '#courses' }] },
+        { heading: 'Already applied?', links: [{ label: 'Sign in to the portal', onClick: () => onSignIn() }, faqLink(0, 'What do I need?')] },
+      ] },
+    { id: 'fees', label: 'Fees', href: '#fees', title: 'Fees', sub: 'What you pay at each stage',
+      cols: [
+        { heading: 'What you pay', links: [{ label: `Admission form · K${FEES.registration}`, href: '#fees' }, { label: 'Course fees', href: '#fees' }, { label: `Certificate · K${FEES.certificate}`, href: '#fees' }] },
+        { heading: 'How to pay', links: [{ label: 'MTN Money & Airtel Money', href: '#fees' }, { label: 'Bank deposit', href: '#fees' }, { label: 'Cash at the office', href: '#fees' }] },
+        { heading: 'Questions', links: [faqLink(1, 'Paying in instalments'), faqLink(2, 'How do I pay?')] },
+      ] },
+    { id: 'faq', label: 'FAQ', href: '#faq', title: 'Questions', sub: 'What new students ask most',
+      cols: [
+        { heading: 'Getting started', links: faqs.slice(0, 3).map((f, i) => faqLink(i, f.q)) },
+        { heading: 'Studying', links: faqs.slice(3, 6).map((f, i) => faqLink(i + 3, f.q)) },
+        { heading: 'Still stuck?', links: [{ label: 'Contact us', href: '#contact' }, ...(contact.phone ? [{ label: `Call ${contact.phone}`, href: `tel:${contact.phone.replace(/\s/g, '')}` }] : [])] },
+      ] },
+  ];
+  const openMenu = menus.find(m => m.id === menuId);
+  const go = (l: MenuLink) => { l.onClick?.(); setMenuId(null); setMenuOpen(false); setMobileSub(null); };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -129,15 +169,19 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <motion.div style={{ scaleX: progress }} className="fixed top-0 left-0 right-0 h-[3px] bg-sun origin-left z-[60]" />
 
         {/* ---------- Top bar ---------- */}
-        <nav className="sticky top-0 z-50 bg-white shadow-[0_8px_24px_-18px_rgba(0,0,0,0.35)]">
+        <nav className="sticky top-0 z-50 bg-white shadow-[0_8px_24px_-18px_rgba(0,0,0,0.35)]" onMouseLeave={() => setMenuId(null)} onKeyDown={e => { if (e.key === 'Escape') setMenuId(null); }}>
           <div className={`${wrap} h-[76px] lg:h-[90px] flex items-center justify-between gap-4`}>
             <a href="#top" onClick={() => setMenuOpen(false)} className="shrink-0" aria-label={`${SCHOOL.name} home`}>
               <span className="lg:hidden"><Logo height={44} /></span>
               <span className="hidden lg:inline-flex"><Logo height={56} /></span>
             </a>
-            <div className="hidden lg:flex items-center gap-10">
-              {navLinks.map(([h, l]) => (
-                <a key={h} href={h} className="relative text-[15px] font-semibold text-ink/80 hover:text-navy transition-colors after:absolute after:left-0 after:-bottom-1.5 after:h-[3px] after:w-0 after:bg-sun after:transition-all hover:after:w-full">{l}</a>
+            <div className="hidden lg:flex items-center gap-9 self-stretch">
+              {menus.map(m => (
+                <a key={m.id} href={m.href} onMouseEnter={() => setMenuId(m.id)} onFocus={() => setMenuId(m.id)} onClick={() => setMenuId(null)}
+                  aria-haspopup="true" aria-expanded={menuId === m.id}
+                  className={`relative h-full flex items-center gap-1 text-[15px] font-semibold transition-colors after:absolute after:left-0 after:bottom-[22px] after:h-[3px] after:bg-sun after:transition-all ${menuId === m.id ? 'text-navy after:w-full' : 'text-ink/80 hover:text-navy after:w-0'}`}>
+                  {m.label}<ChevronDown className={`w-3.5 h-3.5 transition-transform ${menuId === m.id ? 'rotate-180' : ''}`} />
+                </a>
               ))}
             </div>
             <div className="flex items-center gap-2 sm:gap-3">
@@ -149,11 +193,61 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             </div>
           </div>
           <AnimatePresence>
+            {openMenu && (
+              <motion.div key="mega" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22, ease }}
+                className="hidden lg:block absolute left-0 right-0 top-full bg-stone-50 shadow-[0_30px_50px_-30px_rgba(0,0,0,0.35)]">
+                <div key={openMenu.id} className={`${wrap} py-10 grid grid-cols-[260px_repeat(3,minmax(0,1fr))] gap-10`}>
+                  <div>
+                    <p className="font-display font-extrabold text-[30px] leading-tight text-ink">{openMenu.title}</p>
+                    <p className="mt-2 text-[15px] leading-[1.6] text-stone-500">{openMenu.sub}</p>
+                  </div>
+                  {openMenu.cols.map(col => (
+                    <div key={col.heading}>
+                      <p className="text-[13px] font-semibold text-stone-500">{col.heading}</p>
+                      <ul className="mt-4 space-y-3.5">
+                        {col.links.map(l => (
+                          <li key={l.label}>
+                            {l.href
+                              ? <a href={l.href} onClick={() => go(l)} className="group inline-flex items-center gap-2 text-[15px] text-ink hover:text-navy transition-colors">{l.label}<ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" /></a>
+                              : <button onClick={() => go(l)} className="group inline-flex items-center gap-2 text-[15px] font-normal text-ink hover:text-navy transition-colors">{l.label}<ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" /></button>}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
             {menuOpen && (
               <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} transition={{ duration: 0.3, ease }} className="lg:hidden overflow-hidden bg-white">
-                <div className={`${wrap} py-4 flex flex-col`}>
-                  {navLinks.map(([h, l]) => (
-                    <a key={h} href={h} onClick={() => setMenuOpen(false)} className="py-3.5 text-ink text-[16px] font-semibold">{l}</a>
+                <div className={`${wrap} py-4 flex flex-col max-h-[calc(100dvh-76px)] overflow-y-auto overscroll-contain`}>
+                  {menus.map(m => (
+                    <div key={m.id}>
+                      <button onClick={() => setMobileSub(mobileSub === m.id ? null : m.id)} aria-expanded={mobileSub === m.id}
+                        className="w-full py-3.5 flex items-center justify-between text-ink text-[16px] font-semibold">
+                        {m.label}<ChevronDown className={`w-4 h-4 transition-transform ${mobileSub === m.id ? 'rotate-180' : ''}`} />
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {mobileSub === m.id && (
+                          <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} transition={{ duration: 0.25, ease }} className="overflow-hidden">
+                            <div className="bg-stone-50 px-4 py-3 mb-2 space-y-4">
+                              {m.cols.map(col => (
+                                <div key={col.heading}>
+                                  <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-stone-500">{col.heading}</p>
+                                  <div className="mt-1 flex flex-col">
+                                    {col.links.map(l => l.href
+                                      ? <a key={l.label} href={l.href} onClick={() => go(l)} className="py-2 text-[15px] text-ink">{l.label}</a>
+                                      : <button key={l.label} onClick={() => go(l)} className="py-2 text-left text-[15px] font-normal text-ink">{l.label}</button>)}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   ))}
                   <div className="grid grid-cols-2 gap-3 pt-5">
                     <button onClick={() => onSignIn()} className="h-12 bg-stone-100 text-ink font-semibold">Sign In</button>
@@ -295,7 +389,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         </section>
 
         {/* ---------- 03 What you get ---------- */}
-        <section className="bg-ink py-20 lg:py-[120px]">
+        <section id="features" className="bg-ink py-20 lg:py-[120px] scroll-mt-24">
           <div className={wrap}>
             <div className="grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-6 items-end mb-14">
               <Numbered n="03" light title="What You Get" />
@@ -411,7 +505,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         </section>
 
         {/* ---------- Footer ---------- */}
-        <footer className="bg-ink text-white/70">
+        <footer id="contact" className="bg-ink text-white/70 scroll-mt-24">
           <div className={`${wrap} py-16 grid sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10`}>
             <div>
               <p className="font-display font-extrabold text-white text-[20px] leading-tight">{SCHOOL.name}</p>
