@@ -335,27 +335,40 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
           </div>
         </section>
 
-        {/* ---------- 05 Fees ---------- */}
+        {/* ---------- 05 Fees: your payment journey ---------- */}
         <section id="fees" className="bg-stone-50 py-20 lg:py-[120px] scroll-mt-24">
-          <div className={`${wrap} grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-10`}>
-            <Numbered n="05" title="Fees">
-              <p className="mt-5 text-[15px] leading-[1.7] text-stone-500">What you pay, and when. Pay by MTN Money, Airtel Money, bank deposit or cash at the office.</p>
-            </Numbered>
-            <Reveal delay={0.1} className="bg-white shadow-[0_10px_30px_-18px_rgba(0,0,0,0.25)] overflow-x-auto">
-              <table className="w-full text-[15px] min-w-[520px]">
-                <thead className="bg-ink text-white">
-                  <tr>
-                    <th scope="col" className="text-left font-semibold px-7 py-5">Fee</th>
-                    <th scope="col" className="text-left font-semibold px-7 py-5">Amount</th>
-                    <th scope="col" className="text-left font-semibold px-7 py-5">When</th>
-                  </tr>
-                </thead>
-                <tbody className="tabular-nums [&>tr:nth-child(even)]:bg-stone-50">
-                  <tr><td className="px-7 py-5 font-semibold">Admission form</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">K {FEES.registration}</td><td className="px-7 py-5 text-stone-500">Once, after you fill in the enrolment form</td></tr>
-                  <tr><td className="px-7 py-5 font-semibold">Course fee</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">Per course</td><td className="px-7 py-5 text-stone-500">At enrolment: in full, or 3 or 6 monthly instalments</td></tr>
-                  <tr><td className="px-7 py-5 font-semibold">Certificate</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">K {FEES.certificate}</td><td className="px-7 py-5 text-stone-500">After you pass the course ({FEES.passMark}% or more)</td></tr>
-                </tbody>
-              </table>
+          <div className={wrap}>
+            <div className="grid lg:grid-cols-[370px_minmax(0,1fr)] gap-x-[30px] gap-y-6 items-end mb-14">
+              <Numbered n="05" title="Fees" />
+              <Reveal delay={0.1}><p className="text-[15px] leading-[1.7] text-stone-500 max-w-[60ch]">What you pay at each stage, from applying to graduating.</p></Reveal>
+            </div>
+            <ol className="relative grid lg:grid-cols-3 gap-12 lg:gap-10">
+              {/* dotted path joining the stages: down the left on phones, across on computers */}
+              <span aria-hidden className="hidden lg:block absolute top-[42px] left-10 right-[calc((100%-80px)/3-40px)] h-1 bg-[repeating-linear-gradient(90deg,var(--color-sun)_0_14px,transparent_14px_24px)]" />
+              {[
+                { img: '/icons/memo.webp', when: 'Before you start', title: 'Admission form', price: `K ${FEES.registration}`, text: 'Once, after you fill in the enrolment form.' },
+                { img: '/icons/coin.webp', when: 'While you study', title: 'Course fee', price: 'Per course', text: 'In full, or 3 or 6 monthly instalments. Each course shows its price.' },
+                { img: '/icons/graduation-cap.webp', when: 'When you finish', title: 'Certificate', price: `K ${FEES.certificate}`, text: `After you pass the course (${FEES.passMark}% or more).` },
+              ].map((st, i) => (
+                <Reveal key={st.title} delay={i * 0.12}>
+                  <li className="list-none relative flex lg:block gap-6">
+                    {i < 2 && <span aria-hidden className="lg:hidden absolute left-[38px] top-20 -bottom-12 w-1 bg-[repeating-linear-gradient(180deg,var(--color-sun)_0_14px,transparent_14px_24px)]" />}
+                    <span className="relative shrink-0 w-20 h-20 lg:w-[84px] lg:h-[84px] rounded-full bg-white shadow-[0_14px_30px_-16px_rgba(0,0,0,0.35)] flex items-center justify-center">
+                      <img src={st.img} alt="" width={52} height={52} loading="lazy" className="w-[50px] h-[50px] object-contain" />
+                    </span>
+                    <div className="lg:mt-7">
+                      <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-royal">{st.when}</p>
+                      <h3 className="mt-1.5 font-display font-extrabold text-[20px] text-ink">{st.title}</h3>
+                      <p className="mt-4 font-display font-extrabold text-[36px] lg:text-[40px] leading-none tracking-[-0.02em] text-ink tabular-nums">{st.price}</p>
+                      <p className="mt-3 text-[15px] leading-[1.65] text-stone-500 max-w-[34ch]">{st.text}</p>
+                    </div>
+                  </li>
+                </Reveal>
+              ))}
+            </ol>
+            <Reveal className="mt-14 flex flex-wrap items-center gap-2.5">
+              <span className="text-[14px] text-stone-500 mr-2">Pay by</span>
+              {['MTN Money', 'Airtel Money', 'Bank deposit', 'Cash at the office'].map(m => <span key={m} className="bg-white px-3.5 py-2 text-[13px] font-semibold text-ink shadow-[0_6px_16px_-12px_rgba(0,0,0,0.3)]">{m}</span>)}
             </Reveal>
           </div>
         </section>
