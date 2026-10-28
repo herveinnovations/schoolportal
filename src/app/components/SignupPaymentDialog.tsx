@@ -31,7 +31,7 @@ export const SignupPaymentDialog: React.FC<SignupPaymentDialogProps> = ({ open, 
         ) : (
           <div className="max-h-[90vh] overflow-y-auto">
             <DialogHeader className="p-6 pb-2 text-left">
-              <DialogTitle className="text-2xl font-bold text-stone-900">Pay the registration fee</DialogTitle>
+              <DialogTitle className="text-2xl font-bold text-stone-900">Pay the admission form fee</DialogTitle>
               <DialogDescription>A once-off fee of K {FEES.registration} for {studentName}.</DialogDescription>
             </DialogHeader>
             <div className="px-6 pb-6 space-y-5">

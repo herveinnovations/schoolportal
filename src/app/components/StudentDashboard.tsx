@@ -76,7 +76,7 @@ export const StudentDashboard: React.FC = () => {
 
   const tryEnrol = (c: Course) => {
     if (!registered) { toast.info('Complete your registration form first'); setShowRegistration(true); return; }
-    if (!user.studentNumber) { toast.info('Waiting for Finance to confirm your registration fee', { description: 'You can enrol as soon as your student number is issued. We’ll notify you.' }); return; }
+    if (!user.studentNumber) { toast.info('Waiting for Finance to confirm your admission form fee', { description: 'You can enrol as soon as your student number is issued. We’ll notify you.' }); return; }
     setEnrolCourse(c);
   };
 

@@ -39,7 +39,7 @@ export const StaffOverview: React.FC<{ go: (tab: string) => void }> = ({ go }) =
   const attention = [
     pending.length > 0 && { icon: Wallet, tone: 'bg-amber-100 text-amber-800', text: `${pending.length} payment${pending.length === 1 ? '' : 's'} waiting to be confirmed`, sub: `${kwacha(pending.reduce((s, c) => s + c.amount, 0))} in total`, tab: 'payments' },
     overdueStudents.length > 0 && { icon: AlertTriangle, tone: 'bg-red-100 text-red-700', text: `${overdueStudents.length} student${overdueStudents.length === 1 ? ' has' : 's have'} an overdue instalment`, sub: 'More than a week past the due date', tab: 'students' },
-    awaitingRegistration.length > 0 && { icon: UserPlus, tone: 'bg-stone-100 text-stone-700', text: `${awaitingRegistration.length} student${awaitingRegistration.length === 1 ? '' : 's'} without a student number`, sub: 'Registration fee not yet confirmed', tab: 'students' },
+    awaitingRegistration.length > 0 && { icon: UserPlus, tone: 'bg-stone-100 text-stone-700', text: `${awaitingRegistration.length} student${awaitingRegistration.length === 1 ? '' : 's'} without a student number`, sub: 'Admission form fee not yet confirmed', tab: 'students' },
     unmarked > 0 && staffCan(user, 'academics') && { icon: PenLine, tone: 'bg-emerald-100 text-emerald-800', text: `${unmarked} piece${unmarked === 1 ? '' : 's'} of work waiting for lecturers to mark`, sub: 'Assignments and exam essays', tab: 'results' },
   ].filter(Boolean) as { icon: typeof Wallet; tone: string; text: string; sub: string; tab: string }[];
 

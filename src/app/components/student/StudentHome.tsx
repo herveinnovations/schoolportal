@@ -57,7 +57,7 @@ export const StudentHome: React.FC<Props> = ({ go, openCourse, onRegister, onRes
   else if (fin.registration?.status === 'pending') alerts.push(
     <div key="reg-pend" className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
       <Hourglass className="w-5 h-5 text-amber-700 shrink-0" />
-      <p className="text-sm text-amber-900"><strong>Registration fee received, waiting for Finance.</strong> Your student number is issued once it's confirmed.</p>
+      <p className="text-sm text-amber-900"><strong>Admission form fee received, waiting for Finance.</strong> Your student number is issued once it's confirmed.</p>
     </div>);
   if (!registered) alerts.push(
     <div key="reg-form" className="flex flex-wrap items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">

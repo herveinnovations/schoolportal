@@ -62,7 +62,7 @@ export const StudentCourses: React.FC<Props> = ({ openCourse, onEnrol, canEnrol 
         <SectionTitle title="Browse courses" sub="Prices are in Zambian Kwacha. Pay in full or in 3 or 6 monthly instalments." />
         {!canEnrol && (
           <div className="mb-4 flex items-center gap-2 text-sm rounded-xl bg-amber-50 border border-amber-200 text-amber-900 px-4 py-3">
-            <Lock className="w-4 h-4 shrink-0" />{user.studentNumber ? 'Complete your registration form to enrol. You can still look around.' : 'You can enrol once Finance confirms your registration fee and issues your student number. You can still look around.'}
+            <Lock className="w-4 h-4 shrink-0" />{user.studentNumber ? 'Complete your registration form to enrol. You can still look around.' : 'You can enrol once Finance confirms your admission form fee and issues your student number. You can still look around.'}
           </div>
         )}
         <div className="flex flex-wrap items-center gap-3 mb-5">

@@ -58,7 +58,7 @@ const Numbered: React.FC<{ n: string; title: React.ReactNode; light?: boolean; c
 /* ---------- FAQ ---------- */
 const faqs = [
   { q: 'What do I need to register?', a: `Your full names, date of birth, cell number, residential address and email, plus your NRC number if you have one. You choose your mode of study and the courses you want, and pay the K${FEES.registration} admission form fee. Other requirements are given in your Acceptance Letter.` },
-  { q: 'Can I pay course fees in instalments?', a: `Yes. When you enrol you choose full payment, 3 monthly instalments or 6 monthly instalments. The registration fee of K${FEES.registration} is paid once, in full.` },
+  { q: 'Can I pay course fees in instalments?', a: `Yes. When you enrol you choose full payment, 3 monthly instalments or 6 monthly instalments. The admission form fee of K${FEES.registration} is paid once, in full.` },
   { q: 'How do I pay?', a: 'By MTN Money, Airtel Money, bank deposit or cash at the office. You enter the transaction reference in the portal and our Finance office confirms it, usually within one working day.' },
   { q: 'What if I miss a live class?', a: 'Lecturers add recordings to your course, so you can watch them any time before your exams.' },
   { q: 'How do exams work?', a: 'Exams open at their scheduled time and have a countdown. Your answers save as you go, and the exam submits itself when the time runs out. Multiple-choice answers are marked straight away.' },
@@ -113,10 +113,10 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
   ];
 
   const steps = [
-    { title: 'Create your account', text: 'Sign up with your name, email and a password, then confirm your email.' },
-    { title: 'Pay the registration fee', text: `A once-off K${FEES.registration}. Finance confirms it and issues your student number.` },
-    { title: 'Complete registration', text: 'NRC or passport, contact details, guardian and education history.' },
-    { title: 'Enrol and start', text: 'Choose a course, full-time or part-time, and a payment plan. Then join your first class.' },
+    { title: 'Create your account', text: 'Click Apply Now, sign up with your name, email and a password, then confirm your email.' },
+    { title: 'Fill in the enrolment form', text: 'Your details, your mode of study and the courses you want.' },
+    { title: 'Pay the admission form fee', text: `K${FEES.registration} by Mobile Money, bank or cash. Finance confirms it and issues your student number.` },
+    { title: 'Enrol and start', text: 'Choose your course and a payment plan, then join your first class.' },
   ];
 
   const shownCourses = courses.filter(c => filter === 'all' || (c.level ?? 'beginner') === filter);
@@ -351,7 +351,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-200 tabular-nums">
-                  <tr><td className="px-7 py-5 font-semibold">Registration</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">K {FEES.registration}</td><td className="px-7 py-5 text-stone-500">Once, after you create your account</td></tr>
+                  <tr><td className="px-7 py-5 font-semibold">Admission form</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">K {FEES.registration}</td><td className="px-7 py-5 text-stone-500">Once, after you fill in the enrolment form</td></tr>
                   <tr><td className="px-7 py-5 font-semibold">Course fee</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">Per course</td><td className="px-7 py-5 text-stone-500">At enrolment: in full, or 3 or 6 monthly instalments</td></tr>
                   <tr><td className="px-7 py-5 font-semibold">Certificate</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">K {FEES.certificate}</td><td className="px-7 py-5 text-stone-500">After you pass the course ({FEES.passMark}% or more)</td></tr>
                 </tbody>

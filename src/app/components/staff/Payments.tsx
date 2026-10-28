@@ -12,7 +12,7 @@ import { kwacha } from '@/app/lib/finance';
 
 const methodLabel: Record<PaymentClaim['method'], string> = { mtn: 'MTN MoMo', airtel: 'Airtel Money', bank: 'Bank deposit', cash: 'Cash' };
 const methodIcon = { mtn: Smartphone, airtel: Smartphone, bank: Landmark, cash: Banknote };
-const purposeLabel = (c: PaymentClaim) => (c.purpose === 'registration' ? 'Registration fee' : c.purpose === 'certificate' ? `Certificate · ${c.courseName}` : `Course fee · ${c.courseName}`);
+const purposeLabel = (c: PaymentClaim) => (c.purpose === 'registration' ? 'Admission form fee' : c.purpose === 'certificate' ? `Certificate · ${c.courseName}` : `Course fee · ${c.courseName}`);
 const REASONS = ['Reference not found in our statement', 'Amount received is different', 'Duplicate of an earlier payment'];
 
 /** Finance checks each student's payment reference against the MoMo / bank statement, then confirms or rejects it. */

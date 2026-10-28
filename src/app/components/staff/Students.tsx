@@ -22,7 +22,7 @@ export const Students: React.FC = () => {
     .sort((a, b) => a.s.name.localeCompare(b.s.name));
 
   const status = (s: User, f: ReturnType<typeof studentFinance>) => {
-    if (!s.studentNumber) return f.registration?.status === 'pending' ? <StatusPill tone="amber">Registration fee to confirm</StatusPill> : <StatusPill tone="stone">Not registered</StatusPill>;
+    if (!s.studentNumber) return f.registration?.status === 'pending' ? <StatusPill tone="amber">Admission form fee to confirm</StatusPill> : <StatusPill tone="stone">Not registered</StatusPill>;
     if (f.overdue.length) return <StatusPill tone="red">Overdue</StatusPill>;
     if (f.balance > 0) return <StatusPill tone="emerald">Paying</StatusPill>;
     return <StatusPill tone="green">Paid up</StatusPill>;
@@ -145,7 +145,7 @@ export const Students: React.FC = () => {
                   <ul className="divide-y divide-stone-100 text-sm">
                     {[...sel.f.claims].sort((a, b) => b.submittedAt.localeCompare(a.submittedAt)).map(c => (
                       <li key={c.id} className="flex items-center gap-3 py-2">
-                        <span className="flex-1 min-w-0 truncate">{c.purpose === 'registration' ? 'Registration fee' : c.purpose === 'certificate' ? 'Certificate fee' : `Course fee · ${c.courseName}`}<span className="text-xs text-stone-400"> · {fmtDate(c.submittedAt)}</span></span>
+                        <span className="flex-1 min-w-0 truncate">{c.purpose === 'registration' ? 'Admission form fee' : c.purpose === 'certificate' ? 'Certificate fee' : `Course fee · ${c.courseName}`}<span className="text-xs text-stone-400"> · {fmtDate(c.submittedAt)}</span></span>
                         <span className="tabular-nums">{kwacha(c.amount)}</span>
                         <StatusPill tone={c.status === 'confirmed' ? 'green' : c.status === 'pending' ? 'amber' : 'red'}>{c.status === 'pending' ? 'To check' : c.status === 'confirmed' ? 'Confirmed' : 'Rejected'}</StatusPill>
                       </li>

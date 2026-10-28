@@ -130,7 +130,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ open, onOpen
     row('Cell number', f.phoneNumber);
     row('Residential address', f.residentialAddress);
     row('Email', f.email);
-    row('Student number', user?.studentNumber ?? 'Issued after the registration fee is confirmed');
+    row('Student number', user?.studentNumber ?? 'Issued after the admission form fee is confirmed');
     row('Mode of study', f.modeOfStudy);
     row('Courses', f.coursesOfInterest.join('\n'));
     row('Physical disabilities', f.disability === 'Yes' && f.disabilityDetails ? `Yes: ${f.disabilityDetails}` : f.disability);
@@ -167,7 +167,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ open, onOpen
       },
     });
     try { localStorage.removeItem(draftKey); } catch { /* ignore */ }
-    toast.success('Enrolment form submitted', { description: 'The admissions office has your details. You can now enrol in courses.' });
+    toast.success('Enrolment form submitted', { description: user?.hasCompletedPayment ? 'The admissions office has your details.' : `Next, pay the K${FEES.registration} admission form fee.` });
     try { generatePDF(); } catch { /* the download is a convenience */ }
     onOpenChange(false);
     setStep(0);

@@ -13,7 +13,7 @@ import { PayToAlphatech } from '../PayToAlphatech';
 import { PAY_TO } from '@/app/config/school';
 
 const methodLabel = (m: PaymentClaim['method']) => PAY_TO[m].label;
-const purposeLabel = (c: PaymentClaim) => (c.purpose === 'registration' ? 'Registration fee' : c.purpose === 'certificate' ? `Certificate: ${c.courseName}` : `Course fee: ${c.courseName}`);
+const purposeLabel = (c: PaymentClaim) => (c.purpose === 'registration' ? 'Admission form fee' : c.purpose === 'certificate' ? `Certificate: ${c.courseName}` : `Course fee: ${c.courseName}`);
 
 /** Pay an instalment (or any amount) towards a course. */
 export const InstalmentPaymentDialog: React.FC<{ courseId: string; amount: number; onClose: () => void }> = ({ courseId, amount, onClose }) => {

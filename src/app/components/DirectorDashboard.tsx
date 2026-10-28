@@ -154,7 +154,7 @@ export const DirectorDashboard: React.FC = () => {
 
         {/* Courses */}
         <TabsContent value="courses">
-          <SectionTitle title="Courses" sub={`Registration fee is ${kwacha(FEES.registration)}. Course fees are set per course.`} action={<Button onClick={() => openCourse()}><Plus className="w-4 h-4" />New course</Button>} />
+          <SectionTitle title="Courses" sub={`Admission form fee is ${kwacha(FEES.registration)}. Course fees are set per course.`} action={<Button onClick={() => openCourse()}><Plus className="w-4 h-4" />New course</Button>} />
           {courses.length === 0 ? <EmptyState icon={BookOpen} title="No courses yet" text="Create your first course and assign a lecturer." action={<Button onClick={() => openCourse()}>New course</Button>} /> : (
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {courses.map(c => {
