@@ -83,7 +83,7 @@ export const Signup: React.FC<SignupProps> = ({ onSwitchToLogin, onHome }) => {
             {steps.map((st, i) => {
               const current = !st.done && (i === 0 || steps[i - 1].done);
               return (
-                <li key={st.title} className={`flex items-start gap-3 border p-4 ${current ? 'border-ink' : 'border-stone-200'} ${st.done ? 'bg-stone-50' : 'bg-white'}`}>
+                <li key={st.title} className={`flex items-start gap-3 p-4 ${current ? 'bg-sun/15' : 'bg-stone-50'}`}>
                   <span className={`w-9 h-9 shrink-0 flex items-center justify-center font-bold ${st.done ? 'bg-green-600 text-white' : current ? 'bg-sun text-ink' : 'bg-stone-100 text-stone-400'}`}>{st.done ? <Check className="w-5 h-5" /> : i + 1}</span>
                   <span className="flex-1">
                     <span className={`block font-semibold ${st.done ? 'text-stone-500 line-through' : 'text-ink'}`}>{st.title}</span>

@@ -66,11 +66,11 @@ const faqs = [
 ];
 
 const FaqItem: React.FC<{ q: string; a: string; open: boolean; onToggle: () => void; id: string }> = ({ q, a, open, onToggle, id }) => (
-  <div className="border-b border-stone-200">
+  <div className="bg-stone-50 px-6 mb-3 last:mb-0">
     <button id={`${id}-btn`} aria-expanded={open} aria-controls={`${id}-panel`} onClick={onToggle}
       className="w-full flex items-center justify-between gap-6 py-6 text-left font-display font-bold text-[17px] text-ink hover:text-royal focus-visible:outline-2 focus-visible:outline-royal">
       {q}
-      <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.25 }} className={`shrink-0 w-9 h-9 flex items-center justify-center ${open ? 'bg-sun text-ink' : 'bg-stone-100 text-ink/60'}`}><ChevronDown className="w-5 h-5" /></motion.span>
+      <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.25 }} className={`shrink-0 w-9 h-9 flex items-center justify-center ${open ? 'bg-sun text-ink' : 'bg-white text-ink/60'}`}><ChevronDown className="w-5 h-5" /></motion.span>
     </button>
     <AnimatePresence initial={false}>
       {open && (
@@ -129,7 +129,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
         <motion.div style={{ scaleX: progress }} className="fixed top-0 left-0 right-0 h-[3px] bg-sun origin-left z-[60]" />
 
         {/* ---------- Top bar ---------- */}
-        <nav className="sticky top-0 z-50 bg-white border-b border-stone-200 shadow-[0_8px_24px_-18px_rgba(0,0,0,0.35)]">
+        <nav className="sticky top-0 z-50 bg-white shadow-[0_8px_24px_-18px_rgba(0,0,0,0.35)]">
           <div className={`${wrap} h-[76px] lg:h-[90px] flex items-center justify-between gap-4`}>
             <a href="#top" onClick={() => setMenuOpen(false)} className="shrink-0" aria-label={`${SCHOOL.name} home`}>
               <span className="lg:hidden"><Logo height={44} /></span>
@@ -150,13 +150,13 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
           </div>
           <AnimatePresence>
             {menuOpen && (
-              <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} transition={{ duration: 0.3, ease }} className="lg:hidden overflow-hidden bg-white border-t border-stone-200">
+              <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} transition={{ duration: 0.3, ease }} className="lg:hidden overflow-hidden bg-white">
                 <div className={`${wrap} py-4 flex flex-col`}>
                   {navLinks.map(([h, l]) => (
-                    <a key={h} href={h} onClick={() => setMenuOpen(false)} className="py-3.5 text-ink text-[16px] font-semibold border-b border-stone-100">{l}</a>
+                    <a key={h} href={h} onClick={() => setMenuOpen(false)} className="py-3.5 text-ink text-[16px] font-semibold">{l}</a>
                   ))}
                   <div className="grid grid-cols-2 gap-3 pt-5">
-                    <button onClick={() => onSignIn()} className="h-12 border border-ink/25 text-ink font-semibold">Sign In</button>
+                    <button onClick={() => onSignIn()} className="h-12 bg-stone-100 text-ink font-semibold">Sign In</button>
                     <button onClick={() => onSignUp()} className="h-12 bg-sun text-ink font-semibold">Apply Now</button>
                   </div>
                 </div>
@@ -253,7 +253,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             </div>
 
             {courses.length === 0 ? (
-              <Reveal className="bg-stone-50 border-l-4 border-sun p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <Reveal className="bg-stone-50 p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                 <div>
                   <p className="font-display font-extrabold text-[20px] text-ink">The course list is being prepared</p>
                   <p className="mt-2 text-stone-500 text-[15px]">Courses for the next intake will be listed here soon. Create your account now so you’re ready to enrol.</p>
@@ -267,14 +267,14 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                     {shownCourses.map((c, i) => (
                       <motion.article key={c.id} layout initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97 }}
                         transition={{ duration: 0.45, ease, delay: i * 0.05 }} whileHover={{ y: -6 }}
-                        className="group bg-white border border-stone-200 hover:border-ink hover:shadow-[0_24px_50px_-24px_rgba(0,0,0,0.35)] transition-[box-shadow,border-color] flex flex-col">
+                        className="group bg-white shadow-[0_10px_30px_-18px_rgba(0,0,0,0.25)] hover:shadow-[0_24px_50px_-24px_rgba(0,0,0,0.35)] transition-shadow flex flex-col">
                         {c.imageUrl ? <div className="h-44 overflow-hidden"><img src={c.imageUrl} alt="" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" /></div> : null}
                         <div className="p-8 flex flex-col flex-1">
                           <span className={`self-start px-3 py-1 text-[12px] font-bold uppercase tracking-[0.08em] ${levelTone(c.level)}`}>{levelLabel(c.level)}</span>
                           <h3 className="mt-5 font-display font-extrabold text-[20px] leading-[1.2] text-ink">{c.name}</h3>
                           <p className="mt-1 text-[14px] text-stone-400">{c.lecturerName} · {c.credits} credits</p>
                           <p className="mt-4 text-[15px] leading-[1.65] text-stone-500 line-clamp-3 flex-1">{c.description}</p>
-                          <div className="mt-6 pt-6 border-t border-stone-200 flex items-end justify-between gap-4">
+                          <div className="mt-6 pt-2 flex items-end justify-between gap-4">
                             <div>
                               <p className="font-display font-extrabold text-[22px] text-ink tabular-nums leading-none">K {Number(c.price).toLocaleString()}</p>
                               <p className="mt-1.5 text-[13px] text-stone-400 tabular-nums">or K {Math.round(c.price / 3).toLocaleString()} × 3 months</p>
@@ -301,7 +301,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
               <Numbered n="03" light title="What You Get" />
               <Reveal delay={0.1}><p className="text-[15px] leading-[1.7] text-white/60 max-w-[60ch]">Everything a student needs, from the first lecture to the final certificate, in one account.</p></Reveal>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {features.map((f, i) => (
                 <Reveal key={f.title} delay={(i % 3) * 0.08} className="bg-ink p-8 lg:p-10 group hover:bg-ink-soft transition-colors">
                   <img src={f.img} alt="" width={80} height={80} loading="lazy" className="block w-20 h-20 object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:-translate-y-1" />
@@ -323,7 +323,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-[30px]">
               {steps.map((s, i) => (
                 <Reveal key={s.title} delay={i * 0.1}>
-                  <li className="list-none h-full border-t-4 border-ink pt-7">
+                  <li className="list-none h-full">
                     <span className="font-display font-extrabold text-[44px] leading-none text-sun">{String(i + 1).padStart(2, '0')}</span>
                     <p className="mt-5 font-display font-bold text-[18px] text-ink">{s.title}</p>
                     <p className="mt-2.5 text-[15px] leading-[1.65] text-stone-500">{s.text}</p>
@@ -341,7 +341,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             <Numbered n="05" title="Fees">
               <p className="mt-5 text-[15px] leading-[1.7] text-stone-500">What you pay, and when. Pay by MTN Money, Airtel Money, bank deposit or cash at the office.</p>
             </Numbered>
-            <Reveal delay={0.1} className="bg-white border border-stone-200 overflow-x-auto">
+            <Reveal delay={0.1} className="bg-white shadow-[0_10px_30px_-18px_rgba(0,0,0,0.25)] overflow-x-auto">
               <table className="w-full text-[15px] min-w-[520px]">
                 <thead className="bg-ink text-white">
                   <tr>
@@ -350,7 +350,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                     <th scope="col" className="text-left font-semibold px-7 py-5">When</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-200 tabular-nums">
+                <tbody className="tabular-nums [&>tr:nth-child(even)]:bg-stone-50">
                   <tr><td className="px-7 py-5 font-semibold">Admission form</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">K {FEES.registration}</td><td className="px-7 py-5 text-stone-500">Once, after you fill in the enrolment form</td></tr>
                   <tr><td className="px-7 py-5 font-semibold">Course fee</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">Per course</td><td className="px-7 py-5 text-stone-500">At enrolment: in full, or 3 or 6 monthly instalments</td></tr>
                   <tr><td className="px-7 py-5 font-semibold">Certificate</td><td className="px-7 py-5 font-display font-extrabold text-[17px]">K {FEES.certificate}</td><td className="px-7 py-5 text-stone-500">After you pass the course ({FEES.passMark}% or more)</td></tr>
@@ -366,7 +366,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             <Numbered n="06" title={<>Questions<br className="hidden lg:block" /> &amp; Answers</>}>
               <p className="mt-5 text-[15px] leading-[1.7] text-stone-500">What new students ask most. Can’t find your answer? Call us{contact.phone ? ` on ${contact.phone}` : ''}.</p>
             </Numbered>
-            <Reveal delay={0.1} className="border-t border-stone-200">
+            <Reveal delay={0.1}>
               {faqs.map((f, i) => (
                 <FaqItem key={f.q} id={`faq-${i}`} q={f.q} a={f.a} open={openFaq === i} onToggle={() => setOpenFaq(openFaq === i ? null : i)} />
               ))}
@@ -381,7 +381,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
               <Numbered n="07" title="Downloads">
                 <p className="mt-5 text-[15px] leading-[1.7] text-stone-500">Prospectus, forms and other documents from the school.</p>
               </Numbered>
-              <Reveal delay={0.1} className="border border-stone-200 divide-y divide-stone-100">
+              <Reveal delay={0.1} className="space-y-3 [&>*]:bg-stone-50">
                 {publicDocs.map(d => <DocumentRow key={d.id} doc={d} showAudience={false} />)}
               </Reveal>
             </div>
@@ -433,7 +433,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
               <p className="mt-3 text-[13px] text-white/45 leading-relaxed">Payments: MTN Money, Airtel Money, bank deposit or cash at the office.</p>
             </div>
           </div>
-          <div className="border-t border-white/10">
+          <div className="bg-black/20">
             <p className={`${wrap} py-6 text-[13px] text-white/40`}>© {new Date().getFullYear()} {SCHOOL.name}. All rights reserved.</p>
           </div>
         </footer>

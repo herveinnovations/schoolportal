@@ -94,7 +94,7 @@ export const AuthShell: React.FC<{ onHome: () => void; role: ShellTheme; childre
 
         {/* Form side */}
         <div className="flex flex-col min-w-0">
-          <nav className="h-[76px] px-4 sm:px-8 flex items-center justify-between bg-white lg:bg-transparent border-b border-stone-200 lg:border-0">
+          <nav className="h-[76px] px-4 sm:px-8 flex items-center justify-between bg-white lg:bg-transparent">
             <button onClick={onHome} aria-label="Alphatech Computer Institute home" className="lg:invisible"><Logo height={44} /></button>
             <button onClick={onHome} className="group inline-flex items-center gap-1.5 text-sm font-semibold text-ink/70 hover:text-ink">
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" /> Back to home
@@ -102,7 +102,7 @@ export const AuthShell: React.FC<{ onHome: () => void; role: ShellTheme; childre
           </nav>
           <main className="flex-1 flex items-center justify-center px-4 py-10">
             <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease }} className="w-full max-w-md">
-              <div className="auth-card bg-white border border-stone-200 border-t-4 border-t-sun shadow-[0_30px_60px_-30px_rgba(0,0,0,0.25)] p-6 sm:p-9">{children}</div>
+              <div className="auth-card bg-white shadow-[0_30px_60px_-30px_rgba(0,0,0,0.25)] p-6 sm:p-9">{children}</div>
               {aside}
             </motion.div>
           </main>
@@ -114,14 +114,14 @@ export const AuthShell: React.FC<{ onHome: () => void; role: ShellTheme; childre
 
 export const ErrorNote: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <motion.div role="alert" initial={{ opacity: 0, y: -6, x: 0 }} animate={{ opacity: 1, y: 0, x: [0, -6, 6, -4, 4, 0] }} transition={{ duration: 0.4 }}
-    className="text-red-600 text-sm bg-red-50 p-3 rounded-lg border border-red-100 flex items-start gap-2">
+    className="text-red-600 text-sm bg-red-50 p-3 rounded-lg flex items-start gap-2">
     <span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-1.5" />
     <span>{children}</span>
   </motion.div>
 );
 
 export const SuccessNote: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="text-green-700 text-sm bg-green-50 p-3 rounded-lg border border-green-100 flex items-center gap-2">
+  <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="text-green-700 text-sm bg-green-50 p-3 rounded-lg flex items-center gap-2">
     <CheckCircle2 className="w-4 h-4 shrink-0" />{children}
   </motion.div>
 );
