@@ -104,12 +104,12 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
   }, []);
 
   const features = [
-    { icon: Video, title: 'Live classes', text: 'Join lectures in real time on Zoom, Google Meet or Jitsi, straight from your portal. Your attendance is recorded.' },
-    { icon: PlayCircle, title: 'Lecture recordings', text: 'Missed a class? Recordings are added to your course so you can revise any time.' },
-    { icon: FileText, title: 'Assignments with feedback', text: 'Submit work online and see your mark and your lecturer’s comments.' },
-    { icon: Clock, title: 'Exams with a real timer', text: 'Multiple choice, true/false, short answer and essay. It submits itself when time runs out.' },
-    { icon: Wallet, title: 'Pay in instalments', text: 'Pay a course fee in full, or spread it over 3 or 6 months by Mobile Money, bank or cash.' },
-    { icon: TrendingUp, title: 'Results and certificates', text: 'Track your marks and progress, and get your certificate when you pass.' },
+    { img: '/icons/laptop.webp', title: 'Live classes', text: 'Join lectures in real time on Zoom, Google Meet or Jitsi, straight from your portal. Your attendance is recorded.' },
+    { img: '/icons/film-projector.webp', title: 'Lecture recordings', text: 'Missed a class? Recordings are added to your course so you can revise any time.' },
+    { img: '/icons/memo.webp', title: 'Assignments with feedback', text: 'Submit work online and see your mark and your lecturer’s comments.' },
+    { img: '/icons/stopwatch.webp', title: 'Exams with a real timer', text: 'Multiple choice, true/false, short answer and essay. It submits itself when time runs out.' },
+    { img: '/icons/coin.webp', title: 'Pay in instalments', text: 'Pay a course fee in full, or spread it over 3 or 6 months by Mobile Money, bank or cash.' },
+    { img: '/icons/graduation-cap.webp', title: 'Results and certificates', text: 'Track your marks and progress, and get your certificate when you pass.' },
   ];
 
   const steps = [
@@ -304,7 +304,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10">
               {features.map((f, i) => (
                 <Reveal key={f.title} delay={(i % 3) * 0.08} className="bg-ink p-8 lg:p-10 group hover:bg-ink-soft transition-colors">
-                  <span className="w-14 h-14 bg-sun text-ink flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-1"><f.icon className="w-6 h-6" /></span>
+                  <span className="w-[92px] h-[92px] bg-white border-b-4 border-sun flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-1"><img src={f.img} alt="" width={68} height={68} loading="lazy" className="w-[68px] h-[68px] object-contain" /></span>
                   <h3 className="mt-6 font-display font-bold text-[18px] text-white">{f.title}</h3>
                   <p className="mt-2.5 text-[15px] leading-[1.65] text-white/60">{f.text}</p>
                 </Reveal>
