@@ -344,19 +344,17 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
             </div>
             <ol className="relative grid lg:grid-cols-3 gap-12 lg:gap-10">
               {/* dotted path joining the stages: down the left on phones, across on computers */}
-              <span aria-hidden className="hidden lg:block absolute top-[42px] left-10 right-[calc((100%-80px)/3-40px)] h-1 bg-[repeating-linear-gradient(90deg,var(--color-sun)_0_14px,transparent_14px_24px)]" />
+              <span aria-hidden className="hidden lg:block absolute top-[6px] left-[7px] right-[calc((100%-80px)/3-7px)] h-1 bg-[repeating-linear-gradient(90deg,var(--color-sun)_0_14px,transparent_14px_24px)]" />
               {[
-                { img: '/icons/memo.webp', when: 'Before you start', title: 'Admission form', price: `K ${FEES.registration}`, text: 'Once, after you fill in the enrolment form.' },
-                { img: '/icons/coin.webp', when: 'While you study', title: 'Course fee', price: 'Per course', text: 'In full, or 3 or 6 monthly instalments. Each course shows its price.' },
-                { img: '/icons/graduation-cap.webp', when: 'When you finish', title: 'Certificate', price: `K ${FEES.certificate}`, text: `After you pass the course (${FEES.passMark}% or more).` },
+                { when: 'Before you start', title: 'Admission form', price: `K ${FEES.registration}`, text: 'Once, after you fill in the enrolment form.' },
+                { when: 'While you study', title: 'Course fee', price: 'Per course', text: 'In full, or 3 or 6 monthly instalments. Each course shows its price.' },
+                { when: 'When you finish', title: 'Certificate', price: `K ${FEES.certificate}`, text: `After you pass the course (${FEES.passMark}% or more).` },
               ].map((st, i) => (
                 <Reveal key={st.title} delay={i * 0.12}>
-                  <li className="list-none relative flex lg:block gap-6">
-                    {i < 2 && <span aria-hidden className="lg:hidden absolute left-[38px] top-20 -bottom-12 w-1 bg-[repeating-linear-gradient(180deg,var(--color-sun)_0_14px,transparent_14px_24px)]" />}
-                    <span className="relative shrink-0 w-20 h-20 lg:w-[84px] lg:h-[84px] rounded-full bg-white shadow-[0_14px_30px_-16px_rgba(0,0,0,0.35)] flex items-center justify-center">
-                      <img src={st.img} alt="" width={52} height={52} loading="lazy" className="w-[50px] h-[50px] object-contain" />
-                    </span>
-                    <div className="lg:mt-7">
+                  <li className="list-none relative flex lg:block gap-5">
+                    {i < 2 && <span aria-hidden className="lg:hidden absolute left-[5px] top-[18px] -bottom-12 w-1 bg-[repeating-linear-gradient(180deg,var(--color-sun)_0_14px,transparent_14px_24px)]" />}
+                    <span className="relative shrink-0 block w-3.5 h-3.5 rounded-full bg-sun ring-4 ring-stone-50" />
+                    <div className="-mt-[3px] lg:mt-6">
                       <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-royal">{st.when}</p>
                       <h3 className="mt-1 font-display font-bold text-[17px] text-ink">{st.title}</h3>
                       <p className="mt-3 font-display font-extrabold text-[26px] lg:text-[28px] leading-none tracking-[-0.02em] text-ink tabular-nums">{st.price}</p>
