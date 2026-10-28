@@ -357,10 +357,10 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                       <img src={st.img} alt="" width={52} height={52} loading="lazy" className="w-[50px] h-[50px] object-contain" />
                     </span>
                     <div className="lg:mt-7">
-                      <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-royal">{st.when}</p>
-                      <h3 className="mt-1.5 font-display font-extrabold text-[20px] text-ink">{st.title}</h3>
-                      <p className="mt-4 font-display font-extrabold text-[36px] lg:text-[40px] leading-none tracking-[-0.02em] text-ink tabular-nums">{st.price}</p>
-                      <p className="mt-3 text-[15px] leading-[1.65] text-stone-500 max-w-[34ch]">{st.text}</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-royal">{st.when}</p>
+                      <h3 className="mt-1 font-display font-bold text-[17px] text-ink">{st.title}</h3>
+                      <p className="mt-3 font-display font-extrabold text-[26px] lg:text-[28px] leading-none tracking-[-0.02em] text-ink tabular-nums">{st.price}</p>
+                      <p className="mt-2.5 text-[14px] leading-[1.6] text-stone-500 max-w-[34ch]">{st.text}</p>
                     </div>
                   </li>
                 </Reveal>
