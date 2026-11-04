@@ -1,3 +1,3 @@
-/* Self-hosted fonts: Work Sans for headings, Inter for everything else */
-@import '@fontsource-variable/inter';
+/* Self-hosted fonts: Outfit for all text; Work Sans only for the ALPHATECH logo lettering */
+@import '@fontsource-variable/outfit';
 @import '@fontsource-variable/work-sans';

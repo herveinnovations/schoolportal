@@ -263,7 +263,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                   aria-haspopup="true" aria-expanded={menuId === m.id}
                   className={`relative h-full flex items-center gap-1 text-[15px] font-semibold transition-colors duration-300 ${menuId === m.id ? 'text-navy' : 'text-ink/80 hover:text-navy'}`}>
                   {m.label}<ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ease-out ${menuId === m.id ? 'rotate-180' : ''}`} />
-                  {menuId === m.id && <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-[22px] h-[3px] bg-sun" transition={{ type: 'spring', stiffness: 420, damping: 38 }} />}
+                  {menuId === m.id && <motion.span layoutId="nav-underline" className="absolute left-1/2 -translate-x-1/2 bottom-[20px] w-9 h-[3px] rounded-full bg-sun" transition={{ type: 'spring', stiffness: 420, damping: 38 }} />}
                 </a>
               ))}
             </div>
