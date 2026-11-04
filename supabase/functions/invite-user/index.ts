@@ -24,9 +24,13 @@ Deno.serve(async (req) => {
   const { data: { user } } = token ? await admin.auth.getUser(token) : { data: { user: null } };
   if (!user) return json({ error: 'Please sign in again.' }, 401);
 
-  const { data: me } = await admin.from('profiles').select('role, staff_role, active').eq('id', user.id).single();
-  if (!me || me.role !== 'staff' || me.staff_role !== 'admin' || !me.active) {
-    return json({ error: 'Only an administrator can invite lecturers and staff.' }, 403);
+  // Ask the database as the caller, so the Staff ID check for this sign-in applies too
+  const asCaller = createClient(url, Deno.env.get('SUPABASE_ANON_KEY')!, {
+    auth: { persistSession: false }, global: { headers: { Authorization: `Bearer ${token}` } },
+  });
+  const { data: myStaffRole } = await asCaller.rpc('my_staff_role');
+  if (myStaffRole !== 'admin') {
+    return json({ error: 'Only an administrator, signed in with their Staff ID, can invite lecturers and staff.' }, 403);
   }
 
   let body: { email?: string; name?: string; role?: string; staffRole?: string | null; redirectTo?: string };

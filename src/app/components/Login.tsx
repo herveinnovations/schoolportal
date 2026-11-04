@@ -6,7 +6,6 @@ import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/app/components/ui/dialog';
 import { AuthShell, ErrorNote, SuccessNote, PasswordInput, Spinner, type Role } from './AuthShell';
-import { Info } from 'lucide-react';
 
 interface LoginProps {
   onSwitchToSignup: (role?: Role) => void;
@@ -14,7 +13,7 @@ interface LoginProps {
   initialRole?: Role;
 }
 
-/** One sign-in for everyone. The account decides which portal opens. */
+/** Student sign-in. Lecturers and staff use /staff. */
 export const Login: React.FC<LoginProps> = ({ onSwitchToSignup, onHome }) => {
   const { login, requestPasswordReset } = useAuth();
   const [email, setEmail] = useState('');
@@ -50,17 +49,12 @@ export const Login: React.FC<LoginProps> = ({ onSwitchToSignup, onHome }) => {
   return (
     <AuthShell
       onHome={onHome}
-      role="all"
-      aside={
-        <p className="mt-4 text-xs text-stone-500 flex items-start justify-center gap-1.5 text-center px-4">
-          <Info className="w-3.5 h-3.5 shrink-0 mt-0.5" /> Lecturers and staff: use the email your invitation was sent to.
-        </p>
-      }
+      role="student"
     >
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-stone-900">Welcome back</h1>
-          <p className="text-stone-500 text-sm mt-1">Sign in to Alphatech Computer Institute. Students, lecturers and staff all sign in here.</p>
+          <p className="text-stone-500 text-sm mt-1">Sign in to your Alphatech student portal.</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div className="space-y-2">

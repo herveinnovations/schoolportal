@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from '@/app/context/AuthContext';
 import { SiteProvider } from '@/app/context/SiteContext';
 import { Landing } from '@/app/components/Landing';
 import { Login } from '@/app/components/Login';
+import { StaffLogin } from '@/app/components/StaffLogin';
 import { Signup } from '@/app/components/Signup';
 import { SetPassword } from '@/app/components/SetPassword';
 
@@ -25,7 +26,10 @@ const Splash: React.FC = () => (
 );
 
 function MainContent() {
-  const { user, loading, authLink, logout } = useAuth();
+  const { user, loading, authLink, logout, staffVerified } = useAuth();
+  // alphatechonlinelearning.vercel.app/staff is the lecturer and staff sign-in
+  const onStaffPage = window.location.pathname.replace(/\/+$/, '').toLowerCase() === '/staff';
+  const goHome = () => { if (onStaffPage) window.location.assign('/'); else go({ page: 'home' }); };
   const [view, setView] = useState<View>({ page: 'home' });
 
   const go = (v: View) => { setView(v); window.scrollTo(0, 0); };
@@ -53,6 +57,10 @@ function MainContent() {
       </div>
     );
   }
+
+  // Lecturers and staff must enter their Staff ID before their portal opens
+  if (user && user.role !== 'student' && !staffVerified) return <StaffLogin onHome={goHome} />;
+  if (!user && onStaffPage) return <StaffLogin onHome={goHome} />;
 
   if (!user || (user.role === 'student' && !user.hasCompletedPayment)) {
     // An unpaid student lands on the payment step inside Signup

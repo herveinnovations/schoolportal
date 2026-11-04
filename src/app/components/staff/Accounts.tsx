@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { toast } from 'sonner';
 import { useAuth, type StaffRole, type User } from '@/app/context/AuthContext';
@@ -7,9 +7,19 @@ import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
-import { UserPlus, Mail, X, ShieldCheck, Power, Clock } from 'lucide-react';
+import { UserPlus, Mail, X, ShieldCheck, Power, Clock, Copy, RefreshCw, KeyRound } from 'lucide-react';
+import { supabase, friendlyError } from '@/app/lib/supabase';
 import { EmptyState, StatusPill, fmtDate } from '../shell/ui';
 import { Spinner } from '../AuthShell';
+
+/** A Staff ID with a copy button. */
+const StaffIdChip: React.FC<{ code?: string }> = ({ code }) => code ? (
+  <span className="inline-flex items-center gap-1.5 bg-stone-100 px-2 py-1">
+    <span className="font-mono text-[13px] tracking-[0.08em] text-ink">{code}</span>
+    <button type="button" aria-label={`Copy Staff ID ${code}`} className="text-stone-500 hover:text-ink"
+      onClick={() => { navigator.clipboard?.writeText(code).then(() => toast.success('Staff ID copied'), () => toast.error('Could not copy')); }}><Copy className="w-3.5 h-3.5" /></button>
+  </span>
+) : <span className="text-xs text-stone-400">—</span>;
 
 const ROLE_INFO: Record<'lecturer' | StaffRole, { label: string; text: string }> = {
   lecturer: { label: 'Lecturer', text: 'Teaches assigned courses: live classes, assignments, exams, marking and attendance.' },
@@ -27,6 +37,22 @@ export const Accounts: React.FC = () => {
   const [form, setForm] = useState<{ name: string; email: string; role: Choice }>({ name: '', email: '', role: 'lecturer' });
   const [busy, setBusy] = useState(false);
   const [confirmOff, setConfirmOff] = useState<User | null>(null);
+  const [codes, setCodes] = useState<Record<string, string>>({});
+  const [confirmNewId, setConfirmNewId] = useState<User | null>(null);
+
+  // Staff IDs are only readable by administrators
+  const loadCodes = useCallback(async () => {
+    const { data } = await supabase.from('staff_codes').select('user_id, code');
+    setCodes(Object.fromEntries((data ?? []).map(r => [r.user_id as string, r.code as string])));
+  }, []);
+  useEffect(() => { loadCodes(); }, [loadCodes, users.length]);
+
+  const newId = async (p: User) => {
+    const { data, error } = await supabase.rpc('reset_staff_code', { target: p.id });
+    if (error) { toast.error(friendlyError(error.message)); return; }
+    setCodes(c => ({ ...c, [p.id]: data as string }));
+    toast.success(`New Staff ID for ${p.name}`, { description: `${data}. Their old ID no longer works.` });
+  };
   if (!user) return null;
 
   const team = users.filter(u => u.role !== 'student').sort((a, b) => (a.role === b.role ? a.name.localeCompare(b.name) : a.role.localeCompare(b.role)));
@@ -38,7 +64,7 @@ export const Accounts: React.FC = () => {
     const err = await inviteStaff({ name: form.name.trim(), email: form.email.trim(), role: form.role === 'lecturer' ? 'lecturer' : 'staff', staffRole: form.role === 'lecturer' ? undefined : form.role });
     setBusy(false);
     if (err) { toast.error(err); return; }
-    toast.success(`Invitation sent to ${form.email.trim()}`, { description: 'They choose their own password from the email link.' });
+    toast.success(`Invitation sent to ${form.email.trim()}`, { description: 'Give them their Staff ID from the "Waiting to accept" list. It is not in the email.' });
     setForm({ name: '', email: '', role: 'lecturer' });
     setOpen(false);
   };
@@ -46,7 +72,10 @@ export const Accounts: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <p className="text-sm text-stone-600 max-w-2xl">Lecturers and staff can’t sign up on their own. Invite them by email; they choose a password from the link and sign in on the same page as students.</p>
+        <div className="text-sm text-stone-600 max-w-2xl space-y-2">
+          <p>Lecturers and staff can’t sign up on their own. Invite them by email; they choose a password from the link.</p>
+          <p className="flex items-start gap-2 bg-sun/15 px-3 py-2 text-ink"><KeyRound className="w-4 h-4 mt-0.5 shrink-0" /><span>They sign in at <strong>{window.location.host}/staff</strong> with their email, password <strong>and Staff ID</strong>. Give each person their Staff ID yourself, in person or by phone. It is never emailed.</span></p>
+        </div>
         <Button onClick={() => setOpen(true)}><UserPlus className="w-4 h-4" />Invite someone</Button>
       </div>
 
@@ -59,6 +88,7 @@ export const Accounts: React.FC = () => {
                 <motion.li key={i.email} exit={{ opacity: 0, height: 0 }} className="flex flex-wrap items-center gap-3 px-5 py-3">
                   <Mail className="w-4 h-4 text-stone-400" />
                   <span className="flex-1 min-w-[180px]"><span className="block text-sm font-medium text-stone-900">{i.name}</span><span className="block text-xs text-stone-500">{i.email} · invited {fmtDate(i.createdAt)}</span></span>
+                  <StaffIdChip code={i.staffCode} />
                   <StatusPill tone="amber"><Clock className="w-3 h-3" />{ROLE_INFO[i.role === 'lecturer' ? 'lecturer' : (i.staffRole ?? 'registrar')].label}</StatusPill>
                   <Button size="sm" variant="ghost" onClick={() => { cancelInvite(i.email); toast.success('Invitation cancelled'); }}><X className="w-4 h-4" />Cancel</Button>
                 </motion.li>
@@ -70,10 +100,11 @@ export const Accounts: React.FC = () => {
 
       {team.length === 0 ? <EmptyState icon={ShieldCheck} title="Only you so far" text="Invite your lecturers and office staff." /> : (
         <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-x-auto">
-          <table className="w-full text-sm min-w-[620px]">
+          <table className="w-full text-sm min-w-[760px]">
             <thead className="bg-stone-50 text-stone-600"><tr>
               <th scope="col" className="text-left font-semibold px-4 py-3">Person</th>
               <th scope="col" className="text-left font-semibold px-3 py-3">Access</th>
+              <th scope="col" className="text-left font-semibold px-3 py-3">Staff ID</th>
               <th scope="col" className="text-left font-semibold px-3 py-3">Status</th>
               <th scope="col" className="text-right font-semibold px-4 py-3"><span className="sr-only">Actions</span></th>
             </tr></thead>
@@ -91,6 +122,8 @@ export const Accounts: React.FC = () => {
                         </Select>
                       )}
                     </td>
+                    <td className="px-3 py-3"><div className="flex items-center gap-1"><StaffIdChip code={codes[p.id]} />
+                      {codes[p.id] && <button type="button" title="Give a new Staff ID" aria-label={`Give ${p.name} a new Staff ID`} onClick={() => setConfirmNewId(p)} className="p-1.5 text-stone-500 hover:text-ink"><RefreshCw className="w-3.5 h-3.5" /></button>}</div></td>
                     <td className="px-3 py-3">{p.active === false ? <StatusPill tone="stone">Switched off</StatusPill> : <StatusPill tone="green">Active</StatusPill>}</td>
                     <td className="px-4 py-3 text-right">
                       {!me && (p.active === false
@@ -122,6 +155,17 @@ export const Accounts: React.FC = () => {
             </fieldset>
             <p className="text-xs text-stone-500">Tip: if a course already lists this lecturer’s exact name, it is linked to them automatically when they accept.</p>
             <Button className="w-full" onClick={send} disabled={busy}>{busy ? <><Spinner /> Sending…</> : 'Send invitation'}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!confirmNewId} onOpenChange={o => !o && setConfirmNewId(null)}>
+        <DialogContent>
+          <DialogHeader className="text-left"><DialogTitle>Give {confirmNewId?.name} a new Staff ID?</DialogTitle>
+            <DialogDescription>Do this if their Staff ID may have been seen by someone else. The old ID stops working straight away{confirmNewId?.id === user.id ? '' : ' and they’ll have to sign in again with the new one'}.</DialogDescription></DialogHeader>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setConfirmNewId(null)}>Cancel</Button>
+            <Button onClick={() => { if (confirmNewId) newId(confirmNewId); setConfirmNewId(null); }}><RefreshCw className="w-4 h-4" />Give new ID</Button>
           </div>
         </DialogContent>
       </Dialog>

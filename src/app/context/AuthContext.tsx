@@ -59,6 +59,8 @@ export interface StaffInvite {
   staffRole?: StaffRole;
   createdAt: string;
   acceptedAt?: string;
+  /** The Staff ID they'll need at /staff. Only administrators can read it. */
+  staffCode?: string;
 }
 
 export interface User {
@@ -306,6 +308,12 @@ interface AuthContextType {
   staffInvites: StaffInvite[];
 
   login: (email: string, password: string) => Promise<string | null>;
+  /** Lecturer and staff sign-in: email, password and the school-issued Staff ID, all checked before the portal opens. */
+  loginStaff: (email: string, password: string, staffId: string) => Promise<string | null>;
+  /** For a lecturer or staff member already signed in (e.g. from an invite) who still has to enter their Staff ID. */
+  verifyStaffId: (staffId: string) => Promise<string | null>;
+  /** False for a lecturer or staff member whose current sign-in hasn't entered the Staff ID yet. */
+  staffVerified: boolean;
   signup: (name: string, email: string, password: string) => Promise<{ error?: string; needsConfirmation?: boolean }>;
   logout: () => void;
   requestPasswordReset: (email: string) => Promise<string | null>;
@@ -460,6 +468,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [authLink, setAuthLink] = useState<AuthLink>(initialAuthLink);
   const sessionUserId = session?.user.id ?? null;
+  const [staffVerified, setStaffVerified] = useState(false);
+  // While a sign-in is being checked (role, Staff ID), keep the new session back so screens don't flash
+  const holding = useRef(false);
 
   const patch = useCallback(<K extends keyof Store>(key: K, fn: (prev: Store[K]) => Store[K]) => {
     setStore(s => ({ ...s, [key]: fn(s[key]) }));
@@ -488,6 +499,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     supabase.auth.getSession().then(({ data }) => { if (!cancelled) setSession(data.session); if (!data.session) setLoading(false); });
     const { data: sub } = supabase.auth.onAuthStateChange((event, s) => {
       if (event === 'PASSWORD_RECOVERY') setAuthLink('recovery');
+      if (holding.current && s) return;
       setSession(s);
     });
     return () => { cancelled = true; sub.subscription.unsubscribe(); };
@@ -498,6 +510,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     (async () => {
       if (sessionUserId) {
         setLoading(true);
+        const { data: ok } = await supabase.rpc('staff_session_ok');
+        if (cancelled) return;
+        setStaffVerified(ok === true);
         await loadEverything();
       } else {
         await loadCatalogue();
@@ -568,17 +583,56 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   /* ---------- Accounts ---------- */
 
-  const login = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+  const STAFF_MESSAGES: Record<string, string> = {
+    wrong: 'That Staff ID is not correct.',
+    locked: 'Too many wrong Staff IDs. Wait 15 minutes, then try again, or ask the administrator for help.',
+    not_staff: 'This page is for lecturers and staff only.',
+    not_signed_in: 'Your sign-in expired. Please sign in again.',
+  };
+
+  /** Signs in, checks the account, and only then lets the session through to the app. */
+  const signInChecked = async (email: string, password: string, check: (prof: { name: string; role: string; active: boolean }) => Promise<string | null>) => {
+    holding.current = true;
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      if (error) return friendlyError(error.message);
+      const { data: prof } = await supabase.from('profiles').select('name, role, active').eq('id', data.user.id).single();
+      let problem: string | null = null;
+      if (!prof) problem = 'Your account could not be loaded. Please try again.';
+      else if (prof.active === false) problem = 'This account has been switched off. Please contact the administration office.';
+      else problem = await check(prof);
+      if (problem) {
+        await supabase.auth.signOut();
+        return problem;
+      }
+      supabase.from('activity_logs').insert({ user_id: data.user.id, user_name: prof!.name, user_role: prof!.role, action: 'login' }).then(() => {});
+      setSession(data.session);
+      return null;
+    } finally {
+      holding.current = false;
+    }
+  };
+
+  /** Students sign in on the main website. */
+  const login = (email: string, password: string) => signInChecked(email, password, async prof =>
+    prof.role === 'student' ? null : 'Lecturers and staff sign in on the staff page, with their Staff ID.');
+
+  /** Lecturers and staff sign in at /staff with their Staff ID. */
+  const loginStaff = (email: string, password: string, staffId: string) => signInChecked(email, password, async prof => {
+    if (prof.role === 'student') return 'This page is for lecturers and staff only. Students sign in on the main website.';
+    const { data, error } = await supabase.rpc('verify_staff_code', { code: staffId });
     if (error) return friendlyError(error.message);
-    const { data: prof } = await supabase.from('profiles').select('name, role, active').eq('id', data.user.id).single();
-    if (prof && prof.active === false) {
-      await supabase.auth.signOut();
-      return 'This account has been switched off. Please contact the administration office.';
-    }
-    if (prof) {
-      supabase.from('activity_logs').insert({ user_id: data.user.id, user_name: prof.name, user_role: prof.role, action: 'login' }).then(() => {});
-    }
+    if (data !== 'ok') return STAFF_MESSAGES[data as string] ?? 'Your Staff ID could not be checked.';
+    setStaffVerified(true);
+    return null;
+  });
+
+  const verifyStaffId = async (staffId: string) => {
+    const { data, error } = await supabase.rpc('verify_staff_code', { code: staffId });
+    if (error) return friendlyError(error.message);
+    if (data !== 'ok') return STAFF_MESSAGES[data as string] ?? 'Your Staff ID could not be checked.';
+    setStaffVerified(true);
+    await loadEverything();
     return null;
   };
 
@@ -912,7 +966,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <AuthContext.Provider
       value={{
-        loading, authLink,
+        loading, authLink, staffVerified, loginStaff, verifyStaffId,
         user, users, courses: store.courses, timetable: store.timetable, liveClasses: store.liveClasses, notifications,
         activityLogs: store.activityLogs, recordings: store.recordings, homeworks: store.homeworks, exams,
         homeworkSubmissions: store.homeworkSubmissions, examAttempts: store.examAttempts, paymentClaims: store.paymentClaims,

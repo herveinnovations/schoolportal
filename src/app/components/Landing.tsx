@@ -431,7 +431,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                         <div className="p-8 flex flex-col flex-1">
                           <span className={`self-start px-3 py-1 text-[12px] font-bold uppercase tracking-[0.08em] ${levelTone(c.level)}`}>{levelLabel(c.level)}</span>
                           <h3 className="mt-5 font-display font-extrabold text-[20px] leading-[1.2] text-ink">{c.name}</h3>
-                          <p className="mt-1 text-[14px] text-stone-400">{c.lecturerName} · {c.credits} credits</p>
+                          <p className="mt-1 text-[14px] text-stone-400">{c.credits} credits</p>
                           <p className="mt-4 text-[15px] leading-[1.65] text-stone-500 line-clamp-3 flex-1">{c.description}</p>
                           <div className="mt-6 pt-2 flex items-end justify-between gap-4">
                             <div>
@@ -588,11 +588,13 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
               </ul>
             </div>
             <div>
-              <p className="font-display font-bold text-white text-[16px] mb-4">Lecturers &amp; staff</p>
+              <p className="font-display font-bold text-white text-[16px] mb-4">Explore</p>
               <ul className="space-y-2.5 text-[15px]">
-                <li><button onClick={() => onSignIn()} className="text-[15px] font-normal hover:text-sun transition-colors">Sign in</button></li>
+                <li><a href="#about" className="hover:text-sun transition-colors">About us</a></li>
+                <li><a href="#features" className="hover:text-sun transition-colors">What you get</a></li>
+                <li><a href="#how" className="hover:text-sun transition-colors">How to join</a></li>
+                <li><a href="#faq" className="hover:text-sun transition-colors">Questions</a></li>
               </ul>
-              <p className="mt-3 text-[13px] text-white/45 leading-relaxed">Use the email address your invitation was sent to.</p>
             </div>
             <div>
               <p className="font-display font-bold text-white text-[16px] mb-4">Contact</p>
