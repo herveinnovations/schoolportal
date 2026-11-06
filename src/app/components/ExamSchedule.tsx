@@ -153,7 +153,7 @@ export const ExamSchedule: React.FC = () => {
                     <p className="text-sm text-stone-600 flex items-center gap-1.5"><Award className="w-4 h-4 text-amber-600" />You can get a certificate for this course.</p>
                     {certPaid(e) ? <Button onClick={() => setShowCert(e)} className="bg-emerald-700"><Award className="w-4 h-4" />View certificate</Button>
                       : certPending(e) ? <StatusPill tone="amber"><Hourglass className="w-3 h-3" />Certificate payment pending</StatusPill>
-                      : <Button variant="outline" onClick={() => setCertFor(e)}><CreditCard className="w-4 h-4" />Get certificate (K {FEES.certificate})</Button>}
+                      : <Button variant="outline" onClick={() => setCertFor(e)}><CreditCard className="w-4 h-4" />Get certificate</Button>}
                   </div>
                 )}
               </div>

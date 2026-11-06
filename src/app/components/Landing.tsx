@@ -231,7 +231,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
       ] },
     { id: 'fees', label: 'Fees', href: '#fees', title: 'Fees', sub: 'What you pay at each stage',
       cols: [
-        { heading: 'What you pay', links: [{ label: `Admission form · K${FEES.registration}`, href: '#fees' }, { label: 'Course fees', href: '#fees' }, { label: `Certificate · K${FEES.certificate}`, href: '#fees' }] },
+        { heading: 'What you pay', links: [{ label: `Admission form · K${FEES.registration}`, href: '#fees' }, { label: 'Course fees', href: '#fees' }, { label: 'Certificate', href: '#fees' }] },
         { heading: 'How to pay', links: [{ label: 'MTN Money & Airtel Money', href: '#fees' }, { label: 'Bank deposit', href: '#fees' }, { label: 'Cash at the office', href: '#fees' }] },
         { heading: 'Questions', links: [faqLink(1, 'Paying in instalments'), faqLink(2, 'How do I pay?')] },
       ] },
@@ -506,7 +506,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
               {[
                 { when: 'Before you start', title: 'Admission form', price: `K ${FEES.registration}`, text: 'Once, after you fill in the enrolment form.' },
                 { when: 'While you study', title: 'Course fee', price: 'Per course', text: 'In full, or 3 or 6 monthly instalments. Each course shows its price.' },
-                { when: 'When you finish', title: 'Certificate', price: `K ${FEES.certificate}`, text: `After you pass the course (${FEES.passMark}% or more).` },
+                { when: 'When you finish', title: 'Certificate', price: '', text: `After you pass the course (${FEES.passMark}% or more).` },
               ].map((st, i) => (
                 <Reveal key={st.title} delay={i * 0.12}>
                   <li className="list-none relative flex lg:block gap-5">
@@ -515,7 +515,7 @@ export const Landing: React.FC<LandingProps> = ({ onSignIn, onSignUp }) => {
                     <div className="-mt-[3px] lg:mt-6">
                       <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-royal">{st.when}</p>
                       <h3 className="mt-1 font-display font-bold text-[17px] text-ink">{st.title}</h3>
-                      <p className="mt-3 font-display font-extrabold text-[26px] lg:text-[28px] leading-none tracking-[-0.02em] text-ink tabular-nums">{st.price}</p>
+                      {st.price && <p className="mt-3 font-display font-extrabold text-[26px] lg:text-[28px] leading-none tracking-[-0.02em] text-ink tabular-nums">{st.price}</p>}
                       <p className="mt-2.5 text-[14px] leading-[1.6] text-stone-500 max-w-[34ch]">{st.text}</p>
                     </div>
                   </li>

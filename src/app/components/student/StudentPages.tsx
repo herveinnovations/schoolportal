@@ -228,7 +228,7 @@ export const StudentCertificates: React.FC<{ go: (tab: string) => void }> = ({ g
     .filter(x => x.e && percent(x.a.score!, examMax(x.e)) >= FEES.passMark);
   const issued = user.certificates ?? [];
 
-  if (!passed.length && !issued.length) return <EmptyState icon={Award} title="No certificates yet" text={`Pass a course exam (${FEES.passMark}% or more) and you can get a certificate for K ${FEES.certificate}.`} action={<Button variant="outline" onClick={() => go('exams')}>Go to exams</Button>} />;
+  if (!passed.length && !issued.length) return <EmptyState icon={Award} title="No certificates yet" text={`Pass a course exam (${FEES.passMark}% or more) and you can get your certificate.`} action={<Button variant="outline" onClick={() => go('exams')}>Go to exams</Button>} />;
 
   return (
     <div className="space-y-8">
@@ -246,7 +246,7 @@ export const StudentCertificates: React.FC<{ go: (tab: string) => void }> = ({ g
                   <p className="text-xs text-stone-500 mb-4">{percent(a.score!, examMax(e))}% · {fmtDate(a.endTime!)}</p>
                   {paid ? <Button className="w-full" onClick={() => go('exams')}>View certificate</Button>
                     : pending ? <StatusPill tone="amber"><Hourglass className="w-3 h-3" />Payment pending</StatusPill>
-                    : <Button variant="outline" className="w-full" onClick={() => go('exams')}>Get certificate (K {FEES.certificate})</Button>}
+                    : <Button variant="outline" className="w-full" onClick={() => go('exams')}>Get certificate</Button>}
                 </div>
               );
             })}
